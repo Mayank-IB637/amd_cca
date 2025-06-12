@@ -37,14 +37,21 @@ function InstanceForm() {
 
   const form = useForm({
     resolver: zodResolver(instanceSchema),
-    defaultValues: {},
+    defaultValues: { 
+      region: "",
+      instanceType: "",
+      pricingModel: "",
+      quantity: 0,
+      noOfHours: 0,
+      uuid: "",},
     mode: "onTouched",
   });
 
   const handleSubmit = useCallback(
     (data) => {
+      console.log("Submitted data...",data)
       dispatch(
-        addInstance({ id: nanoid(), ...data, uuid: data.uuid || nanoid() })
+        addInstance({ id: nanoid(), ...data, uuid: data.uuid || nanoid(), cloud: data.cloud || "AWS" })
       );
       setFormSuccess("Instance added successfully");
       setFormError("");
@@ -53,9 +60,10 @@ function InstanceForm() {
     [dispatch, setFormSuccess, setFormError, form]
   );
 
-  const handleError = () => {
-    setFormError("Please enter the required fields.");
-  };
+ const handleError = (errors) => {
+  console.log("Validation errors:", JSON.stringify(errors));
+  setFormError("Please enter the required fields.");
+};
 
   useEffect(() => {
     form.reset({});
@@ -76,7 +84,7 @@ function InstanceForm() {
     >
       <Suspense fallback={null}>
         <PortfolioDetails form={form} />
-        <Divider />
+        <Divider sx={{mt:1}}/>
 
         <GenericMetadata form={form} />
       </Suspense>

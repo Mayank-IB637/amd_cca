@@ -52,11 +52,12 @@ function BottomBar() {
  
   const handleSavePortFolio =  () => {
     const trimmedName = portfolioName?.trim();
-    if (!trimmedName) {
+    const validNameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
       dispatch(
         setMessage({
           type: errorMessageType.ERROR,
-          message: "Portfolio name is required",
+          message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
         })
       );
       return;

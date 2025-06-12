@@ -65,31 +65,32 @@ export const serviceProviderOptions = [
 export const FIELDS = [
   {
     name: "region",
-    label: "Region",
+    label: "Region*",
     options: regionOptions,
     tooltipMessage: "Select Region associated with CSP",
   },
   {
     name: "instanceType",
-    label: "Instance Type",
+    label: "Size*",
     options: instanceOptions,
     tooltipMessage: "Select Instance associated with Region",
   },
   {
     name: "uuid",
-    label: "UUID/Instance Name",
+    label: "UUID / Instance Name",
     tooltipMessage: "Enter UUID/Instance Name, For Ex: VM for AI/ML server",
   },
-  { label: "Quantity", name: "quantity", tooltipMessage: "Quantity" },
+  { label: "Quantity*", name: "quantity", tooltipMessage: "Quantity" },
   {
-    label: "Total Number of Hours per Month",
+    label: "Total Number of Hours per Month*",
     name: "noOfHours",
     tooltipMessage: "Max hours per month",
   },
   {
-    label: "Pricing Model",
+    label: "Pricing Model*",
     name: "pricingModel",
     tooltipMessage: "",
+    options:pricingModelOptions
   }
   
 ];

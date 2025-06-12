@@ -6,7 +6,7 @@ export const mockFormDataResponse = {
   uuid: "yhG_7_KsqZNeKgPJn6b09",
   pricingModel: "ondemand",
   cloud:'AWS',
-  totalNumberofHoursPerMonth:730,
+  noOfHours:730,
   quantity:1
 };
 

@@ -11,7 +11,7 @@ import {
   selectInstances,
   selectSelfAssessment,
 } from "@/redux/features/instance/instance.selector";
-import { removeInstance } from "@/redux/features/instance/instance.slice";
+import { removeInstance, setUploadedFileName } from "@/redux/features/instance/instance.slice";
 import { Slider } from "@mui/material";
 
 const CustomTable = lazy(() => import("../ui/table/CustomTable"));
@@ -48,65 +48,66 @@ function PortfolioBody() {
       if (!selectedRows?.length) return;
       const selectedIndexes = selectedRows.map((row) => row.index);
       dispatch(removeInstance(selectedIndexes));
+      dispatch(setUploadedFileName(''))
     },
     [dispatch]
   );
 
   return (
-    <Box sx={{ width: "100%", p: 0, bgcolor: "primary.contrastText" }} style={{ paddingLeft: '5px',marginTop:'-40px',marginBottom:'0px' }}>
-      <Suspense fallback={<TableSkeleton />}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "8px",
+   <Box sx={{ width: "100%", p: 0, bgcolor: "primary.contrastText", mt: 0, overflow: "hidden" }} style={{ paddingLeft: '5px' }}>
+  <Suspense fallback={<TableSkeleton />}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        gap: "10px"
+      }}
+    >
+      <p
+        style={{
+          fontSize: 16,
+          fontWeight: 500,
+          color: "rgb(0,0,225)",
+          margin: 0,
+          flex: "1 1 auto",
+          minWidth: "200px"
+        }}
+      >
+        Note: Double-click to update input values.
+      </p>
+      <div style={{ 
+        width: "200px", 
+        minWidth: "150px",
+        paddingRight: "20px"
+      }}>
+        <Slider
+          defaultValue={20}
+          step={10}
+          marks
+          min={0}
+          max={100}
+          valueLabelDisplay="on"
+          sx={{
+            '& .MuiSlider-valueLabel': {
+              fontSize: '0.75rem',
+              padding: '2px 6px'
+            }
           }}
-        >
-          <p
-            style={{
-              fontSize: 16,
-              fontWeight: 500,
-              color: "rgb(0,0,225)",
-            }}
-          >
-            Note: Double-click to update input values.
-          </p>
-          <div style={{ width: "300px", marginRight: "20px" }}>
-            <Slider
-              defaultValue={20}
-              step={10}
-              marks
-              min={0}
-              max={100}
-              valueLabelDisplay="on"
-              sx={{
-                '& .MuiSlider-valueLabel': {
-                  top: 'auto',
-                  bottom: '-45px',
-                  '&::before': {
-                    bottom: 'auto',
-                    top: '-6px',
-                    borderBottomColor: 'currentColor',
-                    borderTopColor: 'transparent',
-                  }
-                },
-                marginBottom: '50px',
-              }}
-            />
-
-          </div>
-        </div>
-        <CustomTable
-          variant="primary"
-          data={dataMap['instance_stats']}
-          columns={columnsMap['instance_stats']}
-          isPagination
-          isAction={true}
-          onDelete={onDelete}
         />
-      </Suspense>
-    </Box>
+      </div>
+    </div>
+    <CustomTable
+      variant="primary"
+      data={dataMap['instance_stats']}
+      columns={columnsMap['instance_stats']}
+      isPagination
+      isAction={true}
+      onDelete={onDelete}
+    />
+  </Suspense>
+</Box>
   );
 }
 

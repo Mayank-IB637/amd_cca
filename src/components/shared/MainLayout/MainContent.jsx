@@ -12,17 +12,8 @@ function MainContent() {
   const showTable = instanceData.length > 0;
   return (
     <Box sx={{ flex: 1, p: 0, overflowY: "auto" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-          boxShadow: 3,
-        }}
-      >
         <InstanceForm />
         {showTable && <PortfolioBody />}
-      </Box>
     </Box>
   );
 }

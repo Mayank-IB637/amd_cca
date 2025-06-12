@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { instanceOptions, regionOptions } from "../constant";
+import { instanceOptions, pricingModelOptions, regionOptions } from "../constant";
 
 export const instanceSchema = z.object({ 
   region: z.string()    .nonempty("Region is required")
@@ -12,10 +12,11 @@ export const instanceSchema = z.object({
       message: "Invalid instance type selected",
     }),
   uuid: z.string().optional(),
-  pricingModel: z.string().optional(),
-  maxCpuUtilization: z.number().min(0, "Required"),
-  maxMemoryUsed: z.number().min(0, "Required"),
-  maxNetworkBandwidth: z.number().min(0, "Required"),
-  maxDiskBandwidth: z.number().min(0, "Required"),
-  maxIOPS: z.number().min(0, "Required")
+  pricingModel: z.string()
+    .nonempty("Pricing Model is required")
+    .refine(val => pricingModelOptions.includes(val), {
+      message: "Invalid pricing model selected",
+    }),
+  quantity: z.string().min(1, "Required"),
+  noOfHours: z.string().min(1, "Required")
 });

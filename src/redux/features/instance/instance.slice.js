@@ -15,6 +15,7 @@ const initialState = {
   message: "",
   reset: false,
   messageType: null,
+  uploadedFileName: "",
 };
 
 const instanceSlice = createSlice({
@@ -40,6 +41,9 @@ const instanceSlice = createSlice({
     },
     setPortFolioName(state, action) {
       state.name = action.payload;
+    },
+    setUploadedFileName(state,action){
+        state.uploadedFileName = action.payload;
     },
     setMessage(state, action) {
       state.message = action.payload.message;
@@ -87,6 +91,7 @@ export const {
   updateInstanceState,
   updateSingleInstance,
   addSelfAssessmentList,
+  setUploadedFileName
 } = instanceSlice.actions;
 
 export default instanceSlice.reducer;
