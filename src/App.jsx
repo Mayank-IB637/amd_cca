@@ -13,7 +13,7 @@ import InstanceAdviceBottomBar from "./components/shared/InstanceAdvice/Instance
 import Sidebar from "./components/shared/Sidebar/Sidebar";
 import MainContent from "./components/shared/MainLayout/MainContent";
 import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdviceLayout";
-import Explorer from "./components/Explorer";
+import Explorer from "./components/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
 
 // Route config for reusability
