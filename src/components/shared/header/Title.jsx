@@ -1,8 +1,35 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useLocation, Link } from "react-router-dom";
+
+const links = {
+  MANAGE_PORTFOLIO: "/",
+  EXPLORER: "/explorer",
+};
 
 function Title() {
+  const location = useLocation();
+  const url = location.pathname;
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const data = [
+    { label: "Manage Portfolio", path: links.MANAGE_PORTFOLIO },
+    { label: "Explorer", path: links.EXPLORER },
+  ];
+
+  const styles = (isActive) => {
+    return {
+      color: "white",
+      fontSize: "16px",
+      ml: 2.5,
+      borderBottom: isActive ? "2px solid white" : "2px solid transparent",
+      paddingBottom: "2px",
+      transition: "border-bottom 0.3s",
+      "&:hover": {
+        borderBottom: "2px solid white",
+      },
+    };
+  }
 
   return (
     <Box
@@ -11,12 +38,14 @@ function Title() {
         mr: { xs: "auto", md: 2 },
         flexGrow: 1,
         width: { xs: 80, lg: "60%" },
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "start",
       }}
     >
       <Typography
         id="header-heading-txt"
         sx={{
-          flexGrow: 1,
           fontSize: "1.2rem",
           fontWeight: "bold",
           color: "white",
@@ -24,11 +53,25 @@ function Title() {
           textAlign: "center",
           textOverflow: "ellipsis",
           whiteSpace: { xs: "nowrap", sm: "wrap" },
-          width: "100%",
         }}
       >
         {isSm ? "Cloud Cost Advisor" : "EPYC Cloud Cost Advisor"}
       </Typography>
+
+      <Box sx={{ display: "flex", ml: 3 }}>
+        {data.map((item) => {
+          const isActive = url === item.path;
+          return (
+            <Link key={item.path} to={item.path} style={{ textDecoration: "none" }}>
+              <Box
+                sx={styles(isActive)}
+              >
+                {item.label}
+              </Box>
+            </Link>
+          );
+        })}
+      </Box>
     </Box>
   );
 }

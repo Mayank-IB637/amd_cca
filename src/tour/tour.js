@@ -1,7 +1,7 @@
 import Shepherd from "shepherd.js";
 import "shepherd.js/dist/css/shepherd.css";
 import steps from "./steps.tour";
-import {  FIELDS } from "@/lib/constant";
+import { FIELDS } from "@/lib/constant";
 import { mockFormDataResponse } from "@/lib/data";
 import { store } from "@/redux/store";
 
@@ -148,6 +148,7 @@ const actionHandlers = {
       }
     }
     if (role === "GenericMetadataForm") await processFields(FIELDS);
+   
   },
   td(el) {
     el.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
