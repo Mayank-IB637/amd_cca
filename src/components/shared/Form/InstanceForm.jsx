@@ -41,9 +41,9 @@ function InstanceForm() {
       region: "",
       instanceType: "",
       pricingModel: "",
-      quantity: 0,
-      noOfHours: 0,
-      uuid: "",},
+      quantity: '',
+      noOfHours: '',
+      uuid: ""},
     mode: "onTouched",
   });
 
