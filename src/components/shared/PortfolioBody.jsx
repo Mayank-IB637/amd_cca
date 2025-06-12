@@ -30,35 +30,16 @@ TabPanel.propTypes = {
   index: PropTypes.string.isRequired,
 };
 
-const TABS = [
-  {
-    label: "Instance Stats",
-    value: "instance_stats",
-    getColumns: GetInstanceColumn,
-    showNote: true,
-    isAction: true,
-  },
-  {
-    label: "Self Perf Assessment",
-    value: "self_perf_assessment",
-    getColumns: selfPrefAssessmentColumn,
-    showNote: false,
-    isAction: false,
-  },
-];
 
 function PortfolioBody() {
   const dispatch = useDispatch();
-  const [value, setValue] = useState(TABS[0].value);
 
   const dataMap = {
-    instance_stats: useSelector(selectInstances),
-    self_perf_assessment: useSelector(selectSelfAssessment),
+    instance_stats: useSelector(selectInstances)
   };
 
   const columnsMap = {
-    instance_stats: GetInstanceColumn(),
-    self_perf_assessment: selfPrefAssessmentColumn,
+    instance_stats: GetInstanceColumn()
   };
 
   const handleChange = useCallback((_, newValue) => setValue(newValue), []);
@@ -73,57 +54,58 @@ function PortfolioBody() {
   );
 
   return (
-    <Box sx={{ width: "100%", p: 0, bgcolor: "primary.contrastText" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs value={value} onChange={handleChange} aria-label="portfolio tabs">
-          {TABS.map((tab) => (
-            <Tab key={tab.value} label={tab.label} value={tab.value} />
-          ))}
-        </Tabs>
-      </Box>
+    <Box sx={{ width: "100%", p: 0, bgcolor: "primary.contrastText" }} style={{ paddingLeft: '5px',marginTop:'-40px',marginBottom:'0px' }}>
       <Suspense fallback={<TableSkeleton />}>
-        {TABS.map((tab) => (
-          <TabPanel key={tab.value} value={value} index={tab.value}>
-            {tab.showNote && (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "8px",
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 500,
-                    color: "rgb(0,0,225)",
-                  }}
-                >
-                  Note: Double-click to update input values.
-                </p>
-                <div style={{ width: "300px", marginRight: "20px" }}>
-                  <Slider
-                    defaultValue={20}
-                    step={10}
-                    marks
-                    min={0}
-                    max={100}
-                    valueLabelDisplay="on"
-                  />
-                </div>
-              </div>
-            )}
-            <CustomTable
-              variant="primary"
-              data={dataMap[tab.value]}
-              columns={columnsMap[tab.value]}
-              isPagination
-              isAction={tab.isAction}
-              onDelete={tab.isAction ? onDelete : undefined}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <p
+            style={{
+              fontSize: 16,
+              fontWeight: 500,
+              color: "rgb(0,0,225)",
+            }}
+          >
+            Note: Double-click to update input values.
+          </p>
+          <div style={{ width: "300px", marginRight: "20px" }}>
+            <Slider
+              defaultValue={20}
+              step={10}
+              marks
+              min={0}
+              max={100}
+              valueLabelDisplay="on"
+              sx={{
+                '& .MuiSlider-valueLabel': {
+                  top: 'auto',
+                  bottom: '-45px',
+                  '&::before': {
+                    bottom: 'auto',
+                    top: '-6px',
+                    borderBottomColor: 'currentColor',
+                    borderTopColor: 'transparent',
+                  }
+                },
+                marginBottom: '50px',
+              }}
             />
-          </TabPanel>
-        ))}
+
+          </div>
+        </div>
+        <CustomTable
+          variant="primary"
+          data={dataMap['instance_stats']}
+          columns={columnsMap['instance_stats']}
+          isPagination
+          isAction={true}
+          onDelete={onDelete}
+        />
       </Suspense>
     </Box>
   );

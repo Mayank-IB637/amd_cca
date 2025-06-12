@@ -14,6 +14,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  assetsInclude: ['**/*.xlsx', '**/*.xls', "**/*.csv"],
   build: {
     chunkSizeWarningLimit: 500,
     rollupOptions: {
