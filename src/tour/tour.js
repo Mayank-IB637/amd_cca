@@ -1,7 +1,7 @@
 import Shepherd from "shepherd.js";
 import "shepherd.js/dist/css/shepherd.css";
 import steps from "./steps.tour";
-import { CONSUMPTION_FIELDS, GENERIC_FIELDS } from "@/lib/constant";
+import { FIELDS } from "@/lib/constant";
 import { mockFormDataResponse } from "@/lib/data";
 import { store } from "@/redux/store";
 
@@ -147,9 +147,8 @@ const actionHandlers = {
         el.scrollBy({ left: 200, behavior: "smooth" });
       }
     }
-    if (role === "GenericMetadataForm") await processFields(GENERIC_FIELDS);
-    if (role === "ConsumptionMetadataForm")
-      await processFields(CONSUMPTION_FIELDS);
+    if (role === "GenericMetadataForm") await processFields(FIELDS);
+   
   },
   td(el) {
     el.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
