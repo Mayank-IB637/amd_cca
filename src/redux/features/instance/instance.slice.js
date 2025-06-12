@@ -61,9 +61,8 @@ const instanceSlice = createSlice({
       state.reset = action.payload;
     },
     updateInstanceState(state, action) {
-      const { name, instances, selfPrefAssessment } = action.payload;
+      const { name, instances } = action.payload;
       state.name = name;
-      state.selfAssessment = selfPrefAssessment;
       state.instances = instances;
     },
         updateSingleInstance(state, action) {

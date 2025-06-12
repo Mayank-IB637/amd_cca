@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import GetInstanceColumn from "./PortfolioTable/portfolioColumn";
-import { selfPrefAssessmentColumn } from "./PortfolioTable/selfPrefAssessmentColumn";
 import TableSkeleton from "../ui/table/table_components/TableSkeleton ";
 import ErrorBoundary from "./ErrorBoundary";
 import {

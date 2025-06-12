@@ -47,7 +47,6 @@ function BottomBar() {
   const portfolioName = useSelector(selectPortfolioName);
   const instances = useSelector(selectInstances);
   const instanceList = useSelector(selectInstanceList);
-  const selfPrefAssessmentData = useSelector(selectSelfAssessment);
 
   const formId = currentInstanceId || nanoid();
  
@@ -81,8 +80,7 @@ function BottomBar() {
     const payload = {
       id: formId,
       instances,
-      name: trimmedName,
-      selfPrefAssessment: selfPrefAssessmentData,
+      name: trimmedName
     };
     if (currentInstanceId) {
       dispatch(updateInstance(payload));
@@ -115,13 +113,12 @@ function BottomBar() {
     dispatch(
       updateInstanceState({
         name: portfolioName,
-        selfAssessment: selfPrefAssessmentData,
         instances,
       })
     );
     dispatch(addCurrentInstance(null));
     navigate("/");
-  }, [dispatch, portfolioName, selfPrefAssessmentData, instances, navigate]);
+  }, [dispatch, portfolioName, instances, navigate]);
 
   const isSaveDisabled = !instances.length;
   const isCancelDisabled = !instances.length;
