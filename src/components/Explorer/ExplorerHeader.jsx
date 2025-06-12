@@ -1,36 +1,45 @@
 import React from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, useTheme } from "@mui/material";
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 
-const Explore = () => {
+const ExplorerHeader = () => {
+    const theme = useTheme();
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-between",
         alignItems: "center",
-        px: 2,
-        py: 1.5,
+        justifyContent: "space-between",
         borderBottom: "1px solid #ccc",
-        backgroundColor: "#f9f9f9",
+        fontSize: "24px",
+
+        // backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
       }}
     >
-      <Box>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+
+      <Box sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" sx={{ 
+          fontWeight: "bold",
+          fontSize: "24px",
+           }}>
           Explorer
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{
+          fontSize: "16px",
+        }}>
           Explore a wide range of AMD instances across various cloud service
           providers, with details such as vCPU count, memory, pricing, and region
         </Typography>
       </Box>
+
 
       <Button
         variant="outlined"
         startIcon={<FileDownloadOutlinedIcon />}
         sx={{
           textTransform: "none",
-          borderRadius: 2,
+          ml: 50, 
         }}
       >
         Export
@@ -39,4 +48,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
+export default ExplorerHeader;
