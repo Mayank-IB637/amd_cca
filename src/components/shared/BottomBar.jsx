@@ -34,6 +34,7 @@ import {
   updateInstanceState,
 } from "@/redux/features/instance/instance.slice";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
+import { AttachMoney } from "@mui/icons-material";
 
 function BottomBar() {
   const theme = useTheme();
@@ -267,7 +268,7 @@ function BottomBar() {
           <Button
             id={"instanceAdvice"}
             variant="contained"
-            startIcon={<BuildIcon />}
+            startIcon={<AttachMoney />}
             disabled={isInstanceAdviceDisabled}
             onClick={() => navigate("/instanceAdvice")}
           >

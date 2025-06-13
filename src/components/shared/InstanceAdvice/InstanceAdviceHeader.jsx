@@ -11,7 +11,7 @@ import {
   ListItem,
   ListItemText,
   useMediaQuery,
-  Slider,
+  Slider, FormControl, InputLabel, Select, MenuItem, Tooltip, TextField, Grid
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -19,13 +19,18 @@ import PropTypes from "prop-types";
 import TooltipHoc from "@/components/ui/Tooltip";
 import DialogHoc from "@/components/ui/Dialog";
 import { useTheme } from "@emotion/react";
-
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 const EXPLANATION_LIST = [
   "Instances for which performance data is unavailable.",
   "Older generation series (e.g., 3rd generations) with insufficient performance data.",
   "Graviton instances, which are not currently supported by EIA.",
 ];
 
+const EIAList = [
+  "EIA is recommended when a more technical analysis is needed for an optimized recommendation.",
+  "For disk (d) or network-enhanced (n) instances.",
+  "When savings are not projected on modernized instances powered by AMD EPYC™ processors."
+]
 const Spinner = () => (
   <>
     <Box sx={spinnerStyles.loader} />
@@ -112,6 +117,61 @@ ExplanationDialogContent.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
 
+const EIARecommendedDialogContent = ({ handleClose }) => (
+  <Box p={0}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      p={2}
+    >
+      <Box>
+        <Typography
+          variant="body2"
+          fontSize={16}
+          fontWeight="bold"
+          gutterBottom
+        >
+          When is EIA recommended?
+        </Typography>
+
+      </Box>
+      <IconButton onClick={handleClose}>
+        <CloseIcon />
+      </IconButton>
+    </Box>
+    <Divider />
+    <Box p={2} pl={3}>
+      <List
+        sx={{
+          listStyleType: "disc",
+          listStylePosition: "outside",
+          pl: 2,
+        }}
+        dense
+      >
+        {EIAList.map((text) => (
+          <ListItem
+            key={text}
+            sx={{
+              display: "list-item",
+              p: "2px 0",
+              alignItems: "flex-start",
+            }}
+          >
+            <ListItemText
+              primary={text}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  </Box>
+);
+
+EIARecommendedDialogContent.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+};
 const ExportButton = React.memo(() => (
   <TooltipHoc message="Export detailed recommendation">
     <Button
@@ -133,42 +193,11 @@ const ExportButton = React.memo(() => (
   </TooltipHoc>
 ));
 
-const AnnuallyCheckbox = React.memo(({ isAnnually, setIsAnnually }) => (
-  <FormControlLabel
-    id="annuallyPrice"
-    sx={{
-      width: "fit-content",
-      px: 1,
-      "& .MuiFormControlLabel-label": {
-        fontWeight: 600,
-        fontSize: 16,
-        color: "#5f5f5f",
-      },
-    }}
-    control={
-      <Checkbox
-        checked={isAnnually}
-        onChange={(e) => setIsAnnually(e.target.checked)}
-        inputProps={{
-          "aria-label": "Annually",
-          "aria-describedby": "annuallyPrice-messages",
-        }}
-      />
-    }
-    label="Annually"
-  />
-));
-
-AnnuallyCheckbox.propTypes = {
-  isAnnually: PropTypes.bool.isRequired,
-  setIsAnnually: PropTypes.func.isRequired,
-};
-
-const InstanceAdviceHeader = ({ isAnnually, setIsAnnually }) => {
+const InstanceAdviceHeader = () => {
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
-
+  const headerItems = ['ALL', 'Hourly Cost Optimization', 'Modernize', 'Modernize & Downsize'];
   const handleRefresh = useCallback(() => {
     setLoading(true);
     setTimeout(() => setLoading(false), 1000);
@@ -200,88 +229,132 @@ const InstanceAdviceHeader = ({ isAnnually, setIsAnnually }) => {
           variant="h6"
           sx={{ fontSize: "1.3rem", fontWeight: "bold", color: "primary.main" }}
         >
-          Instance advice
+          Cost advice
         </Typography>
         <ExportButton />
       </Box>
-      <AnnuallyCheckbox isAnnually={isAnnually} setIsAnnually={setIsAnnually} />
-      <Box
-        display="flex"
-        flexDirection={isMd ? "row" : "column"}
-        justifyContent="space-between"
-        alignItems="center"
-        gap={2}
-        ml="auto"
-        mb={3}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            fontFamily: '"Open Sans", Arial, sans-serif',
-            fontSize: 13,
-          }}
-        >
-          CI-Current Instance Data,{" "}
-          <Box
-            component="span"
-            sx={{ ml: 1, fontFamily: '"Open Sans", Arial, sans-serif' }}
-          >
-            Performance Improvement*
-          </Box>
-          <DialogHoc
-            trigger={({ onClick }) => (
-              <Box
-                component="span"
-                onClick={onClick}
+      <Grid container spacing={2} alignItems="center" mb={1} mt={1}>
+        <Grid item size={{ xs: 12, md: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormControl fullWidth size="small" sx={{ mr: 1 }}>
+              <InputLabel id="savings-type-label">Savings Type</InputLabel>
+              <Select
+                labelId="savings-type-label"
+                label="Savings Type"
+                fullWidth
+              // value, onChange etc.
+              >
+                {headerItems.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Tooltip title="What's this" arrow>
+              <IconButton
+                size="small"
                 sx={{
-                  ml: 1,
-                  fontFamily: '"Open Sans", Arial, sans-serif',
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                  fontWeight: 700,
+                  bgcolor: 'white',
+                  borderRadius: '50%',
+                  height: 32,
+                  flexShrink: 0
                 }}
               >
-                Input Errors Explanation
-              </Box>
-            )}
-            content={ExplanationDialogContent}
-          />
-        </Typography>
-        <Box
-          sx={{
-            width: 350,
-            mr: 2.5,
-            display: "flex",
-            gap: 1.25,
-            alignItems: "center",
-          }}
-        >
-          <Slider
-            defaultValue={20}
-            step={10}
-            marks
-            min={0}
-            max={100}
-            valueLabelDisplay="on"
-          />
-          <Button onClick={handleRefresh} disabled={loading}>
-            <RefreshIcon
-              sx={
-                loading
-                  ? {
-                      "@keyframes spin": {
-                        from: { transform: "rotate(0deg)" },
-                        to: { transform: "rotate(360deg)" },
-                      },
-                      animation: "spin 2s linear infinite",
-                    }
-                  : undefined
-              }
-              fontSize="large"
+                <HelpOutlineIcon sx={{ fontSize: 20, color: 'black' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Grid>
+
+        {/* Second section: Dialog Links (3 cols) */}
+        <Grid item xs={12} md={3}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+              gap: { xs: 1, md: 2 },
+            }}
+          >
+            <DialogHoc
+              trigger={({ onClick }) => (
+                <Box
+                  component="span"
+                  onClick={onClick}
+                  sx={{
+                    fontFamily: '"Open Sans", Arial, sans-serif',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    fontWeight: 700,
+                    fontSize: { xs: '0.875rem', md: '1rem' },
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Input Errors Explanation
+                </Box>
+              )}
+              content={ExplanationDialogContent}
             />
-          </Button>
-        </Box>
-      </Box>
+            <DialogHoc
+              trigger={({ onClick }) => (
+                <Box
+                  component="span"
+                  onClick={onClick}
+                  sx={{
+                    fontFamily: '"Open Sans", Arial, sans-serif',
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    fontWeight: 700,
+                    fontSize: { xs: '0.875rem', md: '1rem' },
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  When EIA is Recommended?
+                </Box>
+              )}
+              content={EIARecommendedDialogContent}
+            />
+          </Box>
+        </Grid>
+
+        {/* Third section: Slider + Controls (5 cols) */}
+        <Grid item xs={12} md={5}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
+            <Slider
+              aria-label="Headroom"
+              valueLabelDisplay="on"
+              step={10}
+              marks
+              max={100}
+              sx={{
+                flexGrow: 1,
+                minWidth: 120,
+              }}
+            />
+            <Tooltip title="Refresh" arrow>
+              <IconButton sx={{ flexShrink: 0 }}>
+                <RefreshIcon />
+              </IconButton>
+            </Tooltip>
+            <TextField
+              size="small"
+              placeholder="Search"
+              onChange={(e) => setSearchText(e.target.value)}
+              sx={{
+                minWidth: { xs: 120, md: 150 },
+                flexShrink: 0
+              }}
+            />
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 };
