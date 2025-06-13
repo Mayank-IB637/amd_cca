@@ -169,6 +169,58 @@ const EIARecommendedDialogContent = ({ handleClose }) => (
   </Box>
 );
 
+const rulesDialogContent = ({ handleClose }) => (
+  <Box p={0}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      p={2}
+    >
+      <Box>
+        <Typography
+          variant="body2"
+          fontSize={16}
+          fontWeight="bold"
+          gutterBottom
+        >
+       All the recommendations are based on the competitive performance analysis across and within processor offerings
+        </Typography>
+
+      </Box>
+      <IconButton onClick={handleClose}>
+        <CloseIcon />
+      </IconButton>
+    </Box>
+    <Divider />
+    <Box p={1}>
+        <ul>
+            <li>
+              <span style={{fontWeight: 'bold'}}>Hourly Cost Optimization: </span>
+              <br/>
+                <span>Recommendation to lower hourly costs by using 5th generation AMD processors (Milan, EPYC 7R13 series) for high efficiency and the same performance.</span>
+            </li>
+            <li>
+              <span style={{fontWeight:'bold'}}>Modernize: </span>
+              <br/>
+                <span>Recommendation for using the latest AMD processors (Genoa, EPYC 9004 series) for increased performance ~2X uplift.</span>
+            </li>
+            <li>
+              <span style={{fontWeight:'bold'}}>Modernize & Downsize:  </span>
+              <br/>
+                <span>Recommendation to use the latest AMD processors and smaller instance sizes for the same performance and cost savings.</span>
+            </li>
+            <li class="ml-2 mt-10"><a href="https://www.amd.com/en/products/processors/server/epyc/aws.html" target="_blank"> https://www.amd.com/en/products/processors/server/epyc/aws.html</a></li>
+            <li class="ml-2 mt-2"><a href="https://www.amd.com/en/products/processors/server/epyc/microsoft-azure.html" target="_blank">https://www.amd.com/en/products/processors/server/epyc/microsoft-azure.html</a></li>
+          </ul>
+    </Box>
+  </Box>
+);
+
+rulesDialogContent.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+};
+
 EIARecommendedDialogContent.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
@@ -195,6 +247,7 @@ const ExportButton = React.memo(() => (
 
 const InstanceAdviceHeader = () => {
   const [loading, setLoading] = useState(false);
+  const [searchText,setSearchText] = useState('')
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
   const headerItems = ['ALL', 'Hourly Cost Optimization', 'Modernize', 'Modernize & Downsize'];
@@ -242,7 +295,6 @@ const InstanceAdviceHeader = () => {
                 labelId="savings-type-label"
                 label="Savings Type"
                 fullWidth
-              // value, onChange etc.
               >
                 {headerItems.map((item) => (
                   <MenuItem key={item} value={item}>
@@ -251,19 +303,23 @@ const InstanceAdviceHeader = () => {
                 ))}
               </Select>
             </FormControl>
-            <Tooltip title="What's this" arrow>
-              <IconButton
-                size="small"
-                sx={{
+             <DialogHoc
+              trigger={({ onClick }) => (
+                <Box
+                  component="span"
+                  onClick={onClick}
+                  sx={{
                   bgcolor: 'white',
                   borderRadius: '50%',
                   height: 32,
                   flexShrink: 0
                 }}
-              >
-                <HelpOutlineIcon sx={{ fontSize: 20, color: 'black' }} />
-              </IconButton>
-            </Tooltip>
+                >
+                  <HelpOutlineIcon sx={{ color: 'black' }} />
+                </Box>
+              )}
+              content={rulesDialogContent}
+            />
           </Box>
         </Grid>
 
