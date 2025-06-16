@@ -49,6 +49,10 @@ const SelectHoc = ({
           key={getOptionValue(option)}
           id={option.id}
           {...(props?.menuProps ? props.menuProps(option) : {})}
+           sx={{
+                    fontSize: "0.95rem",
+                    py: 1.5,
+                  }}
         >
           {getOptionLabel(option)}
         </MenuItem>
