@@ -15,7 +15,10 @@ import MainContent from "./components/shared/MainLayout/MainContent";
 import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdviceLayout";
 import Explorer from "./components/shared/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
+// import TelemetryForm from "./components/shared/Telemetry/TelemetryForm";
 import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
+import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
+import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
 
 // Route config for reusability
 const routesConfig = [
@@ -24,6 +27,7 @@ const routesConfig = [
   { path: "/explorer", element: <Explorer /> },
   { path: "/explorer/:id", element: <Explorer /> },
   { path: "/instanceAdvice", element: <InstanceAdviceLayout /> },
+  {path:"/telemetry", element: <TelemetryLayout />},
   { path: "/instanceAdvice/:id", element: <p>404 page not found</p> },
 ];
 
@@ -34,7 +38,9 @@ const getSidebar = (pathname) =>
 const getBottomBar = (pathname) =>
   pathname === "/instanceAdvice"
     ? InstanceAdviceBottomBar
-    : !["/explorer", "/explorer/:id"].includes(pathname)
+    :  pathname === "/telemetry"
+    ? TelemetryBottomBar
+    :  !["/explorer", "/explorer/:id"].includes(pathname)
     ? BottomBar
     : null;
 

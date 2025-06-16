@@ -4,6 +4,7 @@ import sidebarReducer from "./features/sidebar/sidebar.slice";
 import instanceReducer from "./features/instance/instance.slice";
 import ExplorerReducer from "./features/Explorer/Explorer.slice";
 import providerDataReducer from "./features/providerData/providerData.slice";
+import telemetryReducer from "./features/Telemetry/telemetry.slice";
 
 
 export const store = configureStore({
@@ -13,5 +14,6 @@ export const store = configureStore({
     sidebar: sidebarReducer,
     explorerData: ExplorerReducer, 
       provider: providerDataReducer,
+      telemetry:telemetryReducer,
   },
 });
