@@ -125,6 +125,7 @@ const ExplorerBox = () => {
       </Box>
       {data.length === 0 ? <></> :
           <CustomTable
+          isPagination={false}
             data={data}
             columns={[
               { header: "Region", accessorKey: "region", cell:({getValue})=><p style={{height:'8px'}}>{getValue()}</p>},

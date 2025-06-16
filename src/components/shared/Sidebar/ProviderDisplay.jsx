@@ -65,6 +65,7 @@ const ProviderDisplay = ({ onClose, data }) => {
   return (
     <CustomTable
       data={data}
+      isPagination={false}
       columns={columns}
       variant="provider"
       sx={{

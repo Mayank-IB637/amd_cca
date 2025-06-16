@@ -10,17 +10,19 @@ export default function PortfolioItem({ portfolio }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const activePortfolioId = useMemo(
-    () => location.pathname.split("/")[1],
-    [location.pathname]
-  );
-
+  const pathParts = location.pathname.split("/");
+  const activePortfolioId = pathParts[pathParts.length - 1];
   const isActive = portfolio.id === activePortfolioId;
   const handleSelect = useCallback(
     (portfolio) => {
       dispatch(addCurrentInstance(portfolio.id));
       dispatch(updateInstanceState(portfolio));
-      navigate(`/${portfolio.id}`);
+      if (portfolio.type == 'cloud') {
+        navigate(`/cloudInstances/${portfolio.id}`);
+      }
+      else {
+        navigate(`/${portfolio.id}`);
+      }
     },
     [dispatch, navigate]
   );
@@ -32,7 +34,6 @@ export default function PortfolioItem({ portfolio }) {
       onClick={() => handleSelect(portfolio)}
     >
       <ListItemText
-  
         primary={
           <Typography fontWeight={isActive ? 600 : "normal"} fontSize={12}>
             {portfolio.name}

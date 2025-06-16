@@ -60,12 +60,17 @@ function Title() {
 
       <Box sx={{ display: "flex", ml: 3 }}>
         {data.map((item) => {
-          const isActive = url === item.path;
+          // If URL contains any of those special routes, activate only Manage Portfolio tab
+          const specialRoutes = ['cloudusagereports', 'instanceAdvice',''];
+          const isSpecialRoute = specialRoutes.some(route => url.includes(route));
+
+          const isActive = isSpecialRoute
+            ? (item.path === links.MANAGE_PORTFOLIO)
+            : (url === item.path);
+
           return (
             <Link key={item.path} to={item.path} style={{ textDecoration: "none" }}>
-              <Box
-                sx={styles(isActive)}
-              >
+              <Box sx={styles(isActive)}>
                 {item.label}
               </Box>
             </Link>

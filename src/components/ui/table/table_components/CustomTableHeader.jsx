@@ -112,7 +112,7 @@ const CustomTableHeader = ({
               return (
                 <TableCell
                   key={header.id}
-                  sx={{ ...styles.head, ...headerStyle, py: "3px" }}
+                  sx={{ ...styles.head, ...headerStyle, py: "3px",px:'5px' }}
                   align={align}
                   colSpan={header.colSpan}
                 >

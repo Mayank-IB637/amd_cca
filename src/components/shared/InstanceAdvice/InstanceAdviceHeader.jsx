@@ -184,7 +184,7 @@ const rulesDialogContent = ({ handleClose }) => (
           fontWeight="bold"
           gutterBottom
         >
-       All the recommendations are based on the competitive performance analysis across and within processor offerings
+          All the recommendations are based on the competitive performance analysis across and within processor offerings
         </Typography>
 
       </Box>
@@ -194,25 +194,25 @@ const rulesDialogContent = ({ handleClose }) => (
     </Box>
     <Divider />
     <Box p={1}>
-        <ul>
-            <li>
-              <span style={{fontWeight: 'bold'}}>Hourly Cost Optimization: </span>
-              <br/>
-                <span>Recommendation to lower hourly costs by using 5th generation AMD processors (Milan, EPYC 7R13 series) for high efficiency and the same performance.</span>
-            </li>
-            <li>
-              <span style={{fontWeight:'bold'}}>Modernize: </span>
-              <br/>
-                <span>Recommendation for using the latest AMD processors (Genoa, EPYC 9004 series) for increased performance ~2X uplift.</span>
-            </li>
-            <li>
-              <span style={{fontWeight:'bold'}}>Modernize & Downsize:  </span>
-              <br/>
-                <span>Recommendation to use the latest AMD processors and smaller instance sizes for the same performance and cost savings.</span>
-            </li>
-            <li class="ml-2 mt-10"><a href="https://www.amd.com/en/products/processors/server/epyc/aws.html" target="_blank"> https://www.amd.com/en/products/processors/server/epyc/aws.html</a></li>
-            <li class="ml-2 mt-2"><a href="https://www.amd.com/en/products/processors/server/epyc/microsoft-azure.html" target="_blank">https://www.amd.com/en/products/processors/server/epyc/microsoft-azure.html</a></li>
-          </ul>
+      <ul>
+        <li>
+          <span style={{ fontWeight: 'bold' }}>Hourly Cost Optimization: </span>
+          <br />
+          <span>Recommendation to lower hourly costs by using 5th generation AMD processors (Milan, EPYC 7R13 series) for high efficiency and the same performance.</span>
+        </li>
+        <li>
+          <span style={{ fontWeight: 'bold' }}>Modernize: </span>
+          <br />
+          <span>Recommendation for using the latest AMD processors (Genoa, EPYC 9004 series) for increased performance ~2X uplift.</span>
+        </li>
+        <li>
+          <span style={{ fontWeight: 'bold' }}>Modernize & Downsize:  </span>
+          <br />
+          <span>Recommendation to use the latest AMD processors and smaller instance sizes for the same performance and cost savings.</span>
+        </li>
+        <li class="ml-2 mt-10"><a href="https://www.amd.com/en/products/processors/server/epyc/aws.html" target="_blank"> https://www.amd.com/en/products/processors/server/epyc/aws.html</a></li>
+        <li class="ml-2 mt-2"><a href="https://www.amd.com/en/products/processors/server/epyc/microsoft-azure.html" target="_blank">https://www.amd.com/en/products/processors/server/epyc/microsoft-azure.html</a></li>
+      </ul>
     </Box>
   </Box>
 );
@@ -224,7 +224,8 @@ rulesDialogContent.propTypes = {
 EIARecommendedDialogContent.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
-const ExportButton = React.memo(() => (
+const ExportButton = React.memo(() => (<>
+
   <TooltipHoc message="Export detailed recommendation">
     <Button
       id="btn-cost-advice-export"
@@ -243,11 +244,12 @@ const ExportButton = React.memo(() => (
       Export
     </Button>
   </TooltipHoc>
+</>
 ));
 
 const InstanceAdviceHeader = () => {
   const [loading, setLoading] = useState(false);
-  const [searchText,setSearchText] = useState('')
+  const [searchText, setSearchText] = useState('')
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.up("md"));
   const headerItems = ['ALL', 'Hourly Cost Optimization', 'Modernize', 'Modernize & Downsize'];
@@ -284,10 +286,18 @@ const InstanceAdviceHeader = () => {
         >
           Cost advice
         </Typography>
-        <ExportButton />
+        <Box display="flex" gap={2} alignItems="center">
+          <TextField
+            size="small"
+            placeholder="Search"
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <ExportButton />
+        </Box>
+
       </Box>
       <Grid container spacing={2} alignItems="center" mb={1} mt={1}>
-        <Grid item size={{ xs: 12, md: 4 }}>
+        <Grid item size={{ xs: 12, md: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <FormControl fullWidth size="small" sx={{ mr: 1 }}>
               <InputLabel id="savings-type-label">Savings Type</InputLabel>
@@ -303,17 +313,17 @@ const InstanceAdviceHeader = () => {
                 ))}
               </Select>
             </FormControl>
-             <DialogHoc
+            <DialogHoc
               trigger={({ onClick }) => (
                 <Box
                   component="span"
                   onClick={onClick}
                   sx={{
-                  bgcolor: 'white',
-                  borderRadius: '50%',
-                  height: 32,
-                  flexShrink: 0
-                }}
+                    bgcolor: 'white',
+                    borderRadius: '50%',
+                    height: 32,
+                    flexShrink: 0
+                  }}
                 >
                   <HelpOutlineIcon sx={{ color: 'black' }} />
                 </Box>
@@ -324,7 +334,7 @@ const InstanceAdviceHeader = () => {
         </Grid>
 
         {/* Second section: Dialog Links (3 cols) */}
-        <Grid item xs={12} md={3}>
+        <Grid item size={{ xs: 12, md: 4 }}>
           <Box
             sx={{
               display: 'flex',
@@ -343,7 +353,7 @@ const InstanceAdviceHeader = () => {
                     cursor: 'pointer',
                     textDecoration: 'underline',
                     fontWeight: 700,
-                    fontSize: { xs: '0.875rem', md: '1rem' },
+                    fontSize: { xs: '0.875rem', md: '0.9rem' },
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -362,7 +372,7 @@ const InstanceAdviceHeader = () => {
                     cursor: 'pointer',
                     textDecoration: 'underline',
                     fontWeight: 700,
-                    fontSize: { xs: '0.875rem', md: '1rem' },
+                    fontSize: { xs: '0.875rem', md: '0.9rem' },
                     whiteSpace: 'nowrap',
                   }}
                 >
@@ -375,40 +385,27 @@ const InstanceAdviceHeader = () => {
         </Grid>
 
         {/* Third section: Slider + Controls (5 cols) */}
-        <Grid item xs={12} md={5}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-            }}
-          >
-            <Slider
-              aria-label="Headroom"
-              valueLabelDisplay="on"
-              step={10}
-              marks
-              max={100}
-              sx={{
-                flexGrow: 1,
-                minWidth: 120,
-              }}
-            />
-            <Tooltip title="Refresh" arrow>
-              <IconButton sx={{ flexShrink: 0 }}>
-                <RefreshIcon />
-              </IconButton>
-            </Tooltip>
-            <TextField
-              size="small"
-              placeholder="Search"
-              onChange={(e) => setSearchText(e.target.value)}
-              sx={{
-                minWidth: { xs: 120, md: 150 },
-                flexShrink: 0
-              }}
-            />
-          </Box>
+        <Grid item size={{ xs: 12, md: 4 }} sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'flex-start', md: 'center' },
+          gap: { xs: 1, md: 2 },
+          marginLeft: '80px'
+        }}>
+          <Slider
+            aria-label="Headroom"
+            valueLabelDisplay="on"
+            step={10}
+            marks
+            max={100}
+            style={{ maxWidth: '300px' }}
+          />
+          <Tooltip title="Refresh" arrow>
+            <IconButton >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
+
         </Grid>
       </Grid>
     </>

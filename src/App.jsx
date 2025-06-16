@@ -17,6 +17,8 @@ import Explorer from "./components/shared/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
 // import TelemetryForm from "./components/shared/Telemetry/TelemetryForm";
 import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
+import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusagereports";
+import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
 import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
 import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
 
@@ -24,25 +26,32 @@ import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar
 const routesConfig = [
   { path: "/", element: <MainContent /> },
   { path: "/:id", element: <MainContent /> },
+  { path: "/cloudusagereports", element: <CloudUsageReports /> },
+  { path: "/cloudInstances", element: <CloudInstances /> },
+  { path: "/cloudInstances/:id", element: <CloudInstances /> },
   { path: "/explorer", element: <Explorer /> },
   { path: "/explorer/:id", element: <Explorer /> },
   { path: "/instanceAdvice", element: <InstanceAdviceLayout /> },
+  { path: "/instanceAdvice/:id", element: <InstanceAdviceLayout /> },
   {path:"/telemetry", element: <TelemetryLayout />},
-  { path: "/instanceAdvice/:id", element: <p>404 page not found</p> },
 ];
 
 
 const getSidebar = (pathname) =>
   !["/explorer", "/explorer/:id"].includes(pathname) ? Sidebar : null;
 
-const getBottomBar = (pathname) =>
-  pathname === "/instanceAdvice"
-    ? InstanceAdviceBottomBar
-    :  pathname === "/telemetry"
-    ? TelemetryBottomBar
-    :  !["/explorer", "/explorer/:id"].includes(pathname)
-    ? BottomBar
-    : null;
+const getBottomBar = (pathname) => {
+  if (pathname.startsWith('/instanceAdvice')) {
+    return InstanceAdviceBottomBar;
+  }
+  if (pathname.startsWith('/explorer') || pathname === '/cloudusagereports') {
+    return null;
+  }
+  if(pathname.startsWith('/telemetry')){
+    return TelemetryBottomBar
+  }
+  return BottomBar;
+};
 
 const App = () => {
   const location = useLocation();
