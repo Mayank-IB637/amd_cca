@@ -2,9 +2,9 @@ import "./index.css";
 import theme from "./lib/themes";
 import "shepherd.js/dist/css/shepherd.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { use, useEffect, useMemo } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentInstance } from "./redux/features/instanceList/instanceList.selector";
 // import Header from "./components/shared/header/Header";
 // import Footer from "./components/shared/Footer/Footer";
@@ -13,7 +13,7 @@ import InstanceAdviceBottomBar from "./components/shared/InstanceAdvice/Instance
 import Sidebar from "./components/shared/Sidebar/Sidebar";
 import MainContent from "./components/shared/MainLayout/MainContent";
 import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdviceLayout";
-import Explorer from "./components/Explorer/Explorer";
+import Explorer from "./components/shared/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
 import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
 
@@ -47,6 +47,7 @@ const getBottomBar = (pathname) => {
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  // const dispatch = useDispatch();
   const currentInstance = useSelector(selectCurrentInstance);
 
   const pathname = useMemo(() => location.pathname, [location]);
@@ -67,6 +68,10 @@ const App = () => {
       navigate("/");
     }
   }, [pathname, currentInstance, navigate]);
+
+  // useEffect(() => {
+  //  dispatch(fetchProviderData(explorerProvider.AWS));
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>

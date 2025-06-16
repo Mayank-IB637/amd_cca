@@ -41,7 +41,6 @@ export default function PortfolioItem({ portfolio }) {
       onClick={() => handleSelect(portfolio)}
     >
       <ListItemText
-
         primary={
           <Typography fontWeight={isActive ? 600 : "normal"} fontSize={12}>
             {portfolio.name}

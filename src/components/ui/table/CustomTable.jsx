@@ -23,6 +23,7 @@ const CustomTable = ({
   onDelete,
   defaultColumnPinningState,
   id="custom-table",
+  sx,
 }) => {
   const theme = useTheme();
   const styles = useTableStyles(variant, theme);
@@ -85,7 +86,7 @@ const CustomTable = ({
   return (
     <TableContainer
       component={Paper}
-      sx={{ boxShadow: 3, }}
+      sx={{ boxShadow: 3,...sx }}
     >
       <Box sx={{ overflowX: "auto" }} id={id} role="table-container">
         <Table
@@ -127,6 +128,7 @@ CustomTable.propTypes = {
     left: PropTypes.arrayOf(PropTypes.string),
     right: PropTypes.arrayOf(PropTypes.string),
   }),
+  sx: PropTypes.object,
 };
 
 export default CustomTable;
