@@ -16,6 +16,7 @@ import {
 } from "@/redux/features/Explorer/Explorer.slice";
 import SelectHoc from "../../ui/Select";
 import CustomTable from "../../ui/table/CustomTable";
+import { BorderColor } from "@mui/icons-material";
 
 const ExplorerBox = () => {
   const dispatch = useDispatch();
@@ -127,7 +128,7 @@ const ExplorerBox = () => {
           isPagination={false}
             data={data}
             columns={[
-              { header: "Region", accessorKey: "region" },
+              { header: "Region", accessorKey: "region", cell:({getValue})=><p style={{height:'8px'}}>{getValue()}</p>},
               { header: "Generation", accessorKey: "CPU_Generation" },
               { header: "Instance Type", accessorKey: "instance" },
               { header: "vCPU", accessorKey: "vCPU" },
@@ -137,7 +138,7 @@ const ExplorerBox = () => {
               { header: "Spot Price($)", accessorKey: "Instance_Pricing_Spot" },
             ]}
             variant="primary"
-            sx={{ height: "100%", borderRadius:0 ,px:2,pb:2, overflowY: "auto", backgroundColor: "background.paper"}}
+            sx={{ height: "100%", borderRadius:0 ,px:2,pb:2, overflowY: "auto", backgroundColor: "background.paper" }}
           />}
 
     </Box>

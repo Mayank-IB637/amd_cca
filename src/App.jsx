@@ -15,9 +15,13 @@ import MainContent from "./components/shared/MainLayout/MainContent";
 import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdviceLayout";
 import Explorer from "./components/shared/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
+// import TelemetryForm from "./components/shared/Telemetry/TelemetryForm";
 import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
 import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusagereports";
 import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
+import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
+import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
+
 // Route config for reusability
 const routesConfig = [
   { path: "/", element: <MainContent /> },
@@ -29,6 +33,7 @@ const routesConfig = [
   { path: "/explorer/:id", element: <Explorer /> },
   { path: "/instanceAdvice", element: <InstanceAdviceLayout /> },
   { path: "/instanceAdvice/:id", element: <InstanceAdviceLayout /> },
+  {path:"/telemetry", element: <TelemetryLayout />},
 ];
 
 
@@ -41,6 +46,9 @@ const getBottomBar = (pathname) => {
   }
   if (pathname.startsWith('/explorer') || pathname === '/cloudusagereports') {
     return null;
+  }
+  if(pathname.startsWith('/telemetry')){
+    return TelemetryBottomBar
   }
   return BottomBar;
 };
