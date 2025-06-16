@@ -16,7 +16,8 @@ import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdv
 import Explorer from "./components/shared/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
 import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
-
+import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusagereports";
+import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
 // Route config for reusability
 const routesConfig = [
   { path: "/", element: <MainContent /> },

@@ -10,15 +10,8 @@ export default function PortfolioItem({ portfolio }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const activePortfolioId = useMemo(() => {
-    const segments = location.pathname.split("/").filter(Boolean);
-    if (segments[0] === "cloudInstances") {
-      return segments[1];
-    }
-    return segments[0];
-  }, [location.pathname]);
-
-
+  const pathParts = location.pathname.split("/");
+  const activePortfolioId = pathParts[pathParts.length - 1];
   const isActive = portfolio.id === activePortfolioId;
   const handleSelect = useCallback(
     (portfolio) => {
