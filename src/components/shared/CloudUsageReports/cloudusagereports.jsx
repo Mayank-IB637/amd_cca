@@ -28,16 +28,12 @@ import {
 } from "@/redux/features/providerData/providerData.selector";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
 import {
-  addCurrentInstance,
   addInstance,
-  deletePortfolioFromList,
-  updateInstance,
 } from "@/redux/features/instanceList/instanceList.slice";
 import {
   errorMessageType,
   resetInstanceState,
-  setMessage,
-  updateInstanceState,
+  setMessage
 } from "@/redux/features/instance/instance.slice";
 
 const listOfRegions = [
