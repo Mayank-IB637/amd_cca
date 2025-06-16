@@ -62,7 +62,7 @@ function InstanceAdviceLayout() {
           variant="primaryBorder"
           data={[...data, grandTotal]}
           columns={CostAdvisoryColumn}
-          isPagination
+          isPagination={true}
           defaultColumnPinningState={{
             left: ["current", "zone", "instanceType", "monthlyCost", "annualCost"],
             right: [],

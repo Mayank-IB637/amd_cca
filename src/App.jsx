@@ -15,27 +15,34 @@ import MainContent from "./components/shared/MainLayout/MainContent";
 import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdviceLayout";
 import Explorer from "./components/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
+import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
 
 // Route config for reusability
 const routesConfig = [
   { path: "/", element: <MainContent /> },
   { path: "/:id", element: <MainContent /> },
+  { path: "/cloudusagereports", element: <CloudUsageReports /> },
+  { path: "/cloudInstances", element: <CloudInstances /> },
+  { path: "/cloudInstances/:id", element: <CloudInstances /> },
   { path: "/explorer", element: <Explorer /> },
   { path: "/explorer/:id", element: <Explorer /> },
   { path: "/instanceAdvice", element: <InstanceAdviceLayout /> },
-  { path: "/instanceAdvice/:id", element: <p>404 page not found</p> },
+  { path: "/instanceAdvice/:id", element: <InstanceAdviceLayout /> },
 ];
 
 
 const getSidebar = (pathname) =>
   !["/explorer", "/explorer/:id"].includes(pathname) ? Sidebar : null;
 
-const getBottomBar = (pathname) =>
-  pathname === "/instanceAdvice"
-    ? InstanceAdviceBottomBar
-    : !["/explorer", "/explorer/:id"].includes(pathname)
-    ? BottomBar
-    : null;
+const getBottomBar = (pathname) => {
+  if (pathname.startsWith('/instanceAdvice')) {
+    return InstanceAdviceBottomBar;
+  }
+  if (pathname.startsWith('/explorer') || pathname === '/cloudusagereports') {
+    return null;
+  }
+  return BottomBar;
+};
 
 const App = () => {
   const location = useLocation();

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, lazy } from "react";
+	import { useNavigate } from 'react-router-dom'
 import PropTypes from "prop-types";
 import { Checkbox, FormControlLabel, Box, Button, Typography,Link , Grid, TextField} from "@mui/material";
 import { selectPortfolioName, selectUploadedFileName } from "@/redux/features/instance/instance.selector";
@@ -17,6 +18,8 @@ const TOOLTIP_MESSAGE =
 
 const PortfolioDetails = ({ form }) => {
   const name = useSelector(selectPortfolioName);
+    const navigate = useNavigate();
+
   const uploadedFileName = useSelector(selectUploadedFileName);
   const dispatch = useDispatch();
 
@@ -42,7 +45,7 @@ const PortfolioDetails = ({ form }) => {
   }
 
   const cloudUsageReportsRedirect=()=>{
-    Router.push('/cloudusagereports');
+    navigate('/cloudusagereports');
   }
   return (
   <Box sx={{ flexGrow: 1, p: 1 }}>
@@ -122,7 +125,6 @@ const PortfolioDetails = ({ form }) => {
           }}
         >
           <Link
-            href="#"
             onClick={cloudUsageReportsRedirect}
             sx={{
               cursor: 'pointer',

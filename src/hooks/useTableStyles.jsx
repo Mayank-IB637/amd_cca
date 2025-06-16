@@ -14,7 +14,7 @@ export const useTableStyles = (variant, theme) =>
         },
         head: {
           verticalAlign: "top",
-          padding: 2,
+          padding: 0,
           color: "#299bff",
           borderBottom: "none",
           fontWeight: "bold",
@@ -33,16 +33,16 @@ export const useTableStyles = (variant, theme) =>
           alignItems: "center",
           border: "0px",
           borderBottom: `1px solid ${theme.palette.secondary.default}`,
-          padding: " 10px",
-          height: "60px",
+          padding: 4,
+          height: "30px",
         },
         head: {
           alignItems: "stretch",
           verticalAlign: "top",
-          padding: 2,
           color: "#299bff",
           borderBottom: "none",
           fontWeight: "bold",
+          fontSize:"0.8rem",
           backgroundColor: theme.palette.dark,
         },
       };
@@ -52,14 +52,14 @@ export const useTableStyles = (variant, theme) =>
       cell: {
         border: `1px solid ${theme.palette.dark}`,
         verticalAlign: "top",
-        padding: 2,
+        padding: 1,
       },
       head: {
         borderLeft: `1px solid ${theme.palette.secondary.default}`,
         borderTop: `1px solid ${theme.palette.secondary.default}`,
         color: theme.palette.success.contrastText,
         verticalAlign: "top",
-        padding: 2,
+        padding: 1,
         fontWeight: "bold",
       },
     };

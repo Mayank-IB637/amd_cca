@@ -19,7 +19,7 @@ const CustomTable = ({
   data,
   columns,
   variant = "default",
-  isPagination = false,
+  isPagination,
   onDelete,
   defaultColumnPinningState,
   id="custom-table",
@@ -90,7 +90,7 @@ const CustomTable = ({
       <Box sx={{ overflowX: "auto" }} id={id} role="table-container">
         <Table
           size="small"
-          sx={{ tableLayout: "fixed", minWidth: "max-content" }}
+          sx={{ tableLayout: "fixed" }}
         >
           <CustomTableHeader
             headerGroups={table.getHeaderGroups()}

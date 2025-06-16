@@ -34,7 +34,7 @@ import {
   updateInstanceState,
 } from "@/redux/features/instance/instance.slice";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
-import { AttachMoney } from "@mui/icons-material";
+import { AttachMoney, Refresh } from "@mui/icons-material";
 
 function BottomBar() {
   const theme = useTheme();
@@ -42,7 +42,8 @@ function BottomBar() {
   const dispatch = useDispatch();
 
   const location = useLocation();
-  const currentInstanceId = location.pathname.split("/")[1];
+  const pathParts = location.pathname.split("/");
+  const currentInstanceId = pathParts[pathParts.length - 1];
   const alertMessage = useSelector(selectMessage);
   const alertMessageType = useSelector(selectMessageType);
   const portfolioName = useSelector(selectPortfolioName);
@@ -50,8 +51,8 @@ function BottomBar() {
   const instanceList = useSelector(selectInstanceList);
 
   const formId = currentInstanceId || nanoid();
- 
-  const handleSavePortFolio =  () => {
+
+  const handleSavePortFolio = () => {
     const trimmedName = portfolioName?.trim();
     const validNameRegex = /^[a-zA-Z0-9_-]+$/;
     if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
@@ -89,7 +90,7 @@ function BottomBar() {
     } else {
       dispatch(addInstance(payload));
     }
- 
+
     navigate(`/${formId}`);
     dispatch(
       setMessage({
@@ -97,7 +98,17 @@ function BottomBar() {
         message: `${trimmedName} saved successfully`,
       })
     );
-  } ;
+  }
+
+  const handleRefreshInstances = () => {
+    dispatch(
+      setMessage({
+        type: errorMessageType.SUCCESS,
+        message: "Instances Fetched",
+      })
+    );
+  }
+
 
   const handleDeletePortfolio = useCallback(() => {
     dispatch(deletePortfolioFromList({ id: formId }));
@@ -256,12 +267,12 @@ function BottomBar() {
         <Suspense fallback={null}>
           <Button
             id="savePortfolio"
-            onClick={handleSavePortFolio}
+            onClick={location.pathname.includes('cloudInstances') ? handleRefreshInstances : handleSavePortFolio}
             variant="contained"
-            startIcon={<SaveIcon />}
-            disabled={isSaveDisabled}
+            startIcon={location.pathname.includes('cloudInstances') ? <Refresh /> : <SaveIcon />}
+            disabled={!location.pathname.includes('cloudInstances') && isSaveDisabled}
           >
-            Save
+            {location.pathname.includes('cloudInstances') ? 'Refresh' : 'Save'}
           </Button>
         </Suspense>
         <Suspense fallback={null}>
@@ -270,9 +281,9 @@ function BottomBar() {
             variant="contained"
             startIcon={<AttachMoney />}
             disabled={isInstanceAdviceDisabled}
-            onClick={() => navigate("/instanceAdvice")}
+            onClick={() => navigate(`/instanceAdvice/${formId}`)}
           >
-          Cost advice
+            Cost advice
           </Button>
         </Suspense>
       </Box>

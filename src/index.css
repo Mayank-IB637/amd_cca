@@ -3,3 +3,14 @@
   border-radius: 4px;
 }
 
+.action-footer{
+   min-height: 4rem;
+            background-color: #E8E8E8;
+            width: 100%;
+            position: absolute;
+            bottom: -15px;
+            left: -0.1%;
+            display: flex;
+            align-items: start;
+            padding: 1rem;
+}
