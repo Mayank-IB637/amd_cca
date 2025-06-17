@@ -1,40 +1,187 @@
-import React from "react";
+import React, { Suspense, useMemo, useCallback, lazy } from "react";
 import { Box, Grid, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-// import { selectTelemetryState } from "@/redux/features/telemetry/telemetry.selector";
-import {
-  selectTelemetryState
-} from "@/redux/features/Telemetry/telemetry.selector";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { nanoid } from "@reduxjs/toolkit";
+import { useTheme } from "@emotion/react";
+
 import {
   resetTelemetryData,
   telemetryConnectionStatus,
   toggleShowData,
-} from "@/redux/features/Telemetry/telemetry.slice";
-import { useSelector, useDispatch } from "react-redux";
-import { addInstance } from "@/redux/features/instanceList/instanceList.slice";
-import { nanoid } from "@reduxjs/toolkit";
+} from "@/redux/features/telemetry/telemetry.slice";
+import { selectTelemetryState } from "@/redux/features/telemetry/telemetry.selector";
+import {
+  addInstance,
+  updateInstance,
+} from "@/redux/features/instanceList/instanceList.slice";
+import {
+  selectCurrentInstance,
+  selectInstanceList,
+} from "@/redux/features/instanceList/instanceList.selector";
+import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
+import {
+  errorMessageType,
+  setMessage,
+} from "@/redux/features/instance/instance.slice";
+import {
+  selectMessage,
+  selectMessageType,
+} from "@/redux/features/instance/instance.selector";
+
+// Dynamic import for FormAlert
+const FormAlert = lazy(() => import("@/components/ui/FormAlert"));
+
+// Utility: get trimmed name
+const getTrimmedName = (name) => name?.trim() || "";
+
+// Utility: check duplicate
+const isDuplicateInstance = (instances, name, providerType, currentProvider) =>
+  instances.some(
+    (instance) => instance.name === name && providerType === currentProvider
+  );
+
+// Utility: build instance payload
+const buildInstancePayload = ({
+  id,
+  data,
+  provider,
+  name,
+  formData,
+}) => ({
+  id,
+  data,
+  type: "telemetry",
+  provider,
+  name,
+  formData,
+});
 
 const TelemetryBottomBar = () => {
+  const theme = useTheme();
   const dispatch = useDispatch();
-  const telemetryState = useSelector(selectTelemetryState);
-  const isConnected =
-    telemetryState.connectionStatus === telemetryConnectionStatus.CONNECTED;
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const handleSaveInstances = () => {
-dispatch(addInstance({
-  id:nanoid(),
-  type: telemetryState.type,
-  // name: ,
-}))
+  const {
+    connectionStatus,
+    name: portfolioName,
+    data,
+    formData,
+    showData,
+  } = useSelector(selectTelemetryState);
+  const currentInstance = useSelector(selectCurrentInstance);
+  const currentProviderName = useSelector(selectCurrentProviderName);
+  const instanceList = useSelector(selectInstanceList);
+  const alertMessage = useSelector(selectMessage);
+  const alertMessageType = useSelector(selectMessageType);
 
-// 
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+  const providerType = queryParams.get("type");
+
+  const isConnected = connectionStatus === telemetryConnectionStatus.CONNECTED;
+  const generatedFormId = useMemo(
+    () => currentInstance?.id || nanoid(),
+    [currentInstance?.id]
+  );
+  const trimmedName = useMemo(
+    () => getTrimmedName(portfolioName),
+    [portfolioName]
+  );
+  const isDuplicate = useMemo(
+    () =>
+      isDuplicateInstance(
+        instanceList,
+        trimmedName,
+        providerType,
+        currentProviderName
+      ),
+    [instanceList, trimmedName, providerType, currentProviderName]
+  );
+
+  const showAlert = useCallback(
+    (type, message) =>
+      dispatch(
+        setMessage({
+          type,
+          message,
+        })
+      ),
+    [dispatch]
+  );
+
+  const handleSaveInstances = useCallback(() => {
+    if (!trimmedName) {
+      return showAlert(errorMessageType.ERROR, "Portfolio name is required");
     }
+    if (isDuplicate && !currentInstance?.id) {
+      return showAlert(errorMessageType.ERROR, "Portfolio name already exists");
+    }
+
+    const payload = buildInstancePayload({
+      id: generatedFormId,
+      data,
+      provider: currentProviderName,
+      name: trimmedName,
+      formData,
+    });
+
+    if (currentInstance?.id) {
+      dispatch(updateInstance(payload));
+    } else {
+      dispatch(addInstance(payload));
+    }
+    dispatch(resetTelemetryData());
+    navigate(`/telemetry/${generatedFormId}?type=${currentProviderName}`);
+    showAlert(errorMessageType.SUCCESS, `${trimmedName} saved successfully`);
+  }, [
+    trimmedName,
+    isDuplicate,
+    currentInstance?.id,
+    generatedFormId,
+    data,
+    currentProviderName,
+    formData,
+    dispatch,
+    navigate,
+    showAlert,
+  ]);
+
+  const handleCancel = useCallback(
+    () => dispatch(resetTelemetryData()),
+    [dispatch]
+  );
+
+  const handleFetchSync = useCallback(
+    () => dispatch(toggleShowData()),
+    [dispatch]
+  );
+
+  const handleAlertClose = useCallback(
+    () =>
+      dispatch(
+        setMessage({
+          message: "",
+          type: null,
+        })
+      ),
+    [dispatch]
+  );
 
   return (
     <Box
       id="manage-portfolio-footer-action-container"
       // className="action-footer"
-      sx={{ p: 1 }}
+      sx={{
+        p: 1,
+        borderTop: `1px solid ${theme.palette.divider}`,
+        bgcolor: theme.palette.grey[100],
+        color: theme.palette.text.default,
+      }}
     >
       <Grid
         container
@@ -46,10 +193,10 @@ dispatch(addInstance({
         <Grid item>
           <Button
             variant="contained"
-            onClick={() => dispatch(resetTelemetryData())}
+            onClick={handleCancel}
             disabled={!isConnected}
             color="error"
-            id="btn-cinstancelist-cancel"
+            id="btn-instance-list-cancel"
             startIcon={<CloseIcon />}
             sx={{ textTransform: "none", mr: 1 }}
           >
@@ -59,7 +206,7 @@ dispatch(addInstance({
         <Grid item>
           <Button
             variant="contained"
-            onClick={() => dispatch(toggleShowData())}
+            onClick={handleFetchSync}
             disabled={!isConnected}
             sx={{
               backgroundColor: "black",
@@ -69,13 +216,13 @@ dispatch(addInstance({
               "&:hover": { backgroundColor: "black" },
             }}
           >
-            Fetch/ Sync Instances
+            Fetch / Sync Instances
           </Button>
         </Grid>
         <Grid item>
           <Button
             variant="contained"
-            disabled={!isConnected}
+            disabled={!isConnected || !showData}
             onClick={handleSaveInstances}
             sx={{
               backgroundColor: "black",
@@ -89,6 +236,15 @@ dispatch(addInstance({
           </Button>
         </Grid>
       </Grid>
+      <Suspense fallback={null}>
+        <FormAlert
+          open={Boolean(alertMessageType)}
+          severity={alertMessageType}
+          onClose={handleAlertClose}
+        >
+          {alertMessage}
+        </FormAlert>
+      </Suspense>
     </Box>
   );
 };

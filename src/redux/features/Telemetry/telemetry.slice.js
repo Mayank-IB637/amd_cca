@@ -2,8 +2,8 @@ import {
   awsCloudWatchTelemetryData,
   azureInsightsTelemetryData,
   dataDogTelemetryData,
-} from "@/lib/telemetrydata";
-import { createSlice } from "@reduxjs/toolkit";
+} from "@/lib/telemetryData";
+import { createSlice } from "@reduxjs/toolkit";  
 
 export const telemetryConnectionStatus = {
   CONNECTED: "connected",
@@ -12,22 +12,31 @@ export const telemetryConnectionStatus = {
 };
 export const telemetryTypes = {
   DATA_DOG: "Datadog",
-  AWS_CLOUDWATCH: "AWS_Cloudwatch",
-  AZURE_INSIGHTS: "Azure_App_Insights",
+  AWS_CLOUDWATCH: "AWS CloudWatch",
+  AZURE_INSIGHTS: "Azure App Insights",
 };
 
 const initialState = {
   data: [],
+  formData: null,
+  name:"",
   type: null,
   connectionStatus: telemetryConnectionStatus.DISCONNECTED,
   reset: false,
   showData: false,
+  message: "",
+  alertType: "info", 
 };
 
 const telemetrySlice = createSlice({
   name: "telemetry",
   initialState,
   reducers: {
+    setTelemetryData (state, action) {
+      state.name = action.payload.portfolioName;
+      state.formData = {...state.formData,...action.payload};
+    },
+    
     toggleShowData(state) {
       state.showData = !state.showData;
     },
@@ -56,15 +65,21 @@ const telemetrySlice = createSlice({
       state.type = null;
       state.connectionStatus = telemetryConnectionStatus.DISCONNECTED;
       state.reset = true;
+      state.showData = false;
+      state.formData = null;
+      state.name = "";
+      state.message = "";
     },
+    
   },
 });
 
 export const {
-  setTelemetryConnectionStatus,
-  toggleResetTelemetry,
-  resetTelemetryData,
   toggleShowData,
+  setTelemetryData,
+  resetTelemetryData,
+  toggleResetTelemetry,
+  setTelemetryConnectionStatus,
 } = telemetrySlice.actions;
 
 export default telemetrySlice.reducer;

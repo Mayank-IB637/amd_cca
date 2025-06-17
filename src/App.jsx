@@ -73,14 +73,14 @@ const App = () => {
 ;
 
   useEffect(() => {
-    console.log("Tour useEffect triggered");
+    // console.log("Tour useEffect triggered");
     const timeoutId = setTimeout(() => {
-      console.log("Importing tour module...");
+      // console.log("Importing tour module...");
       import("@/tour/tour").then((tour) => { 
-        console.log("Tour module loaded", tour);
+        // console.log("Tour module loaded", tour);
         if (tour?.default?.start) {
           tour.default.start();
-          console.log("Tour started");
+          // console.log("Tour started");
         } else {
           console.error("tour.default.start is not a function", tour);
         }

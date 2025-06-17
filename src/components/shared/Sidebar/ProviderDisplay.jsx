@@ -20,7 +20,7 @@ const ProviderDisplay = ({ onClose, data }) => {
 
       const handleClick = () => {
         dispatch(setProvider({ type, name }));
-        const formattedName = name.replace(/\s+/g, "_") ;
+        const formattedName = name;
         onClose();
 
         if (type === "cloud") {

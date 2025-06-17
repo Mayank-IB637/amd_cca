@@ -49,7 +49,7 @@ function InstanceForm() {
 
   const handleSubmit = useCallback(
     (data) => {
-      console.log("Submitted data...",data)
+      // console.log("Submitted data...",data)
       dispatch(
         addInstance({ id: nanoid(), ...data, uuid: data.uuid || nanoid(), cloud: data.cloud || "AWS" })
       );
@@ -68,6 +68,7 @@ function InstanceForm() {
   useEffect(() => {
     form.reset({});
   }, [form, location.pathname]);
+ 
   return (
     <Box
       component="form"
