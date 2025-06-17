@@ -1,4 +1,4 @@
-import { CONSUMPTION_FIELDS, GENERIC_FIELDS } from "@/lib/constant";
+import { FIELDS } from "@/lib/constant";
 import { mockFormDataResponse } from "@/lib/data";
 import { store } from "@/redux/store";
 
@@ -84,8 +84,6 @@ export const actionHandlers = {
   },
   input(el) {
     const name = el.getAttribute("name");
-    const previousValue = el.value;
-
     let value = mockFormDataResponse[name];
     const portfolioList = store
       .getState()
@@ -133,9 +131,8 @@ export const actionHandlers = {
         el.scrollBy({ left: 300, behavior: "smooth" });
       }
     }
-    if (role === "GenericMetadataForm") await processFields(GENERIC_FIELDS);
-    if (role === "ConsumptionMetadataForm")
-      await processFields(CONSUMPTION_FIELDS);
+    if (role === "portfolioForm") await processFields(FIELDS);
+
   },
   td(el) {
     el.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));

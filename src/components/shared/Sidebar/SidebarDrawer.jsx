@@ -35,7 +35,12 @@ const SidebarDrawer = () => {
   const portfolioType = useSelector(selectCurrentProviderType);
   const instances = useSelector(selectInstanceList);
 
+  
+
+  
+
   const data = instances.filter((instance) => instance.provider === portfolio);
+
 
   const borderColor = theme.palette.sidebar?.border || theme.palette.divider;
   useEffect(() => {

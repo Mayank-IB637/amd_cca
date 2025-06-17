@@ -79,7 +79,9 @@ const ExplanationDialogContent = ({ handleClose }) => (
           instance type
         </Typography>
       </Box>
-      <IconButton onClick={handleClose}>
+      <IconButton
+      id = "input-errors-explanation-close"
+       onClick={handleClose}>
         <CloseIcon />
       </IconButton>
     </Box>
@@ -127,6 +129,7 @@ const EIARecommendedDialogContent = ({ handleClose }) => (
     >
       <Box>
         <Typography
+          // id="eia-recommended-dialog-title"
           variant="body2"
           fontSize={16}
           fontWeight="bold"
@@ -136,7 +139,10 @@ const EIARecommendedDialogContent = ({ handleClose }) => (
         </Typography>
 
       </Box>
-      <IconButton onClick={handleClose}>
+      <IconButton 
+      onClick={handleClose}
+      id = "eia-recommended-dialog-close">
+       
         <CloseIcon />
       </IconButton>
     </Box>
@@ -346,6 +352,7 @@ const InstanceAdviceHeader = () => {
             <DialogHoc
               trigger={({ onClick }) => (
                 <Box
+                id="input-errors-explanation"
                   component="span"
                   onClick={onClick}
                   sx={{
@@ -365,6 +372,7 @@ const InstanceAdviceHeader = () => {
             <DialogHoc
               trigger={({ onClick }) => (
                 <Box
+                  id="eia-recommended"
                   component="span"
                   onClick={onClick}
                   sx={{

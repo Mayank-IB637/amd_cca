@@ -1,250 +1,176 @@
-import React, { useEffect, useState, useCallback } from "react";
-import {
-  TextField,
-  InputAdornment,
-  IconButton,
-  Button,
-  Chip,
-  Typography,
-  Box,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
-  Checkbox,
-} from "@mui/material";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import React, { useEffect, lazy, Suspense, useCallback, useMemo } from "react";
+import { TextField, Button, Typography, Box, useTheme, Skeleton } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { azureAppSchema } from "@/lib/validation/azureAppSchema";
-import FormAlert from "@/components/ui/FormAlert";
-import useTimedMessage from "@/hooks/useTimedMessage";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentProviderRegions } from "@/redux/features/providerData/providerData.selector";
-import { useTheme } from "@emotion/react";
-import {
-  selectTelemetryResetFlag
-} from "@/redux/features/Telemetry/telemetry.selector";
-import {
-  telemetryTypes,
-  toggleShowData,
-  telemetryConnectionStatus,
-  setTelemetryConnectionStatus
-} from "@/redux/features/Telemetry/telemetry.slice";
 import { useLocation } from "react-router-dom";
 
+import {
+  setTelemetryData,
+  setTelemetryConnectionStatus,
+  telemetryConnectionStatus,
+  telemetryTypes,
+  toggleResetTelemetry,
+} from "@/redux/features/telemetry/telemetry.slice";
+import { selectTelemetryResetFlag } from "@/redux/features/telemetry/telemetry.selector";
+import { selectCurrentProviderRegions } from "@/redux/features/providerData/providerData.selector";
+import { selectCurrentInstance } from "@/redux/features/instanceList/instanceList.selector"; 
+import useTimedMessage from "@/hooks/useTimedMessage";
+import { azureAppSchema } from "@/lib/validation/azureAppSchema";
+
+// Lazy loaded components
+const FormAlert = lazy(() => import("@/components/ui/FormAlert"));
+const PasswordField = lazy(() => import("@/components/ui/PasswordField"));
+const RegionsSelect = lazy(() => import("@/components/ui/RegionSelect"));
+
 const inputStyle = { fontWeight: 600 };
+const divStyle = {
+  display: "grid",
+  gridTemplateColumns: { sm: "repeat(3, 1fr)" },
+  gap: 2,
+  mb: 2,
+};
 
-const FormRow = ({ children }) => (
-  <Box
-    sx={{
-      display: "grid",
-      gridTemplateColumns: { sm: "repeat(7, 1fr)" },
-      gap: 2,
-      mb: 2,
-    }}
-  >
-    {children}
-  </Box>
-);
+const defaultFormValues = {
+  portfolioName: "",
+  regions: [],
+  clientId: "",
+  clientSecret: "",
+  tenantId: "",
+  subscriptionId: "",
+};
 
-const AzureInsightsForm = () => {
+function AzureInsightsForm() {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+  const isEdit = queryParams.get("edit");
   const regionOptions = useSelector(selectCurrentProviderRegions);
   const telemetryResetFlag = useSelector(selectTelemetryResetFlag);
+  const currentInstance = useSelector(selectCurrentInstance);
 
-  const [showClientSecret, setShowClientSecret] = useState(false);
   const [formError, setFormError] = useTimedMessage();
   const [formSuccess, setFormSuccess] = useTimedMessage();
 
   const { register, handleSubmit, control, reset } = useForm({
     resolver: zodResolver(azureAppSchema),
-    defaultValues: {
-      portfolioName: "",
-      regions: [],
-      clientId: "",
-      clientSecret: "",
-      tenantId: "",
-      subscriptionId: "",
-    },
+    defaultValues: defaultFormValues,
   });
 
+  // Reset form on telemetry reset flag
   useEffect(() => {
     if (telemetryResetFlag) {
-      reset({ regions: [] });
-      dispatch(toggleShowData());
+      reset({ ...defaultFormValues, regions: [] });
+      dispatch(toggleResetTelemetry());
     }
   }, [telemetryResetFlag, reset, dispatch]);
 
-  const onSubmit = () => {
-    dispatch(
-      setTelemetryConnectionStatus({
-        connectionStatus: telemetryConnectionStatus.CONNECTED,
-        type: telemetryTypes.AZURE_INSIGHTS,
-      })
-    );
-    setFormSuccess("Azure connection is successful");
-    setFormError("");
-  };
+  // Populate form in edit mode
+  useEffect(() => {
+    if (isEdit && currentInstance?.formData) {
+      reset(currentInstance.formData);
+    }
+  }, [currentInstance?.formData, isEdit, reset]);
 
-  const handleError = () => {
-    setFormError("Please enter the required fields.");
-  };
-
-  const isAllSelected = useCallback(
-    (selected) => regionOptions.length > 0 && selected.length === regionOptions.length,
-    [regionOptions]
+  const onSubmit = useCallback(
+    (values) => {
+      dispatch(setTelemetryData(values));
+      dispatch(
+        setTelemetryConnectionStatus({
+          connectionStatus: telemetryConnectionStatus.CONNECTED,
+          type: telemetryTypes.AZURE_INSIGHTS,
+        })
+      );
+      setFormSuccess("Azure Insights connection is successful");
+      setFormError("");
+    },
+    [dispatch, setFormSuccess, setFormError]
   );
 
-  const handleToggleSelectAll = (selected, onChange) => {
-    if (selected.includes("selectAll")) {
-      const allSelected = isAllSelected(selected);
-      onChange(allSelected ? [] : regionOptions);
-    } else {
-      onChange(selected.filter((v) => v !== "selectAll"));
-    }
-  };
+  const handleError = useCallback(
+    (errors) => {
+      setFormError("Please enter the required fields.", errors);
+    },
+    [setFormError]
+  );
+
+  // Reusable renderers
+  const renderTextField = useCallback(
+    (label, name) => (
+      <TextField
+        label={label}
+        fullWidth
+        {...register(name)}
+        slotProps={{ input: { style: inputStyle } }}
+      />
+    ),
+    [register]
+  );
 
   return (
-    <Box
-      component="form"
-      noValidate
-      onSubmit={handleSubmit(onSubmit, handleError)}
-      sx={{ backgroundColor: "white", p: 2, width: "100%" }}
-    >
-      <FormRow>
-        <TextField
-          label="Portfolio Name"
-          fullWidth
-          {...register("portfolioName")}
-          sx={{ gridColumn: "span 3" }}
-          InputProps={{ style: inputStyle }}
-        />
-        <FormControl fullWidth sx={{ gridColumn: "span 3" }}>
-          <InputLabel id="regions-label">Regions</InputLabel>
+    <Suspense fallback={<Skeleton height={400} fullWidth/>}>
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit(onSubmit, handleError)}
+        sx={{ backgroundColor: "white", p: 2, width: "100%" }}
+      >
+        <Box sx={divStyle}>
+          {renderTextField("Portfolio Name", "portfolioName")}
           <Controller
             name="regions"
             control={control}
             render={({ field: { value = [], onChange } }) => (
-              <Select
-                labelId="regions-label"
-                id="regions"
-                multiple
+              <RegionsSelect
+                control={control}
+                regionOptions={regionOptions}
                 value={value}
-                onChange={(e) => handleToggleSelectAll(e.target.value, onChange)}
-                input={<OutlinedInput label="Regions" />}
-                renderValue={(selected) => (
-                  <Box
-                    sx={{
-                      fontSize: "12px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 0.5,
-                      color: theme.palette.grey[800],
-                      fontWeight: 400,
-                    }}
-                  >
-                    {selected.length > 0 && <Chip label={selected[0]} />}
-                    {selected.length > 1 && `(+${selected.length - 1} others)`}
-                  </Box>
-                )}
+                onChange={onChange}
+                theme={theme}
                 sx={inputStyle}
-              >
-                <MenuItem value="selectAll">
-                  <Checkbox checked={isAllSelected(value)} />
-                  Select All
-                </MenuItem>
-                {regionOptions.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    <Checkbox checked={value.includes(region)} />
-                    {region}
-                  </MenuItem>
-                ))}
-              </Select>
+              />
             )}
           />
-        </FormControl>
-      </FormRow>
+        </Box>
 
-      <FormRow>
-       <TextField
-          label="Client ID"
-          fullWidth
-          type={showClientSecret ? "text" : "password"}
-          {...register("clientSecret")}
-          sx={{ gridColumn: "span 3" }}
-          InputProps={{
-            style: inputStyle,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowClientSecret((show) => !show)}
-                  edge="end"
-                  size="small"
-                >
-                  {showClientSecret ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          label="Client Secret"
-          fullWidth
-          type={showClientSecret ? "text" : "password"}
-          {...register("clientSecret")}
-          sx={{ gridColumn: "span 3" }}
-          InputProps={{
-            style: inputStyle,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={() => setShowClientSecret((show) => !show)}
-                  edge="end"
-                  size="small"
-                >
-                  {showClientSecret ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </FormRow>
+        <Box sx={divStyle}>
+          <PasswordField
+            label="Client ID"
+            register={register}
+            name="clientId"
+          />
+          <PasswordField
+            label="Client Secret"
+            register={register}
+            name="clientSecret"
+          />
+        </Box>
 
-      <FormRow>
-        <TextField
-          label="Tenant ID"
-          fullWidth
-          {...register("tenantId")}
-          sx={{ gridColumn: "span 3" }}
-          InputProps={{ style: inputStyle }}
-        />
-        <TextField
-          label="Subscription ID"
-          fullWidth
-          {...register("subscriptionId")}
-          sx={{ gridColumn: "span 3" }}
-          InputProps={{ style: inputStyle }}
-        />
-        <Button
-          variant="contained"
-          fullWidth
-          type="submit"
-          sx={{ gridColumn: "span 1", textTransform: "none" }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Test Connection
-          </Typography>
-        </Button>
-      </FormRow>
+        <Box sx={divStyle}>
+          {renderTextField("Tenant ID", "tenantId")}
+          {renderTextField("Subscription ID", "subsId")}
+          <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ textTransform: "none", minWidth: 150 }}
+            >
+              <Typography variant="button" fontWeight={400}>
+                Test Connection
+              </Typography>
+            </Button>
+          </Box>
+        </Box>
 
-      {formError && <FormAlert severity="error">{formError}</FormAlert>}
-      {formSuccess && <FormAlert severity="success">{formSuccess}</FormAlert>}
-    </Box>
+        {formError && <FormAlert severity="error">{formError}</FormAlert>}
+        {formSuccess && <FormAlert severity="success">{formSuccess}</FormAlert>}
+      </Box>
+    </Suspense>
   );
-};
+}
 
 export default AzureInsightsForm;

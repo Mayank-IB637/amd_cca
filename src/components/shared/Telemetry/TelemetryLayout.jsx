@@ -1,51 +1,44 @@
-import { Box } from "@mui/material";
-import React from "react";
-import DatadogForm from "./DatadogForm";
-import { useSelector } from "react-redux";
-import { selectTelemetryState } from "@/redux/features/Telemetry/telemetry.selector";
+import { Box, Skeleton } from "@mui/material";
+import React, { Suspense, lazy } from "react";
+import { useSelector } from "react-redux"; 
 import { telemetryColumns } from "./telemetryColumns";
 import CustomTable from "@/components/ui/table/CustomTable";
-import AzureInsightsForm from "./AzureInsightsForm";
+import { useLocation } from "react-router-dom"; 
+import { selectTelemetryState } from "@/redux/features/Telemetry/telemetry.selector";
 import { telemetryTypes } from "@/redux/features/Telemetry/telemetry.slice";
-import { useLocation } from "react-router-dom";
-
+// Lazy load the forms
+const DatadogForm = lazy(() => import("./DatadogForm"));
+const AzureInsightsForm = lazy(() => import("./AzureInsightsForm"));
 
 function TelemetryLayout() {
   const { data, showData } = useSelector(selectTelemetryState);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get("type");
+
   return (
     <Box
       sx={{
-        flex: 1,
-        p: 0,
-        overflowY: "auto",
-        bgcolor: "error.contrastText",
+        width: "100%",
+        height: "100%",
+        overflowY: "auto", 
+        display: "flex",
+        flexDirection: "column",
+        padding: 0,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-          padding: 2,
-        }}
-      >
-        {type == telemetryTypes.AZURE_INSIGHTS ? <AzureInsightsForm />
-          : <DatadogForm />}
+      <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
+        {type === telemetryTypes.AZURE_INSIGHTS ? <AzureInsightsForm /> : <DatadogForm />}
+      </Suspense>
 
-        {showData && (
-          <CustomTable
-            variant="primary"
-            data={data}
-            columns={telemetryColumns}
-            isPagination
-
-            id="instance-advice-table"
-          />
-        )}
-      </Box>
+      {showData && (
+        <CustomTable
+          variant="primary"
+          data={data}
+          columns={telemetryColumns}
+          isPagination 
+        />
+      )}
     </Box>
   );
 }

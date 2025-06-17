@@ -56,9 +56,10 @@ const PortfolioDetails = ({ form }) => {
           <Grid container spacing={1} alignItems="center">
               <Grid item size={{xs: 12, md: 5 }}>
                 <TextField
-                  id="txtfieldManageportfolioName"
+                  id="portfolio-name"
                   label="Portfolio Name*"
                   variant="outlined"
+                  name="portfolioName"
                   fullWidth
                   value={name}
                   onChange={handleValueChange}
@@ -88,7 +89,7 @@ const PortfolioDetails = ({ form }) => {
             {/* Upload Button - md=2 */}
             <Grid item size={{ xs: 12, md:2 , lg:2 }} sx={{ px: 1 }}>
               <Button
-                id="btn-manageportfolio-upload"
+                id="uploadInstances"
                 variant="contained"
                 color="primary"
                 startIcon={<UploadIcon />}
@@ -102,7 +103,8 @@ const PortfolioDetails = ({ form }) => {
             {/* Template Button - md=2 */}
             <Grid item size={{ xs: 12, md: 2 , lg: 2}} sx={{ px: 1 }}>
               <Button
-                id="btn-manageportfolio-template"
+                
+                id="step-five-target"
                 variant="contained"
                 color="primary"
                 startIcon={<DownloadIcon />}

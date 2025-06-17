@@ -7,14 +7,23 @@ import { updateInstanceState } from "@/redux/features/instance/instance.slice";
 import { setUploadedFileName } from "@/redux/features/instance/instance.slice";
 import propsTypes from "prop-types";
 import { Close } from "@mui/icons-material";
+import {
+  selectCurrentProviderName,
+  selectCurrentProviderType,
+} from "@/redux/features/providerData/providerData.selector";
+import { useSelector } from "react-redux";
+import { selectCurrentInstance } from "@/redux/features/instanceList/instanceList.selector";
 
 export default function PortfolioItem({ portfolio }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const pathParts = location.pathname.split("/");
-  const activePortfolioId = pathParts[pathParts.length - 1];
-  const isActive = portfolio.id === activePortfolioId;
+
+  const providerName = useSelector(selectCurrentProviderName);
+  const providerType = useSelector(selectCurrentProviderType);
+  const activePortfolioId = useSelector(selectCurrentInstance)?.id;
+
+  const isActive = portfolio.id === activePortfolioId; 
   const handleSelect = useCallback(
     (portfolio) => {
       dispatch(addCurrentInstance(portfolio.id));
@@ -26,9 +35,24 @@ export default function PortfolioItem({ portfolio }) {
       else {
         navigate(`/${portfolio.id}`);
       }
+
+      // Get current query params and preserve them
+      const currentParams = new URLSearchParams(location.search);
+      currentParams.set("type", providerName);
+
+      let path =
+        providerType === "telemetry"
+          ? `/telemetry/${portfolio.id}`
+          : `/${providerName}`;
+
+      navigate(`${path}?${currentParams.toString()}`, { replace: true });
     },
-    [dispatch, navigate]
+    [dispatch, location.search, navigate, providerName, providerType]
   );
+  console.log({
+    isActive,
+     portfolio , activePortfolioId
+  })
 
   return (
     <ListItemButton

@@ -2,8 +2,11 @@ import { z } from "zod";
 import { pricingModelOptions } from "../constant";
 
 export const instanceSchema = z.object({
-  region: z.string().nonempty("Region is required"),
-  instanceType: z.string().nonempty("Instance Type is required"),
+  region: z.string().nonempty("Region is required")
+  ,
+  instanceType: z.string()
+    .nonempty("Instance Type is required")
+  ,
   uuid: z.string().optional(),
   pricingModel: z.string()
     .nonempty("Pricing Model is required")

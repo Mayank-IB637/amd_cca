@@ -38,6 +38,7 @@ import { selectInstanceList } from "@/redux/features/instanceList/instanceList.s
 import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
 import {  setUploadedFileName } from "@/redux/features/instance/instance.slice";
 import { AttachMoney, Refresh } from "@mui/icons-material";
+import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
 
 function BottomBar() {
   const theme = useTheme();
@@ -53,17 +54,30 @@ function BottomBar() {
   const instances = useSelector(selectInstances);
   const instanceList = useSelector(selectInstanceList);
   const currentProviderName = useSelector(selectCurrentProviderName);
+
   const formId = currentInstanceId || nanoid();
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get("type");
-  const handleSavePortFolio = () => {
+
+  // const handleSavePortFolio = () => {
+  //   const trimmedName = portfolioName?.trim();
+  //   const validNameRegex = /^[a-zA-Z0-9_-]+$/;
+  //   if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
+  //     dispatch(
+  //       setMessage({
+  //         type: errorMessageType.ERROR,
+  //         message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
+  //       })
+  //     );
+  //     return;
+  //   }
+   const handleSavePortFolio = () => {
     const trimmedName = portfolioName?.trim();
-    const validNameRegex = /^[a-zA-Z0-9_-]+$/;
-    if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
+    if (!trimmedName) {
       dispatch(
         setMessage({
           type: errorMessageType.ERROR,
-          message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
+          message: "Portfolio name is required",
         })
       );
       return;
@@ -89,9 +103,9 @@ function BottomBar() {
     const payload = {
       id: formId,
       instances,
-      type:"cloud",
+      type: "cloud",
       provider: currentProviderName,
-      name: trimmedName,
+      name: trimmedName
     };
     if (currentInstanceId) {
       dispatch(updateInstance(payload));
@@ -109,14 +123,14 @@ function BottomBar() {
     );
   }
 
-  const handleRefreshInstances = () => {
-    dispatch(
-      setMessage({
-        type: errorMessageType.SUCCESS,
-        message: "Instances Fetched",
-      })
-    );
-  }
+  // const handleRefreshInstances = () => {
+  //   dispatch(
+  //     setMessage({
+  //       type: errorMessageType.SUCCESS,
+  //       message: "Instances Fetched",
+  //     })
+  //   );
+  // }
 
 
   const handleDeletePortfolio = useCallback(() => {
@@ -273,7 +287,7 @@ function BottomBar() {
             />
           </Suspense>
         )}
-        <Suspense fallback={null}>
+        {/* <Suspense fallback={null}>
           <Button
             id="savePortfolio"
             onClick={location.pathname.includes('cloudInstances') ? handleRefreshInstances : handleSavePortFolio}
@@ -282,6 +296,18 @@ function BottomBar() {
             disabled={!location.pathname.includes('cloudInstances') && isSaveDisabled}
           >
             {location.pathname.includes('cloudInstances') ? 'Refresh' : 'Save'}
+          </Button>
+        </Suspense> */}
+        
+        <Suspense fallback={null}>
+          <Button
+            id="savePortfolio"
+            onClick={handleSavePortFolio}
+            variant="contained"
+            startIcon={<SaveIcon />}
+            disabled={isSaveDisabled}
+          >
+            Save
           </Button>
         </Suspense>
         <Suspense fallback={null}>

@@ -66,6 +66,7 @@ function InstanceForm() {
   useEffect(() => {
     form.reset({});
   }, [form, location.pathname]);
+ 
   return (
     <Box
       component="form"

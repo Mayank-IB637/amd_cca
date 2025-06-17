@@ -18,10 +18,9 @@ import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusager
 import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
 import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
 import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
-import {
-  setProvider,
-} from "./redux/features/providerData/providerData.slice";
-import { getProviderConfig } from "./lib/utils";
+import { setProvider } from "./redux/features/providerData/providerData.slice";
+import { getProviderConfig } from "./lib/utils/providerConfig";
+
 // Route config for reusability
 const routesConfig = [
   { path: "/", element: <MainContent /> },
@@ -56,31 +55,32 @@ const getBottomBar = (pathname) => {
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const currentInstance = useSelector(selectCurrentInstance);
 
   const pathname = useMemo(() => location.pathname, [location]);
-  const SidebarComp = useMemo(() => getSidebar(pathname), [pathname]);
-  const BottomBarComp = useMemo(() => getBottomBar(pathname), [pathname]);
-
-    const searchParams = useMemo(
+   const searchParams = useMemo(
     () => new URLSearchParams(location.search),
     [location.search]
   );
-  const type = searchParams.get("type") || "";
+  const SidebarComp = useMemo(() => getSidebar(pathname), [pathname]);
+  const BottomBarComp = useMemo(() => getBottomBar(pathname), [pathname]);
+   const type = searchParams.get("type") || "";
   const routes = useMemo(
     () => location.pathname.split("/").filter(Boolean),
     [location.pathname]
-  );
+  ); 
+;
+
   useEffect(() => {
-    console.log("Tour useEffect triggered");
+    // console.log("Tour useEffect triggered");
     const timeoutId = setTimeout(() => {
-      console.log("Importing tour module...");
+      // console.log("Importing tour module...");
       import("@/tour/tour").then((tour) => { 
-        console.log("Tour module loaded", tour);
+        // console.log("Tour module loaded", tour);
         if (tour?.default?.start) {
           tour.default.start();
-          console.log("Tour started");
+          // console.log("Tour started");
         } else {
           console.error("tour.default.start is not a function", tour);
         }
@@ -96,10 +96,11 @@ const App = () => {
       navigate("/");
     }
   }, [pathname, currentInstance, navigate]);
-
-  // useEffect(() => {
-  //  dispatch(fetchProviderData(explorerProvider.AWS));
-  // }, []);
+useEffect(() => {
+    const provider = getProviderConfig(routes, type);
+    dispatch(setProvider(provider));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routes.join(","), type]);
 
     useEffect(() => {
     const provider = getProviderConfig(routes, type);

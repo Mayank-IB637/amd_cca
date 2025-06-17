@@ -9,13 +9,12 @@ import {
 
 let isMuted = false;
 
-const speakText = (text) => {
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    window.speechSynthesis.speak(utterance);
-  }
+const speakText = (text, isMuted) => {
+  if (isMuted || !("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.speak(utterance);
 };
 function generateButtons(step, currentStepIndex) {
   return [
@@ -107,8 +106,7 @@ function generateButtons(step, currentStepIndex) {
         }
         try {
           await handleElementAction(el, id);
-        } catch (err) {
-          console.error(`Error handling action for ${id}:`, err);
+        } catch (err) { 
           alert(`Action failed for ${id}: ${err.message}`);
         } finally {
           if (step?.action?.next) step.action.next();
@@ -127,7 +125,6 @@ const tour = new Shepherd.Tour({
   },
   useModalOverlay: true,
 });
-
 const allSteps = steps();
 allSteps.forEach((step, currentStepIndex) => {
   tour.addStep({
@@ -157,6 +154,4 @@ allSteps.forEach((step, currentStepIndex) => {
   });
 });
 
-export default {
-  start: () => tour.start(),
-};
+tour.start();

@@ -63,55 +63,8 @@ export const serviceProviderOptions = [
 ];
 
 
-export const CONSUMPTION_FIELDS = [
-  {
-    label: "Max CPU %",
-    name: "maxCpuUtilization",
-    tooltipMessage: "Maximum CPU Utilization (%).",
-  },
-  {
-    label: "Max Mem",
-    name: "maxMemoryUsed",
-    tooltipMessage: "Maximum Memory Used (Gigabyte/sec).",
-  },
-  {
-    label: "Max Network BW",
-    name: "maxNetworkBandwidth",
-    tooltipMessage: "Maximum Network Bandwidth (Megabyte/sec).",
-  },
-  // { label: "Max Network IOPS", name: "maxNetworkIOPS" ,tooltipMessage: "Max Network Bandwidth (Megabyte/sec)." },
-  {
-    label: "Max Disk BW",
-    name: "maxDiskBandwidth",
-    tooltipMessage: "Maximum Disk Bandwidth (Megabyte/sec).",
-  },
-  { label: "Max IOPS", name: "maxIOPS", tooltipMessage: "Maximum Disk IOPS." },
-];
-export const GENERIC_FIELDS = [
-  {
-    name: "region",
-    label: "Region",
-    options: regionOptions,
-    tooltipMessage: "Select Region associated with CSP",
-  },
-  {
-    name: "instanceType",
-    label: "Instance Type",
-    options: instanceOptions,
-    tooltipMessage: "Select Instance associated with Region",
-  },
-  {
-    name: "uuid",
-    label: "UUID/Instance Name",
-    tooltipMessage: "Enter UUID/Instance Name, For Ex: VM for AI/ML server",
-  },
-  {
-    name: "pricingModel",
-    label: "Pricing Model",
-    options: pricingModelOptions,
-    tooltipMessage: "Pricing Model",
-  },
-];
+
+
 export const FIELDS = [
   {
     name: "region",
@@ -139,10 +92,11 @@ export const FIELDS = [
   {
     label: "Pricing Model*",
     name: "pricingModel",
+    type: 'select',
     tooltipMessage: "",
      type: "select"
   }
-  
+
 ];
 
 export const FIND_AND_REPLACE_FIELD_TYPES = [

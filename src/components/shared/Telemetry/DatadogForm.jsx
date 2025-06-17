@@ -1,271 +1,198 @@
-import React, { useEffect, useState } from "react";
-import {
-  TextField,
-  InputAdornment,
-  IconButton,
-  Button,
-  Chip,
-  Typography,
-  Box,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
-  Checkbox,
-} from "@mui/material";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import React, { useEffect, useCallback, useMemo } from "react";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { dataDogSchema } from "@/lib/validation/dataDogSchema";
 import FormAlert from "@/components/ui/FormAlert";
 import useTimedMessage from "@/hooks/useTimedMessage";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentProviderRegions } from "@/redux/features/providerData/providerData.selector";
 import { useTheme } from "@emotion/react";
+import { useLocation } from "react-router-dom";
+import { selectCurrentInstance } from "@/redux/features/instanceList/instanceList.selector";
+import PasswordField from "@/components/ui/PasswordField";
+import RegionsSelect from "@/components/ui/RegionSelect";
+import { dataDogSchema } from "@/lib/validation/dataDogSchema";
 import {
-    selectTelemetryResetFlag
-} from "@/redux/features/Telemetry/telemetry.selector";
-import {
-    telemetryTypes,
-    toggleShowData,
-    telemetryConnectionStatus,
-    setTelemetryConnectionStatus
+  setTelemetryData,
+  setTelemetryConnectionStatus,
+  telemetryConnectionStatus,
+  telemetryTypes,
+  toggleResetTelemetry,
 } from "@/redux/features/Telemetry/telemetry.slice";
-// import { selectTelemetryResetFlag } from "@/redux/features/telemetry/telemetry.selector";
-import { useLocation } from "react-router-dom"; 
+import { selectTelemetryResetFlag } from "@/redux/features/Telemetry/telemetry.selector";
 
 const inputStyle = { fontWeight: 600 };
+
+const getSchema = (type) =>
+  type === telemetryTypes.AWS_CLOUDWATCH
+    ? dataDogSchema.omit({ hostTag: true })
+    : dataDogSchema;
+
+const getApiKeyLabel = (type) =>
+  type === telemetryTypes.AWS_CLOUDWATCH ? "Access Key" : "API Key";
+
+const getAppKeyLabel = (type) =>
+  type === telemetryTypes.AWS_CLOUDWATCH ? "App Secret" : "Application Key";
 
 function DatadogForm() {
   const theme = useTheme();
   const dispatch = useDispatch();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const type = queryParams.get("type"); 
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+  const type = queryParams.get("type");
+  const isEdit = queryParams.get("edit");
   const regionOptions = useSelector(selectCurrentProviderRegions);
   const telemetryResetFlag = useSelector(selectTelemetryResetFlag);
+  const currentInstance = useSelector(selectCurrentInstance);
 
-  const [showApiKey, setShowApiKey] = useState(false);
-  const [showAppKey, setShowAppKey] = useState(false);
   const [formError, setFormError] = useTimedMessage();
   const [formSuccess, setFormSuccess] = useTimedMessage();
 
-  let schema = dataDogSchema;
+  const schema = useMemo(() => getSchema(type), [type]);
 
-  if (type === telemetryTypes.AWS_CLOUDWATCH) {
-    schema = dataDogSchema.omit({ hostTag: true }) 
-
-  }
-     
-
-  const { register, handleSubmit, control, reset } = useForm({
+  const { register, handleSubmit, control, reset, setValue } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
       portfolioName: "",
       regions: [],
-      apiKey: "",
-      appKey: "", 
     },
   });
 
   useEffect(() => {
     if (telemetryResetFlag) {
       reset({ regions: [] });
-      dispatch(toggleShowData());
+      dispatch(toggleResetTelemetry());
     }
   }, [telemetryResetFlag, reset, dispatch]);
 
-  const onSubmit = () => {
-    dispatch(
-      setTelemetryConnectionStatus({
-        connectionStatus: telemetryConnectionStatus.CONNECTED,
-        type: telemetryTypes.DATA_DOG,
-      })
-    );
-    setFormSuccess("Datadog connection is successful");
-    setFormError("");
-  };
-
-  const handleError = () => {
-    setFormError("Please enter the required fields.");
-  };
-
-  const isAllSelected = (selected) =>
-    regionOptions.length > 0 && selected.length === regionOptions.length;
-
-  const handleToggleSelectAll = (selected, onChange) => {
-    if (selected.includes("selectAll")) {
-      const allSelected = isAllSelected(selected);
-      onChange(allSelected ? [] : regionOptions);
-    } else {
-      onChange(selected.filter((v) => v !== "selectAll"));
+  useEffect(() => {
+    if (isEdit && currentInstance?.formData) {
+      reset(currentInstance.formData);
     }
-  };
+  }, [currentInstance?.formData, isEdit, reset]);
+
+  const handlePortfolioChange = useCallback(
+    (e) => {
+      const value = e.target.value;
+      dispatch(setTelemetryData({ portfolioName: value }));
+      setValue("portfolioName", value, { shouldValidate: true });
+    },
+    [dispatch, setValue]
+  );
+
+  const onSubmit = useCallback(
+    (values) => {
+      dispatch(setTelemetryData(values));
+      dispatch(
+        setTelemetryConnectionStatus({
+          connectionStatus: telemetryConnectionStatus.CONNECTED,
+          type: telemetryTypes.DATA_DOG,
+        })
+      );
+      setFormSuccess("Datadog connection is successful");
+      setFormError("");
+    },
+    [dispatch, setFormSuccess, setFormError]
+  );
+
+  const handleError = useCallback(
+    () => setFormError("Please enter the required fields."),
+    [setFormError]
+  );
 
   return (
     <Box
       component="form"
       noValidate
       onSubmit={handleSubmit(onSubmit, handleError)}
-      sx={{ backgroundColor: "white", p: 2, width: "100%" }}
+      sx={{
+        backgroundColor: "white",
+        px: "5px",
+        py: "10px",
+        width: "100%",
+        height: "fit-content",
+      }}
     >
       {/* === First Row === */}
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { sm: "repeat(7, 1fr)" },
-          gap: 2,
+          gridTemplateColumns: { sm: "repeat(4, 1fr)" },
+          gap: "5px",
           mb: 2,
         }}
       >
         <TextField
           label="Portfolio Name"
           fullWidth
-          required
           {...register("portfolioName")}
-          sx={{ gridColumn: "span 3" }}
-          InputProps={{ style: inputStyle }}
+          sx={{ gridColumn: "span 2" }}
+          slotProps={{ input: { style: inputStyle } }}
+          onChange={handlePortfolioChange}
         />
 
-        <FormControl fullWidth required sx={{ gridColumn: "span 3" }}>
-          <InputLabel id="regions-label">Regions</InputLabel>
-          <Controller
-            name="regions"
-            control={control}
-            render={({ field: { value = [], onChange } }) => (
-              <Select
-                labelId="regions-label"
-                id="regions"
-                multiple
-                value={value}
-                onChange={(e) =>
-                  handleToggleSelectAll(e.target.value, onChange)
-                }
-                input={<OutlinedInput label="Regions" />}
-                renderValue={(selected) => (
-                  <Box
-                    sx={{
-                      fontSize: "12px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 0.5,
-                      color: theme.palette.grey[800],
-                      fontWeight: 400,
-                    }}
-                  >
-                    {selected.length > 0 && <Chip label={selected[0]} />}
-                    {selected.length > 1 && `(+${selected.length - 1} others)`}
-                  </Box>
-                )}
-                sx={{ ...inputStyle }}
-              >
-                <MenuItem value="selectAll">
-                  <Checkbox checked={isAllSelected(value)} />
-                  Select All
-                </MenuItem>
-                {regionOptions.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    <Checkbox checked={value.includes(region)} />
-                    {region}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-          />
-        </FormControl>
+        <Controller
+          name="regions"
+          control={control}
+          render={({ field: { value = [], onChange } }) => (
+            <RegionsSelect
+              control={control}
+              regionOptions={regionOptions}
+              value={value}
+              onChange={onChange}
+              theme={theme}
+              sx={inputStyle}
+            />
+          )}
+        />
       </Box>
 
       {/* === Second Row === */}
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { sm: "repeat(7, 1fr)" },
-          gap: 2,
+          gridTemplateColumns: { sm: "repeat(4, 1fr)" },
+          gap: "5px",
           mb: 2,
+          alignItems: "end",
         }}
       >
-        {/* API Key */}
-        <TextField
-           label={type === telemetryTypes.AWS_CLOUDWATCH?"Access Key":"API Key"}
-          type={showApiKey ? "text" : "password"}
-          fullWidth
-          required
-          autoComplete="new-password"
-          {...register("apiKey")}
-          sx={{ gridColumn: "span 2" }}
-          InputProps={{
-            style: inputStyle,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  onClick={() => setShowApiKey((prev) => !prev)}
-                >
-                  {showApiKey ? (
-                    <VisibilityIcon sx={{ fontSize: 19 }} />
-                  ) : (
-                    <VisibilityOffIcon sx={{ fontSize: 19 }} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+        <PasswordField
+          label={getApiKeyLabel(type)}
+          register={register}
+          name="apiKey"
         />
 
-        {/* App Key */}
-        <TextField
-          label={type === telemetryTypes.AWS_CLOUDWATCH?"App Secret":"Application Key"}
-          type={showAppKey ? "text" : "password"}
-          fullWidth
-          required
-          autoComplete="new-password"
-          {...register("appKey")}
-          sx={{ gridColumn: "span 2" }}
-          InputProps={{
-            style: inputStyle,
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  size="small"
-                  onClick={() => setShowAppKey((prev) => !prev)}
-                >
-                  {showAppKey ? (
-                    <VisibilityIcon sx={{ fontSize: 19 }} />
-                  ) : (
-                    <VisibilityOffIcon sx={{ fontSize: 19 }} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+        <PasswordField
+          label={getAppKeyLabel(type)}
+          register={register}
+          name="appKey"
         />
 
-        {/* Host Tag */}
-        {type == telemetryTypes.DATA_DOG && (
+        {type === telemetryTypes.DATA_DOG && (
           <TextField
             label="Host Tag"
             type="text"
             fullWidth
-            required
             {...register("hostTag")}
-            sx={{ gridColumn: "span 2" }}
-            InputProps={{ style: inputStyle }}
+            slotProps={{ input: { style: inputStyle } }}
           />
         )}
 
-        {/* Submit Button */}
-        <Button
-          variant="contained"
-          fullWidth
-          type="submit"
-          sx={{ gridColumn: "span 1", textTransform: "none" }}
-        >
-          <Typography variant="body2" fontWeight={600}>
-            Test Connection
-          </Typography>
-        </Button>
+        <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{ textTransform: "none", minWidth: 150 }}
+          >
+            <Typography variant="button" fontWeight={400}>
+              Test Connection
+            </Typography>
+          </Button>
+        </Box>
       </Box>
 
       {/* Alerts */}
