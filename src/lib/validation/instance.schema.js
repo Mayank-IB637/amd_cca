@@ -1,16 +1,9 @@
 import { z } from "zod";
-import { instanceOptions, pricingModelOptions, regionOptions } from "../constant";
+import { pricingModelOptions } from "../constant";
 
-export const instanceSchema = z.object({ 
-  region: z.string()    .nonempty("Region is required")
-    .refine(val => regionOptions.includes(val), {
-      message: "Invalid region selected",
-    }),
-  instanceType: z.string()
-    .nonempty("Instance Type is required")
-    .refine(val => instanceOptions.includes(val), {
-      message: "Invalid instance type selected",
-    }),
+export const instanceSchema = z.object({
+  region: z.string().nonempty("Region is required"),
+  instanceType: z.string().nonempty("Instance Type is required"),
   uuid: z.string().optional(),
   pricingModel: z.string()
     .nonempty("Pricing Model is required")

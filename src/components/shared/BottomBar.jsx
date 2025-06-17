@@ -5,6 +5,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate, useLocation } from "react-router-dom";
 import { withErrorBoundary } from "@/hooks/withErrorBoundary";
 
+
 // Dynamic imports for icons and components
 const CloseIcon = React.lazy(() => import("@mui/icons-material/Close"));
 const SaveIcon = React.lazy(() => import("@mui/icons-material/Save"));
@@ -34,6 +35,8 @@ import {
   updateInstanceState,
 } from "@/redux/features/instance/instance.slice";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
+import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
+import {  setUploadedFileName } from "@/redux/features/instance/instance.slice";
 import { AttachMoney, Refresh } from "@mui/icons-material";
 
 function BottomBar() {
@@ -49,9 +52,10 @@ function BottomBar() {
   const portfolioName = useSelector(selectPortfolioName);
   const instances = useSelector(selectInstances);
   const instanceList = useSelector(selectInstanceList);
-
+  const currentProviderName = useSelector(selectCurrentProviderName);
   const formId = currentInstanceId || nanoid();
-
+  const queryParams = new URLSearchParams(location.search);
+  const type = queryParams.get("type");
   const handleSavePortFolio = () => {
     const trimmedName = portfolioName?.trim();
     const validNameRegex = /^[a-zA-Z0-9_-]+$/;
@@ -67,7 +71,9 @@ function BottomBar() {
 
     const isDuplicate = instanceList.some(
       (instance) =>
-        instance.name === trimmedName && instance.id !== currentInstanceId
+        instance.name === trimmedName &&
+        instance.id !== currentInstanceId &&
+        type == currentProviderName
     );
 
     if (isDuplicate) {
@@ -83,12 +89,15 @@ function BottomBar() {
     const payload = {
       id: formId,
       instances,
-      name: trimmedName
+      type:"cloud",
+      provider: currentProviderName,
+      name: trimmedName,
     };
     if (currentInstanceId) {
       dispatch(updateInstance(payload));
     } else {
       dispatch(addInstance(payload));
+      dispatch(setUploadedFileName(''))
     }
 
     navigate(`/${formId}`);

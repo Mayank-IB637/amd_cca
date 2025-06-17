@@ -18,7 +18,10 @@ import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusager
 import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
 import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
 import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
-
+import {
+  setProvider,
+} from "./redux/features/providerData/providerData.slice";
+import { getProviderConfig } from "./lib/utils";
 // Route config for reusability
 const routesConfig = [
   { path: "/", element: <MainContent /> },
@@ -53,13 +56,22 @@ const getBottomBar = (pathname) => {
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+   const dispatch = useDispatch();
   const currentInstance = useSelector(selectCurrentInstance);
 
   const pathname = useMemo(() => location.pathname, [location]);
   const SidebarComp = useMemo(() => getSidebar(pathname), [pathname]);
   const BottomBarComp = useMemo(() => getBottomBar(pathname), [pathname]);
 
+    const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+  const type = searchParams.get("type") || "";
+  const routes = useMemo(
+    () => location.pathname.split("/").filter(Boolean),
+    [location.pathname]
+  );
   useEffect(() => {
     console.log("Tour useEffect triggered");
     const timeoutId = setTimeout(() => {
@@ -88,6 +100,11 @@ const App = () => {
   // useEffect(() => {
   //  dispatch(fetchProviderData(explorerProvider.AWS));
   // }, []);
+
+    useEffect(() => {
+    const provider = getProviderConfig(routes, type);
+    dispatch(setProvider(provider));
+  }, [routes.join(","), type]);
 
   return (
     <ThemeProvider theme={theme}>

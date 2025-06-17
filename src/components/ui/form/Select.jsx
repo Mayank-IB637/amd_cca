@@ -39,7 +39,6 @@ const HoverSelect = memo(function HoverSelect({
       tooltipMessage={tooltipMessage}
       value={value}
       position={rest?.tooltipPosition}
-      onClear={handleClear}
     >
       <FormControl fullWidth={fullWidth} required={required} size={size}>
         {label && <InputLabel>{label}</InputLabel>}

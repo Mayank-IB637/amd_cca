@@ -116,13 +116,13 @@ export const FIELDS = [
   {
     name: "region",
     label: "Region*",
-    options: regionOptions,
+    type: "select", 
     tooltipMessage: "Select Region associated with CSP",
   },
   {
     name: "instanceType",
     label: "Size*",
-    options: instanceOptions,
+    type: "select",
     tooltipMessage: "Select Instance associated with Region",
   },
   {
@@ -140,7 +140,7 @@ export const FIELDS = [
     label: "Pricing Model*",
     name: "pricingModel",
     tooltipMessage: "",
-    options:pricingModelOptions
+     type: "select"
   }
   
 ];

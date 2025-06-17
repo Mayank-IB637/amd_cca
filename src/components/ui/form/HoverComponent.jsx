@@ -41,34 +41,6 @@ const HoverComponent = React.memo(function HoverInput({
         style={{ display: "flex", position: "relative", alignItems: "center", border: "none", padding: 0, margin: 0 }}
       >
         {children}
-
-        {showClear && (
-          <IconButton
-            aria-label="clear input"
-            onClick={onClear}
-            edge="end"
-            size="small"
-            sx={{
-              visibility: hideClearIcon ? "hidden" : "visible",
-              position: "absolute",
-              right: 6,
-              scale: "0.8",
-              bgcolor: theme.palette.grey[600],
-              color: theme.palette.primary.contrastText,
-              borderRadius: "50%",
-              p: 0.5,
-              ml: 0.5,
-              "&:hover": {
-                bgcolor: theme.palette.grey[700],
-              },
-              "@media (hover: none)": {
-                visibility: value ? "visible" : "hidden",
-              },
-            }}
-          >
-            <ClearIcon fontSize="small" />
-          </IconButton>
-        )}
       </fieldset>
     </Tooltip>
   );

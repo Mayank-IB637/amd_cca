@@ -91,8 +91,6 @@ export const actionHandlers = {
       .getState()
       .instanceList.data.map((instance) => instance.name);
 
-    console.log({ value, portfolioList, name, previousValue });
-
     if (portfolioList.includes(value) && name == "portfolioName") {
       value = "test Portfolio1.2";
     }

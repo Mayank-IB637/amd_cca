@@ -24,25 +24,20 @@ import { Visibility } from '@mui/icons-material';
 import { VisibilityOff } from '@mui/icons-material';
 import { nanoid } from "@reduxjs/toolkit";
 import {
-    selectCurrentProviderName
+    selectCurrentProviderName,
+    selectCurrentProviderRegions
 } from "@/redux/features/providerData/providerData.selector";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
 import {
-  addInstance,
+    addInstance,
 } from "@/redux/features/instanceList/instanceList.slice";
 import {
-  errorMessageType,
-  resetInstanceState,
-  setMessage
+    errorMessageType,
+    resetInstanceState,
+    setMessage
 } from "@/redux/features/instance/instance.slice";
 
-const listOfRegions = [
-    'us-east-1',
-    'us-west-2',
-    'eu-central-1',
-    'ap-southeast-1',
-    // add your mock regions here
-];
+
 
 const MOCK_CONFIG = {
     TEXT_INPUT_TYPE: 'outlined',
@@ -52,9 +47,13 @@ const MOCK_CONFIG = {
 const CloudUsageReports = () => {
     const navigate = useNavigate()
     const currentProvider = useSelector(selectCurrentProviderName);
-      const instanceList = useSelector(selectInstanceList);
-      const dispatch = useDispatch()
- const formId = nanoid();
+    const instanceList = useSelector(selectInstanceList);
+
+    const dispatch = useDispatch()
+    const options = {
+        region: useSelector(selectCurrentProviderRegions)
+    };
+    const formId = nanoid();
     const [pageTitle] = useState('Add Portfolio');
     const [formData, setFormData] = useState({
         name: '',
@@ -148,73 +147,81 @@ const CloudUsageReports = () => {
         setOpenConfirmDialog(false);
     };
 
-      const handleSavePortFolio =  () => {
+    const handleSavePortFolio = () => {
         const trimmedName = formData.name?.trim();
         const validNameRegex = /^[a-zA-Z0-9_-]+$/;
         if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
-          dispatch(
-            setMessage({
-              type: errorMessageType.ERROR,
-              message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
-            })
-          );
-          return;
+            dispatch(
+                setMessage({
+                    type: errorMessageType.ERROR,
+                    message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
+                })
+            );
+            return;
         }
-    
+
         const isDuplicate = instanceList.some(
-          (instance) =>
-            instance.name === trimmedName && instance.id !== currentInstanceId
+            (instance) =>
+                instance.name === trimmedName && instance.id !== currentInstanceId
         );
-    
+
         if (isDuplicate) {
-          dispatch(
-            setMessage({
-              type: errorMessageType.ERROR,
-              message: "Portfolio name already exists",
-            })
-          );
-          return;
+            dispatch(
+                setMessage({
+                    type: errorMessageType.ERROR,
+                    message: "Portfolio name already exists",
+                })
+            );
+            return;
         }
-        
-        const instances = 
-             {
+
+        const instances =
+        {
             "region": "us-west-2",
-            "instance type": "m5.2xlarge",
+            "instanceType": "m5.2xlarge",
             "quantity": 1,
-            "monthly utilization (hourly)": 730,
+            "noOfHours": 730,
             "pricingModel": "ondemand",
-            "cloud_csp": "AWS",
+            "cloud": "AWS",
             "instance_name": "DataDogTeam",
-            "uuid": "fdedc3d6-c319-40e2-a7cf-5bcbbd7f676f"
+            "uuid": "DatadogTeam"
         }
         const payload = {
-          id: formId,
-          instances,
-          name: trimmedName,
-          type:'cloud'
+            id: formId,
+            instances,
+            name: trimmedName,
+            provider: currentProvider,
+            type: 'cloudreports'
         };
         dispatch(addInstance(payload));
-     
         navigate(`/cloudInstances/${formId}`);
         dispatch(
-          setMessage({
-            type: errorMessageType.SUCCESS,
-            message: `${trimmedName} saved successfully`,
-          })
+            setMessage({
+                type: errorMessageType.SUCCESS,
+                message: `${trimmedName} saved successfully`,
+            })
         );
-      }
+    }
 
     return (
         <Box sx={{ p: 1 }}>
             {/* Header */}
             <Box
                 id="cusagereport-header-controls-container"
-                sx={{ display: 'flex', justifyContent: 'space-between' }}
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: '100%',
+                    py: 1,
+                    mb: 1,
+                }}
             >
+
                 <Typography sx={{ ml: 1, fontSize: '1.2rem', fontWeight: 700 }}>
                     {pageTitle}
                 </Typography>
-                <Button onClick={redirectToMainPage}>
+                <Button onClick={redirectToMainPage} sx={{ minWidth: 'auto', padding: 0 }}>
                     <CloseIcon />
                 </Button>
             </Box>
@@ -297,7 +304,7 @@ const CloudUsageReports = () => {
                         />
                         <Autocomplete
                             multiple
-                            options={listOfRegions}
+                            options={options['region'] || []}
                             value={formData.region}
                             onChange={(event, newValue) => updateFormData('region', newValue)}
                             renderInput={(params) => (
@@ -458,44 +465,95 @@ const CloudUsageReports = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <Box className='action-footer' gap={2}>
-                <div><b>Note:</b> On click of SAVE button, you are authorizing us to fetch all the instances available in the region to us
-                </div>
-                <Button
-                    variant="contained"
-                    color="error"
-                    startIcon={<RefreshIcon />}
-                    onClick={clearPortfolioData}
-                >
-                    Reset
-                </Button>
+                <Grid container className="action-footer" spacing={2}>
+                    <Grid item size={{xs:12, md:8}}>
+                        <Typography variant="body2">
+                            <strong>Note:</strong> On click of SAVE button, you are authorizing us to fetch
+                            all the instances available in the region to us
+                        </Typography>
+                    </Grid>
+                    <Grid item  size={{xs:12, md:4}} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button
+                                id="btn-cusagereport-reset"
+                                variant="contained"
+                                color="error"
+                                startIcon={<RefreshIcon />}
+                                onClick={clearPortfolioData}
+                                sx={{ textTransform: 'none' }}
+                            >
+                                Reset
+                            </Button>
 
-                <Button
-                    variant="contained"
-                    startIcon={<CloseIcon />}
-                    onClick={cancelClick}
-                >
-                    Cancel
-                </Button>
-                <Button
-                    variant="contained"
-                    startIcon={<ConnectionIcon />}
-                    onClick={testConnection}
-                    disabled={loading.testLoadingButton}
-                >
-                    {loading.testLoadingButton ? <CircularProgress size={24} color="inherit" /> : 'Test'}
-                </Button>
+                            <Button
+                                id="btn-cusagereport-testconnection"
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: '#333'
+                                    }
+                                }}
+                                startIcon={loading.testLoadingButton ? null : <ConnectionIcon />}
+                                onClick={testConnection}
+                                disabled={loading.testLoadingButton}
+                            >
+                                {loading.testLoadingButton ? (
+                                    <>
+                                        <CircularProgress size={16} color="inherit" sx={{ mr: 1 }} />
+                                        Testing...
+                                    </>
+                                ) : (
+                                    'Test'
+                                )}
+                            </Button>
 
-                <Button
-                    variant="contained"
-                    startIcon={<SaveIcon />}
-                    onClick={handleSavePortFolio}
-                    disabled={loading.saveLoadingButton}
-                >
-                    {loading.saveLoadingButton ? <CircularProgress size={24} color="inherit" /> : 'Save'}
-                </Button>
+                            <Button
+                                id="btn-cusagereport-cancel"
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: '#333'
+                                    }
+                                }}
+                                startIcon={<CloseIcon />}
+                                onClick={redirectToMainPage}
+                            >
+                                Cancel
+                            </Button>
 
-            </Box>
+                            <Button
+                                id="btn-cusagereport-save"
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: '#333'
+                                    }
+                                }}
+                                startIcon={loading.saveLoadingButton ? null : <SaveIcon />}
+                                onClick={handleSavePortFolio}
+                                disabled={loading.saveLoadingButton}
+                            >
+                                {loading.saveLoadingButton ? (
+                                    <>
+                                        <CircularProgress size={16} color="inherit" sx={{ mr: 1 }} />
+                                        Saving...
+                                    </>
+                                ) : (
+                                    'Save'
+                                )}
+                            </Button>
+                        </Box>
+                    </Grid>
+                </Grid>
 
         </Box>
     );
