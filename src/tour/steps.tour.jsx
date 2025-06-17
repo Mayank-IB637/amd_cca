@@ -2,203 +2,173 @@ import { openSidebar } from "@/redux/features/sidebar/sidebar.slice";
 import { store } from "@/redux/store";
 
 const steps = () => [
-  {
-    id: "step-1",
-    text: "Click this button to view previous releases.",
-    attachTo: {
-      element: "#step-one-target",
-      on: "bottom",
-      offset: "0 10",
-    },
-  },
-  {
-    id: "step-2",
-    text: "Click here to close the dialog box.",
-    attachTo: {
-      element: "#step-two-target",
-      on: "top",
-      offset: "0 20",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-3",
-    text: "Click to open the support menu.",
-    attachTo: {
-      element: "#step-three-target",
-      on: "right",
-    },
-    offset: "0 20",
-  },
-  {
-    id: "step-4",
-    text: "Access all support options here.",
-    attachTo: {
-      element: "#step-three-target",
-      on: "right",
-      offset: "0 20",
-    },
-  },
-  {
-    id: "step-5",
-    text: "Click to open your user profile menu.",
-    attachTo: {
-      element: "#step-four-target",
-      on: "right",
-      offset: "0 20",
-    },
-  },
-  {
-    id: "step-6",
-    text: "Manage your user profile settings here.",
-    attachTo: {
-      element: "#step-four-target",
-      on: "right",
-    },
-  },
-  {
-    id: "step-7",
-    text: "Click to open the download menu.",
-    attachTo: {
-      element: "#step-five-target",
-      on: "bottom",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-8",
-    text: "Download the template in Excel (.xlsx) format to ensure your data is formatted correctly. Fill all required fields as per the template structure.",
-    attachTo: {
-      element: "#downloadSelectTemplate",
-      on: "right",
-    },
-    type: "wait",
-    action: {
-      next: () => {
-        const state = store.getState();
-        const { sidebar } = state;
-        if (!sidebar.isOpen) {
-          store.dispatch(openSidebar());
-        }
-      },
-    },
-  },
-  {
-    id: "step-9",
-    text: "Click to open the Service Provider list.",
-    attachTo: {
-      element: "#step-six-target",
-      on: "left",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-9.1",
-    text: "Select your preferred Service Provider from the list.",
-    attachTo: {
-      element: "#MenuItem-azure",
-      on: "left",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-10",
-    text: "Enter a name for your portfolio. This will help identify it in the system.",
-    attachTo: {
-      element: "#portfolio-name",
-      on: "bottom",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-11",
-    text: "Upload the instance file or updated template here. The Maximum limit is 20,000 records. Once uploaded, the data will auto-populate in the table below.",
-    attachTo: {
-      element: "#uploadInstances",
-      on: "bottom",
-    },
-  },
-  {
-    id: "step-12",
-    text: "Click Save to add this as a portfolio in the EIA application.",
-    attachTo: {
-      element: "#savePortfolio",
-      on: "top",
-    },
-  },
-  {
-    id: "step-13",
-    text: "Click to permanently delete the selected portfolio.",
-    attachTo: {
-      element: "#deletePortfolio",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-14",
-    text: "Click to cancel portfolio deletion.",
-    attachTo: {
-      element: "#cancelDeletePortfolio",
-      on: "bottom",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-15",
-    text: "View AMD instance recommendations with cost comparisons and potential savings.",
-    attachTo: {
-      element: "#instanceAdvice",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-16",
-    text: "Export cost advice as an Excel (.xlsx) file for offline use.",
-    attachTo: {
-      element: "#btn-cost-advice-export",
-      on: "bottom",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-17",
-    text: "Click to view the summary of cost advice data.",
-    attachTo: {
-      element: "#summary-accordion-header",
-      on: "bottom",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-17.1",
-    text: "Click to collapse the cost advice summary.",
-    attachTo: {
-      element: "#summary-accordion-header",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-18",
-    text: "Switch to view annual pricing.",
-    attachTo: {
-      element: "#annuallyPrice",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-19",
-    text: "Switch to view monthly pricing.",
-    attachTo: {
-      element: "#annuallyPrice",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
+  // {
+  //   id: "step-1",
+  //   text: "Click this button to view previous releases.",
+  //   attachTo: {
+  //     element: "#step-one-target",
+  //     on: "bottom",
+  //     offset: "0 10",
+  //   },
+  // },
+  // {
+  //   id: "step-2",
+  //   text: "Click here to close the dialog box.",
+  //   attachTo: {
+  //     element: "#step-two-target",
+  //     on: "top",
+  //     offset: "0 20",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-3",
+  //   text: "Click to open the support menu.",
+  //   attachTo: {
+  //     element: "#step-three-target",
+  //     on: "right",
+  //   },
+  //   offset: "0 20",
+  // },
+  // {
+  //   id: "step-4",
+  //   text: "Access all support options here.",
+  //   attachTo: {
+  //     element: "#step-three-target",
+  //     on: "right",
+  //     offset: "0 20",
+  //   },
+  // },
+  // {
+  //   id: "step-5",
+  //   text: "Click to open your user profile menu.",
+  //   attachTo: {
+  //     element: "#step-four-target",
+  //     on: "right",
+  //     offset: "0 20",
+  //   },
+  // },
+  // {
+  //   id: "step-6",
+  //   text: "Manage your user profile settings here.",
+  //   attachTo: {
+  //     element: "#step-four-target",
+  //     on: "right",
+  //   },
+  // },
+  // {
+  //   id: "step-7",
+  //   text: "Click to open the download menu.",
+  //   attachTo: {
+  //     element: "#step-five-target",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+  //  {
+  //   id: "step-8",
+  //   text: "Enter a name for your portfolio. This will help identify it in the system.",
+  //   attachTo: {
+  //     element: "#portfolio-name",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-9",
+  //   text: "Upload the instance file or updated template here. The Maximum limit is 20,000 records. Once uploaded, the data will auto-populate in the table below.",
+  //   attachTo: {
+  //     element: "#uploadInstances",
+  //     on: "bottom",
+  //   },
+  // },
+  //   {
+  //   id: "step-10",
+  //   text: "Click Save to add this as a portfolio in the CCA application.",
+  //   attachTo: {
+  //     element: "#savePortfolio",
+  //     on: "top",
+  //   },
+  // },
+  // {
+  //   id: "step-11",
+  //   text: "Click to permanently delete the selected portfolio.",
+  //   attachTo: {
+  //     element: "#deletePortfolio",
+  //     on: "top",
+  //   },
+  //   type: "wait",
+  // },
+  //  {
+  //   id: "step-12",
+  //   text: "Click to cancel portfolio deletion.",
+  //   attachTo: {
+  //     element: "#cancelDeletePortfolio",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-13",
+  //   text: "View AMD instance recommendations with cost comparisons and potential savings.",
+  //   attachTo: {
+  //     element: "#instanceAdvice",
+  //     on: "top",
+  //   },
+  //   type: "wait",
+  // },
+  //   {
+  //   id: "step-14",
+  //   text: "Select the Savings Type .",
+  //   attachTo: {
+  //     element: "#savings-type-label",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-15",
+  //   text: "Click this to view input error explanations.",
+  //   attachTo: {
+  //     element: "#input-errors-explanation",
+  //     on: "bottom",
+  //     offset: "0 10",
+  //   },
+  // },
+  //  {
+  //   id: "step-16",
+  //   text: "Click this to close input error explanations.",
+  //   attachTo: {
+  //     element: "#input-errors-explanation-close",
+  //     on: "bottom",
+  //   },
+  // },
+  //  {
+  //   id: "step-17",
+  //   text: "Click this to view EIA Recommendation.",
+  //   attachTo: {
+  //     element: "#eia-recommended",
+  //     on: "bottom",
+  //   },
+  // },
+  //   {
+  //   id: "step-18",
+  //   text: "Click this to close input error explanations.",
+  //   attachTo: {
+  //     element: "#eia-recommended-dialog-close",
+  //     on: "bottom",
+  //   },
+  // },
+  //   {
+  //   id: "step-19",
+  //   text: "Export cost advice as an Excel (.xlsx) file for offline use.",
+  //   attachTo: {
+  //     element: "#btn-cost-advice-export",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+    {
     id: "step-20",
     text: "Scroll through the cost advisory table.",
     attachTo: {
@@ -207,64 +177,106 @@ const steps = () => [
     },
     type: "wait",
   },
-  {
-    id: "step-21",
-    text: "Continue scrolling the cost advisory table.",
-    attachTo: {
-      element: "#instance-advice-table",
-      on: "bottom",
-    },
-    type: "wait",
-    popperOptions: {
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [100, 10],
-          },
-        },
-      ],
-    },
-  },
-  {
-    id: "step-22",
-    text: "Keep scrolling for more cost advisory data.",
-    attachTo: {
-      element: "#instance-advice-table",
-      on: "bottom",
-    },
-    popperOptions: {
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [100, 10], // [x-offset, y-offset] → moves right and down
-          },
-        },
-      ],
-    },
-    type: "wait",
-  },
-  {
-    id: "step-23",
-    text: "Click to close the cost advisory view.",
-    attachTo: {
-      element: "#close-instance-advice",
-      on: "bottom",
-    },
 
-    type: "wait",
-  },
-  {
-    id: "step-24",
-    text: "Click to create a new portfolio.",
-    attachTo: {
-      element: "#btn-dashboard-createPortfolio",
-      on: "bottom",
-    },
 
-    type: "wait",
-  },
+  // {input-errors-explanation-close
+  // savings-type-label
+  //   id: "step-",
+  //   text: "Click to open the Service Provider list.",
+  //   attachTo: {
+  //     element: "#step-six-target",
+  //     on: "left",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-10",
+  //   text: "Select your preferred Service Provider from the list.",
+  //   attachTo: {
+  //     element: "#MenuItem-azure",
+  //     on: "left",
+  //   },
+  //   type: "wait",
+  // },
+  
+
+  // {
+  //   id: "step-17",
+  //   text: "Click to view the summary of cost advice data.",
+  //   attachTo: {
+  //     element: "#summary-accordion-header",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-17.1",
+  //   text: "Click to collapse the cost advice summary.",
+  //   attachTo: {
+  //     element: "#summary-accordion-header",
+  //     on: "top",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-18",
+  //   text: "Switch to view annual pricing.",
+  //   attachTo: {
+  //     element: "#annuallyPrice",
+  //     on: "top",
+  //   },
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-19",
+  //   text: "Switch to view monthly pricing.",
+  //   attachTo: {
+  //     element: "#annuallyPrice",
+  //     on: "top",
+  //   },
+  //   type: "wait",
+  // },
+
+  // {
+  //   id: "step-21",
+  //   text: "Continue scrolling the cost advisory table.",
+  //   attachTo: {
+  //     element: "#instance-advice-table",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  //   popperOptions: {
+  //     modifiers: [
+  //       {
+  //         name: "offset",
+  //         options: {
+  //           offset: [100, 10],
+  //         },
+  //       },
+  //     ],
+  //   },
+  // },
+  
+  // {
+  //   id: "step-23",
+  //   text: "Click to close the cost advisory view.",
+  //   attachTo: {
+  //     element: "#close-instance-advice",
+  //     on: "bottom",
+  //   },
+
+  //   type: "wait",
+  // },
+  // {
+  //   id: "step-24",
+  //   text: "Click to create a new portfolio.",
+  //   attachTo: {
+  //     element: "#btn-dashboard-createPortfolio",
+  //     on: "bottom",
+  //   },
+
+  //   type: "wait",
+  // },
   {
     id: "step-25",
     text: "Enter a name for your new portfolio.",

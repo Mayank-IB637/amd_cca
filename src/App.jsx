@@ -18,6 +18,8 @@ import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusager
 import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
 import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
 import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
+import { setProvider } from "./redux/features/providerData/providerData.slice";
+import { getProviderConfig } from "./lib/utils/providerConfig";
 
 // Route config for reusability
 const routesConfig = [
@@ -53,12 +55,22 @@ const getBottomBar = (pathname) => {
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const currentInstance = useSelector(selectCurrentInstance);
 
   const pathname = useMemo(() => location.pathname, [location]);
+   const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
   const SidebarComp = useMemo(() => getSidebar(pathname), [pathname]);
   const BottomBarComp = useMemo(() => getBottomBar(pathname), [pathname]);
+   const type = searchParams.get("type") || "";
+  const routes = useMemo(
+    () => location.pathname.split("/").filter(Boolean),
+    [location.pathname]
+  ); 
+;
 
   useEffect(() => {
     console.log("Tour useEffect triggered");
@@ -84,10 +96,11 @@ const App = () => {
       navigate("/");
     }
   }, [pathname, currentInstance, navigate]);
-
-  // useEffect(() => {
-  //  dispatch(fetchProviderData(explorerProvider.AWS));
-  // }, []);
+useEffect(() => {
+    const provider = getProviderConfig(routes, type);
+    dispatch(setProvider(provider));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routes.join(","), type]);
 
   return (
     <ThemeProvider theme={theme}>

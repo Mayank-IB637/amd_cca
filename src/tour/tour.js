@@ -49,26 +49,7 @@ function generateButtons(step, currentStepIndex) {
         tour.complete();
       },
     },
-    // {
-    //   text: "Skip",
-    //   disabled: !step.isSkip,
-    //   secondary: !step.isSkip || step.isEnd,
-    //   action: () => {
-    //     const currentLabel = step?.label ?? "";
-    //     let nextIndex = currentStepIndex + 1;
-    //     while (
-    //       nextIndex < allSteps.length &&
-    //       allSteps[nextIndex].label === currentLabel
-    //     ) {
-    //       nextIndex++;
-    //     }
-    //     if (nextIndex < allSteps.length) {
-    //       tour.show(nextIndex);
-    //     } else {
-    //       tour.complete();
-    //     }
-    //   },
-    // },
+    
     {
       text: "Previous",
       disabled: step.isStart,

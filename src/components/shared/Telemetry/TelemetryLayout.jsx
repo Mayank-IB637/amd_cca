@@ -40,9 +40,7 @@ function TelemetryLayout() {
             variant="primary"
             data={data}
             columns={telemetryColumns}
-            isPagination
-
-            id="instance-advice-table"
+            isPagination 
           />
         )}
       </Box>

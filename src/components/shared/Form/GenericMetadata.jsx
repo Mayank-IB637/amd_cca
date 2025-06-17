@@ -10,6 +10,9 @@ import AddIcon from '@mui/icons-material/Add';
 import { AnimatedIconButton } from "@/components/shared/Form/Consumption Metadata/AnimatedIconButton";
 import { Add } from "@mui/icons-material";
 import { selectCurrentProviderInstanceTypes, selectCurrentProviderPricingModels, selectCurrentProviderRegions } from "@/redux/features/providerData/providerData.selector";
+import { setRegion } from "@/redux/features/providerData/providerData.slice";
+
+
 const HoverInput = lazy(() => import("@/components/ui/form/Input"));
 const DialogHoc = React.lazy(() => import("@/components/ui/Dialog"));
 const FindAndReplace = React.lazy(() => import("@/components/shared/Form/Consumption Metadata/FindAndReplace"));
@@ -17,7 +20,7 @@ const TooltipHoc = React.lazy(() => import("@/components/ui/Tooltip"));
 const CloseIcon = React.lazy(() => import("@mui/icons-material/Close"));
 
 const GenericMetadata = ({ form }) => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const options = {
     region: useSelector(selectCurrentProviderRegions),
     instanceType: useSelector(selectCurrentProviderInstanceTypes),
@@ -40,12 +43,12 @@ const GenericMetadata = ({ form }) => {
             value={field.value}
             error={!!fieldState.error}
             {...field}
-             onChange={(e) => { 
+            onChange={(e) => {
               field.onChange(e);
               if (name === "region") {
                 form.setValue("instanceType", "");
-                dispatch(setRegion( e.target.value ));
-              } 
+                dispatch(setRegion(e.target.value));
+              }
             }}
           />
         ) : (
@@ -71,7 +74,7 @@ const GenericMetadata = ({ form }) => {
   }, []);
 
   // Split fields based on your requirements
-  const firstFields = FIELDS.slice(0, 3); 
+  const firstFields = FIELDS.slice(0, 3);
   const quantityField = FIELDS.find(f => f.name === "quantity");
   const noOfHoursField = FIELDS.find(f => f.name === "noOfHours");
   const pricingModelField = FIELDS.find(f => f.name === "pricingModel");
@@ -132,7 +135,7 @@ const GenericMetadata = ({ form }) => {
                     color="primary"
                     size="small"
                     onClick={onClick}
-                    sx={{ padding: "6px" , width: '100px' }}
+                    sx={{ padding: "6px", width: '100px' }}
                   >
                     <Box
                       component="img"
@@ -153,7 +156,7 @@ const GenericMetadata = ({ form }) => {
             <DialogHoc
               maxWidth="md"
               fullWidth={true}
-              style={{width: '100px' }}
+              style={{ width: '100px' }}
               trigger={({ onClick }) => (
                 <TooltipHoc message={"Data correction & adjustment guidelines"}>
                   <AnimatedIconButton
@@ -202,7 +205,7 @@ const GenericMetadata = ({ form }) => {
                 </Box>
               )}
             />
-            
+
           </Box>
         </Grid>
       </Grid>
