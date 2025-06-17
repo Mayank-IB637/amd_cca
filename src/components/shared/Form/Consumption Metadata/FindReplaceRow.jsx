@@ -27,7 +27,6 @@ function FindReplaceRow({ name, label,selectedOptions, options, control, id, err
             tooltipPosition="top"
               id={`${id}From`}
               name={name}
-              tooltipMessage={"Select an option..."}
               label="From"
               options={selectedOptions}
               fullWidth
@@ -50,7 +49,6 @@ function FindReplaceRow({ name, label,selectedOptions, options, control, id, err
             <HoverSelect
               id={`${id}To`}
               name={name}
-              tooltipMessage={"Select an option..."}
               label="To"
               options={options}
               fullWidth

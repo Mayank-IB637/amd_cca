@@ -20,6 +20,7 @@ const TooltipHoc = React.lazy(() => import("@/components/ui/Tooltip"));
 const CloseIcon = React.lazy(() => import("@mui/icons-material/Close"));
 
 const GenericMetadata = ({ form }) => {
+
   const renderField = ({ name, label, type, tooltipMessage }) => (
     <Controller
       key={name}

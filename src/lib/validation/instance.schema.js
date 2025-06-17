@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { instanceOptions, pricingModelOptions, regionOptions } from "../constant";
+import { pricingModelOptions } from "../constant";
 
 export const instanceSchema = z.object({
   region: z.string().nonempty("Region is required")

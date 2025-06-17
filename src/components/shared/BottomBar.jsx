@@ -5,6 +5,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate, useLocation } from "react-router-dom";
 import { withErrorBoundary } from "@/hooks/withErrorBoundary";
 
+
 // Dynamic imports for icons and components
 const CloseIcon = React.lazy(() => import("@mui/icons-material/Close"));
 const SaveIcon = React.lazy(() => import("@mui/icons-material/Save"));
@@ -34,6 +35,8 @@ import {
   updateInstanceState,
 } from "@/redux/features/instance/instance.slice";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
+import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
+import {  setUploadedFileName } from "@/redux/features/instance/instance.slice";
 import { AttachMoney, Refresh } from "@mui/icons-material";
 import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
 
@@ -53,6 +56,8 @@ function BottomBar() {
   const currentProviderName = useSelector(selectCurrentProviderName);
 
   const formId = currentInstanceId || nanoid();
+  const queryParams = new URLSearchParams(location.search);
+  const type = queryParams.get("type");
 
   // const handleSavePortFolio = () => {
   //   const trimmedName = portfolioName?.trim();
@@ -80,7 +85,9 @@ function BottomBar() {
 
     const isDuplicate = instanceList.some(
       (instance) =>
-        instance.name === trimmedName && instance.id !== currentInstanceId
+        instance.name === trimmedName &&
+        instance.id !== currentInstanceId &&
+        type == currentProviderName
     );
 
     if (isDuplicate) {
@@ -104,6 +111,7 @@ function BottomBar() {
       dispatch(updateInstance(payload));
     } else {
       dispatch(addInstance(payload));
+      dispatch(setUploadedFileName(''))
     }
 
     navigate(`/${formId}`);

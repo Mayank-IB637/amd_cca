@@ -102,6 +102,11 @@ useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [routes.join(","), type]);
 
+    useEffect(() => {
+    const provider = getProviderConfig(routes, type);
+    dispatch(setProvider(provider));
+  }, [routes.join(","), type]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

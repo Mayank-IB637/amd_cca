@@ -23,11 +23,11 @@ export default function CloudInstances(){
             data={instancesData}
             isPagination={true}
             columns={[
-              { header: "UUID / Instance Name", accessorKey: "instance_name" },
+              { header: "UUID / Instance Name", accessorKey: "uuid" },
               { header: "Region", accessorKey: "region" },
-              { header: "Size", accessorKey: "instance type" },
+              { header: "Size", accessorKey: "instanceType" },
               { header: "Quantity", accessorKey: "quantity" },
-              { header: "No.of Hours", accessorKey: "monthly utilization (hourly)" },
+              { header: "No.of Hours", accessorKey: "noOfHours" },
               { header: "Pricing Model", accessorKey: "pricingModel" },
             ]}
             variant="primary"

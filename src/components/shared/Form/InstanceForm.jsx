@@ -49,19 +49,17 @@ function InstanceForm() {
 
   const handleSubmit = useCallback(
     (data) => {
-      // console.log("Submitted data...",data)
       dispatch(
         addInstance({ id: nanoid(), ...data, uuid: data.uuid || nanoid(), cloud: data.cloud || "AWS" })
       );
       setFormSuccess("Instance added successfully");
       setFormError("");
-      form.reset({ portfolioName: data.portfolioName });
+      form.reset({ });
     },
     [dispatch, setFormSuccess, setFormError, form]
   );
 
  const handleError = (errors) => {
-  console.log("Validation errors:", JSON.stringify(errors));
   setFormError("Please enter the required fields.");
 };
 
