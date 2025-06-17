@@ -21,7 +21,8 @@ const SidebarSelect = () => {
   const navigate = useNavigate();
 
   const providers = useSelector(selectProviderList);
-  const currentProvider = useSelector(selectCurrentProviderName);
+  const currentProvider = useSelector(selectCurrentProviderName) || "AWS";
+
   const currentProviderType = useSelector(selectCurrentProviderType);
   const currentTelemetryCloud = useSelector(
     selectCurrentProviderTelemetryCloud

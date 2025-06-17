@@ -23,6 +23,8 @@ const EditableTextCell = lazy(() =>
   }))
 );
 
+
+
 const EditableCell = ({ type, ...props }) => {
   return (
     <Suspense fallback={props.value ?? ""}>

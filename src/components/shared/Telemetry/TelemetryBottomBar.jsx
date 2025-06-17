@@ -33,7 +33,7 @@ dispatch(addInstance({
   return (
     <Box
       id="manage-portfolio-footer-action-container"
-      className="action-footer"
+      // className="action-footer"
       sx={{ p: 1 }}
     >
       <Grid

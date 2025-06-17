@@ -2,7 +2,7 @@ import {
   awsCloudWatchTelemetryData,
   azureInsightsTelemetryData,
   dataDogTelemetryData,
-} from "@/lib/TelemetryData";
+} from "@/lib/telemetrydata";
 import { createSlice } from "@reduxjs/toolkit";
 
 export const telemetryConnectionStatus = {
@@ -11,9 +11,9 @@ export const telemetryConnectionStatus = {
   DISCONNECTED: "disconnected",
 };
 export const telemetryTypes = {
-  DATA_DOG: "datadog",
-  AWS_CLOUDWATCH: "aws_cloudwatch",
-  AZURE_INSIGHTS: "azureInsights",
+  DATA_DOG: "Datadog",
+  AWS_CLOUDWATCH: "AWS_Cloudwatch",
+  AZURE_INSIGHTS: "Azure_App_Insights",
 };
 
 const initialState = {

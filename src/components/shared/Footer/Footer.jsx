@@ -4,7 +4,7 @@ import { bottomLinks, footerLinks, socialIcons } from './FooterData';
 import FooterLinkItem from './FooterLinkItem';
 
 const Footer = () => (
-  <Box component="footer" sx={{ bgcolor: '#121212', color: 'white', py: 6, width: '100%', flexShrink: 0 }}>
+  <Box classname = 'action-footer' component="footer" sx={{ bgcolor: '#121212', color: 'white', py: 6, width: '100%', flexShrink: 0, }}>
     <Container maxWidth="lg">
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 4 }}>
         <Stack direction="row" spacing={2}>

@@ -1,4 +1,5 @@
 import React, { lazy, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography, Button, IconButton, Divider, Grid, Tooltip } from "@mui/material";
 import { FIELDS } from "@/lib/constant";
 import { Controller } from "react-hook-form";
@@ -8,6 +9,7 @@ import HoverSelect from "@/components/ui/form/Select";
 import AddIcon from '@mui/icons-material/Add';
 import { AnimatedIconButton } from "@/components/shared/Form/Consumption Metadata/AnimatedIconButton";
 import { Add } from "@mui/icons-material";
+import { selectCurrentProviderInstanceTypes, selectCurrentProviderPricingModels, selectCurrentProviderRegions } from "@/redux/features/providerData/providerData.selector";
 const HoverInput = lazy(() => import("@/components/ui/form/Input"));
 const DialogHoc = React.lazy(() => import("@/components/ui/Dialog"));
 const FindAndReplace = React.lazy(() => import("@/components/shared/Form/Consumption Metadata/FindAndReplace"));
@@ -15,7 +17,13 @@ const TooltipHoc = React.lazy(() => import("@/components/ui/Tooltip"));
 const CloseIcon = React.lazy(() => import("@mui/icons-material/Close"));
 
 const GenericMetadata = ({ form }) => {
-  const renderField = ({ name, label, options, tooltipMessage }) => (
+    const dispatch = useDispatch();
+  const options = {
+    region: useSelector(selectCurrentProviderRegions),
+    instanceType: useSelector(selectCurrentProviderInstanceTypes),
+    pricingModel: useSelector(selectCurrentProviderPricingModels),
+  };
+  const renderField = ({ name, label, tooltipMessage }) => (
     <Controller
       key={name}
       name={name}
@@ -27,11 +35,18 @@ const GenericMetadata = ({ form }) => {
             name={name}
             tooltipMessage={tooltipMessage}
             label={label}
-            options={options}
+            options={options[name] || []}
             fullWidth
             value={field.value}
             error={!!fieldState.error}
             {...field}
+             onChange={(e) => { 
+              field.onChange(e);
+              if (name === "region") {
+                form.setValue("instanceType", "");
+                dispatch(setRegion( e.target.value ));
+              } 
+            }}
           />
         ) : (
           <HoverInput
