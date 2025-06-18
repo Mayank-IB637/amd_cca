@@ -301,6 +301,16 @@ const steps = () => [
     },
     type: "wait",
   },
+    {
+    id: "step-32",
+    text: "Click to cancel portfolio deletion.",
+    attachTo: {
+      element: "#cancelDeletePortfolio",
+      on: "bottom",
+    },
+    type: "wait",
+  },
+
   // {
   //   id: "step-32",
   //   text: "Click to see cloud usage reports.",
