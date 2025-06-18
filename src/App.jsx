@@ -3,7 +3,7 @@ import theme from "./lib/themes";
 import "shepherd.js/dist/css/shepherd.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect, useMemo } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate, matchPath, } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentInstance } from "./redux/features/instanceList/instanceList.selector";
 import BottomBar from "./components/shared/BottomBar";
@@ -13,13 +13,16 @@ import MainContent from "./components/shared/MainLayout/MainContent";
 import InstanceAdviceLayout from "./components/shared/InstanceAdvice/InstanceAdviceLayout";
 import Explorer from "./components/shared/Explorer/Explorer";
 import Layout from "./components/shared/Layout";
-import { explorerProvider, fetchProviderData } from "./redux/features/Explorer/Explorer.slice";
 import CloudUsageReports from "./components/shared/CloudUsageReports/cloudusagereports";
 import CloudInstances from "./components/shared/CloudUsageReports/cloudInstances";
 import TelemetryLayout from "./components/shared/Telemetry/TelemetryLayout";
 import TelemetryBottomBar from "./components/shared/Telemetry/TelemetryBottomBar";
 import { setProvider } from "./redux/features/providerData/providerData.slice";
 import { getProviderConfig } from "./lib/utils/providerConfig";
+import { selectCurrentProviderName } from "./redux/features/providerData/providerData.selector";
+
+import TelemetryDetail from "./components/shared/Telemetry/TelemetryDetails";
+import TelemetryDetailBottomBar from "./components/shared/Telemetry/TelemetryDetailBottombar";
 
 // Route config for reusability
 const routesConfig = [
@@ -33,6 +36,7 @@ const routesConfig = [
   { path: "/instanceAdvice", element: <InstanceAdviceLayout /> },
   { path: "/instanceAdvice/:id", element: <InstanceAdviceLayout /> },
   {path:"/telemetry", element: <TelemetryLayout />},
+  {path:"/telemetry/:id", element: <TelemetryDetail />}
 ];
 
 
@@ -46,9 +50,14 @@ const getBottomBar = (pathname) => {
   if (pathname.startsWith('/explorer') || pathname === '/cloudusagereports') {
     return null;
   }
+
+  if(matchPath("/telemetry/:id", pathname)) {
+    return TelemetryDetailBottomBar
+  }
   if(pathname.startsWith('/telemetry')){
     return TelemetryBottomBar
   }
+
   return BottomBar;
 };
 
@@ -59,13 +68,9 @@ const App = () => {
   const currentInstance = useSelector(selectCurrentInstance);
 
   const pathname = useMemo(() => location.pathname, [location]);
-   const searchParams = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  );
   const SidebarComp = useMemo(() => getSidebar(pathname), [pathname]);
   const BottomBarComp = useMemo(() => getBottomBar(pathname), [pathname]);
-   const type = searchParams.get("type") || "";
+  const type = useSelector(selectCurrentProviderName)
   const routes = useMemo(
     () => location.pathname.split("/").filter(Boolean),
     [location.pathname]
@@ -73,15 +78,11 @@ const App = () => {
 ;
 
   useEffect(() => {
-    // console.log("Tour useEffect triggered");
-    const timeoutId = setTimeout(() => {
-      // console.log("Importing tour module...");
-      import("@/tour/tour").then((tour) => { 
-        // console.log("Tour module loaded", tour);
-        if (tour?.default?.start) {
+     const timeoutId = setTimeout(() => {
+        import("@/tour/tour").then((tour) => { 
+          if (tour?.default?.start) {
           tour.default.start();
-          // console.log("Tour started");
-        } else {
+         } else {
           console.error("tour.default.start is not a function", tour);
         }
       }).catch((err) => {
@@ -96,16 +97,13 @@ const App = () => {
       navigate("/");
     }
   }, [pathname, currentInstance, navigate]);
+
 useEffect(() => {
     const provider = getProviderConfig(routes, type);
     dispatch(setProvider(provider));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [routes.join(","), type]);
 
-    useEffect(() => {
-    const provider = getProviderConfig(routes, type);
-    dispatch(setProvider(provider));
-  }, [routes.join(","), type]);
 
   return (
     <ThemeProvider theme={theme}>

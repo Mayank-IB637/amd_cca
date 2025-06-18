@@ -4,166 +4,53 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate, useLocation } from "react-router-dom";
 import { withErrorBoundary } from "@/hooks/withErrorBoundary";
-
+import EditIcon from "@mui/icons-material/Edit"; // or use `mdi-pen` via MUI if installed
 
 // Dynamic imports for icons and components
 const CloseIcon = React.lazy(() => import("@mui/icons-material/Close"));
 const SaveIcon = React.lazy(() => import("@mui/icons-material/Save"));
 const BuildIcon = React.lazy(() => import("@mui/icons-material/Build"));
 const DeleteIcon = React.lazy(() => import("@mui/icons-material/Delete"));
-const DialogHoc = lazy(() => import("../ui/Dialog"));
-const FormAlert = lazy(() => import("../ui/FormAlert"));
+const DialogHoc = lazy(() => import("../../ui/Dialog"));
+const FormAlert = lazy(() => import("../../ui/FormAlert"));
 
 // Redux actions and selectors
+import { deletePortfolioFromList } from "@/redux/features/instanceList/instanceList.slice";
 import {
-  addCurrentInstance,
-  addInstance,
-  deletePortfolioFromList,
-  updateInstance,
-} from "@/redux/features/instanceList/instanceList.slice";
-import {
-  selectInstances,
   selectMessage,
   selectMessageType,
   selectPortfolioName,
-  selectSelfAssessment,
 } from "@/redux/features/instance/instance.selector";
 import {
   errorMessageType,
   resetInstanceState,
   setMessage,
-  updateInstanceState,
-  setUploadedFileName ,
 } from "@/redux/features/instance/instance.slice";
-// import {  } from "@/redux/features/instanceList/instanceList.selector";
-import { 
-  selectCurrentProviderName,
+import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
+import { selectCurrentInstance } from "@/redux/features/instanceList/instanceList.selector";
+import { getProviderConfig } from "@/lib/utils";
+import { useMemo } from "react";
 
- } from "@/redux/features/providerData/providerData.selector";
-// import {  } from "@/redux/features/instance/instance.slice";
-import { AttachMoney, Refresh } from "@mui/icons-material";
-import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
-// import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
-
-function BottomBar() {
+function TelemetryDetailBottomBarComponent() {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const location = useLocation();
-  const pathParts = location.pathname.split("/");
-  const currentInstanceId = pathParts[pathParts.length - 1];
+  const currentInstance = useSelector(selectCurrentInstance);
+  const currentProviderName = useSelector(selectCurrentProviderName);
+  const routes = useMemo(
+    () => location.pathname.split("/").filter(Boolean),
+    [location.pathname]
+  ); 
+
+  const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+  const type = searchParams.get("type") || "";
   const alertMessage = useSelector(selectMessage);
   const alertMessageType = useSelector(selectMessageType);
-  const portfolioName = useSelector(selectPortfolioName);
-  const instances = useSelector(selectInstances);
-  const instanceList = useSelector(selectInstanceList);
-  const currentProviderName = useSelector(selectCurrentProviderName);
-
-  const formId = currentInstanceId || nanoid();
-  const queryParams = new URLSearchParams(location.search);
-  const type = queryParams.get("type");
-
-  // const handleSavePortFolio = () => {
-  //   const trimmedName = portfolioName?.trim();
-  //   const validNameRegex = /^[a-zA-Z0-9_-]+$/;
-  //   if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
-  //     dispatch(
-  //       setMessage({
-  //         type: errorMessageType.ERROR,
-  //         message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
-  //       })
-  //     );
-  //     return;
-  //   }
-   const handleSavePortFolio = () => {
-    const trimmedName = portfolioName?.trim();
-    if (!trimmedName) {
-      dispatch(
-        setMessage({
-          type: errorMessageType.ERROR,
-          message: "Portfolio name is required",
-        })
-      );
-      return;
-    }
-
-    const isDuplicate = instanceList.some(
-      (instance) =>
-        instance.name === trimmedName &&
-        instance.id !== currentInstanceId &&
-        type == currentProviderName
-    );
-
-    if (isDuplicate) {
-      dispatch(
-        setMessage({
-          type: errorMessageType.ERROR,
-          message: "Portfolio name already exists",
-        })
-      );
-      return;
-    }
-
-    const payload = {
-      id: formId,
-      instances,
-      type: "cloud",
-      provider: currentProviderName,
-      name: trimmedName
-    };
-    if (currentInstanceId) {
-      dispatch(updateInstance(payload));
-    } else {
-      dispatch(addInstance(payload));
-      dispatch(setUploadedFileName(''))
-    }
-
-    navigate(`/${formId}`);
-    dispatch(
-      setMessage({
-        type: errorMessageType.SUCCESS,
-        message: `${trimmedName} saved successfully`,
-      })
-    );
-  }
-
-  // const handleRefreshInstances = () => {
-  //   dispatch(
-  //     setMessage({
-  //       type: errorMessageType.SUCCESS,
-  //       message: "Instances Fetched",
-  //     })
-  //   );
-  // }
-
-
-  const handleDeletePortfolio = useCallback(() => {
-    dispatch(deletePortfolioFromList({ id: formId }));
-    dispatch(resetInstanceState());
-    dispatch(
-      setMessage({
-        type: errorMessageType.SUCCESS,
-        message: `${portfolioName} deleted successfully`,
-      })
-    );
-    navigate("/");
-  }, [dispatch, formId, portfolioName, navigate]);
-
-  const handleResetFormData = useCallback(() => {
-    dispatch(
-      updateInstanceState({
-        name: portfolioName,
-        instances,
-      })
-    );
-    dispatch(addCurrentInstance(null));
-    navigate("/");
-  }, [dispatch, portfolioName, instances, navigate]);
-
-  const isSaveDisabled = !instances.length;
-  const isCancelDisabled = !instances.length;
-  const isInstanceAdviceDisabled = !currentInstanceId;
+  const portfolioName = useSelector(selectPortfolioName); 
 
   useEffect(() => {
     if (alertMessage) {
@@ -178,6 +65,28 @@ function BottomBar() {
       return () => clearTimeout(timeout);
     }
   }, [alertMessage, dispatch]);
+
+  if (!currentInstance) {
+    const provider = getProviderConfig(routes, type);
+    navigate(`/${provider.type}?type=${currentProviderName}`, {
+      replace: true,
+    });
+  }
+  const currentInstanceId = currentInstance.id;
+  const formId = currentInstanceId || nanoid();
+
+  const handleDeletePortfolio = useCallback(() => {
+    dispatch(deletePortfolioFromList({ id: formId }));
+    dispatch(resetInstanceState());
+    dispatch(
+      setMessage({
+        type: errorMessageType.SUCCESS,
+        message: `${portfolioName} deleted successfully`,
+      })
+    );
+    navigate("/");
+  }, [dispatch, formId, portfolioName, navigate]);
+ 
 
   return (
     <Box
@@ -214,18 +123,6 @@ function BottomBar() {
         justifyContent="flex-end"
         alignItems="center"
       >
-        <Suspense fallback={null}>
-          <Button
-            variant="contained"
-            color="error"
-            startIcon={<CloseIcon />}
-            disabled={isCancelDisabled}
-            onClick={handleResetFormData}
-          >
-            Cancel
-          </Button>
-        </Suspense>
-
         {currentInstanceId && (
           <Suspense fallback={null}>
             <DialogHoc
@@ -292,38 +189,28 @@ function BottomBar() {
             />
           </Suspense>
         )}
-        {/* <Suspense fallback={null}>
-          <Button
-            id="savePortfolio"
-            onClick={location.pathname.includes('cloudInstances') ? handleRefreshInstances : handleSavePortFolio}
-            variant="contained"
-            startIcon={location.pathname.includes('cloudInstances') ? <Refresh /> : <SaveIcon />}
-            disabled={!location.pathname.includes('cloudInstances') && isSaveDisabled}
-          >
-            {location.pathname.includes('cloudInstances') ? 'Refresh' : 'Save'}
-          </Button>
-        </Suspense> */}
-        
         <Suspense fallback={null}>
           <Button
             id="savePortfolio"
-            onClick={handleSavePortFolio}
+            onClick={() =>
+              navigate(
+                `/telemetry/?edit=${currentInstance?.id}&type=${currentProviderName}`
+              )
+            }
             variant="contained"
-            startIcon={<SaveIcon />}
-            disabled={isSaveDisabled}
+            startIcon={<EditIcon />}
           >
-            Save
+            Update Credentials
           </Button>
         </Suspense>
         <Suspense fallback={null}>
           <Button
             id={"instanceAdvice"}
             variant="contained"
-            startIcon={<AttachMoney />}
-            disabled={isInstanceAdviceDisabled}
-            onClick={() => navigate(`/instanceAdvice/${formId}`)}
+            startIcon={<BuildIcon />} 
+            onClick={() => navigate("/instanceAdvice")}
           >
-            Cost advice
+            Instance advice
           </Button>
         </Suspense>
       </Box>
@@ -347,8 +234,8 @@ function BottomBar() {
   );
 }
 
-const BottomBarWithBoundary = withErrorBoundary(
-  BottomBar,
+const TelemetryDetailBottomBar = withErrorBoundary(
+  TelemetryDetailBottomBarComponent,
   "Bottom bar component has some Errors"
 );
-export default BottomBarWithBoundary;
+export default TelemetryDetailBottomBar;

@@ -82,7 +82,7 @@ function PortfolioBody() {
         minWidth: "150px",
         paddingRight: "20px"
       }}>
-        <Slider
+        {/* <Slider
           defaultValue={20}
           step={10}
           marks
@@ -95,7 +95,7 @@ function PortfolioBody() {
               padding: '2px 6px'
             }
           }}
-        />
+        /> */}
       </div>
     </div>
     <CustomTable

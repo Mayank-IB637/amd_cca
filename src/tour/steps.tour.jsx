@@ -301,94 +301,28 @@ const steps = () => [
     },
     type: "wait",
   },
-  {
-    id: "step-32",
-    text: "Click to cancel portfolio deletion.",
-    attachTo: {
-      element: "#cancelDeletePortfolio",
-      on: "bottom",
-    },
-    type: "wait",
-  },
+  // {
+  //   id: "step-32",
+  //   text: "Click to see cloud usage reports.",
+  //   attachTo: {
+  //     element: "#manageportfolio-cusagereport-link",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
 
 
 
-  {
-    id: "step-33",
-    text: "Click to update the edited value.",
-    attachTo: {
-      element: "#tableCell_0_maxCpuUtilization_cell",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-33",
-    text: "Click Save to add the instance as a portfolio in the EIA application.",
-    attachTo: {
-      element: "#savePortfolio",
-      on: "top",
-    },
-  },
-  {
-    id: "step-34",
-    text: "View AMD instance recommendations with cost comparison and potential savings.",
-    attachTo: {
-      element: "#instanceAdvice",
-      on: "top",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-35",
-    text: "Click to close the cost advisory panel.",
-    attachTo: {
-      element: "#close-instance-advice",
-      on: "bottom",
-    },
-
-    type: "wait",
-  },
-  {
-    id: "step-36",
-    text: "Click to view Stat Collector information.",
-    attachTo: {
-      element: "#btn-stat-collector",
-      on: "bottom",
-    },
-
-    type: "wait",
-  },
-  {
-    id: "step-37",
-    text: "Download the Stat Collector file.",
-    attachTo: {
-      element: "#btn-download-stat-collector",
-      on: "bottom",
-    },
-
-    type: "wait",
-  },
-  {
-    id: "step-38",
-    text: "Click to open your user profile menu.",
-    attachTo: {
-      element: "#step-four-target",
-      on: "right",
-      offset: "0 20",
-    },
-  },
-  {
-    id: "step-39",
-    text: "Click here to log out of the application.",
-    attachTo: {
-      element: "#logout-link",
-      on: "right",
-      offset: "0 20",
-    },
-    type: "wait",
-    isEnd: true,
-  },
+  // {
+  //   id: "step-33",
+  //   text: "Click to update the edited value.",
+  //   attachTo: {
+  //     element: "#Aws-box",
+  //     on: "bottom",
+  //   },
+  //   type: "wait",
+  // },
+  
 ];
 
 export default steps;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Box,
   FormControl,
@@ -25,6 +25,8 @@ const ExplorerBox = () => {
   const regions = useSelector((state) => state.explorerData.regions) || [];
   const data = useSelector((state) => state.explorerData.data) || [];
 
+  const [search, setSearch] = useState("");
+
   const handleProviderChange = (e) => {
     const selectedProvider = e.target.value;
     dispatch(setExplorerProvider(selectedProvider));  // sets provider & clears region
@@ -43,9 +45,24 @@ const ExplorerBox = () => {
     }
   }, [provider, dispatch]);
 
+  // Filter data based on search input
+  const filteredData = useMemo(() => {
+    if (!search.trim()) return data;
+    const lower = search.toLowerCase();
+    return data.filter((row) =>
+      Object.values(row).some(
+        (val) =>
+          val &&
+          val
+            .toString()
+            .toLowerCase()
+            .includes(lower)
+      )
+    );
+  }, [search, data]);
+
   return (
     <Box>
-
       <Box sx={{ width: "100%", bgcolor: "background.paper", p: 5, mt: 2 }}>
         <Box
           display="flex"
@@ -53,7 +70,6 @@ const ExplorerBox = () => {
           alignItems="center"
           justifyContent="space-between"
         >
-
           <Box display="flex" flexWrap="wrap" gap={4}>
             <FormControl variant="outlined" size="small" sx={{ minWidth: 350 }}>
               <InputLabel>Filter by Service Provider</InputLabel>
@@ -113,34 +129,34 @@ const ExplorerBox = () => {
               </Select>
             </FormControl>
 
-
             <TextField
               variant="outlined"
               size="small"
               placeholder="Search"
               sx={{ minWidth: 350 }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </Box>
         </Box>
       </Box>
-      {data.length === 0 ? <></> :
-          <CustomTable
+      {filteredData.length === 0 ? <></> :
+        <CustomTable
           isPagination={false}
-            data={data}
-            columns={[
-              { header: "Region", accessorKey: "region", cell:({getValue})=><p style={{height:'8px'}}>{getValue()}</p>},
-              { header: "Generation", accessorKey: "CPU_Generation" },
-              { header: "Instance Type", accessorKey: "instance" },
-              { header: "vCPU", accessorKey: "vCPU" },
-              { header: "Memory (GB)", accessorKey: "memory(GB)" },
-              { header: "Ondemand Price($)", accessorKey: "instancePricingOndemand" },
-              { header: "Reserved Price($)", accessorKey: "instancePricingReserved" },
-              { header: "Spot Price($)", accessorKey: "Instance_Pricing_Spot" },
-            ]}
-            variant="primary"
-            sx={{ height: "100%", borderRadius:0 ,px:2,pb:2, overflowY: "auto", backgroundColor: "background.paper" }}
-          />}
-
+          data={filteredData}
+          columns={[
+            { header: "Region", accessorKey: "region", cell: ({ getValue }) => <p style={{ height: '8px' }}>{getValue()}</p> },
+            { header: "Generation", accessorKey: "CPU_Generation" },
+            { header: "Instance Type", accessorKey: "instance" },
+            { header: "vCPU", accessorKey: "vCPU" },
+            { header: "Memory (GB)", accessorKey: "memory(GB)" },
+            { header: "Ondemand Price($)", accessorKey: "instancePricingOndemand" },
+            { header: "Reserved Price($)", accessorKey: "instancePricingReserved" },
+            { header: "Spot Price($)", accessorKey: "Instance_Pricing_Spot" },
+          ]}
+          variant="primary"
+          sx={{ height: "100%", borderRadius: 0, px: 2, pb: 2, overflowY: "auto", backgroundColor: "background.paper" }}
+        />}
     </Box>
   );
 };

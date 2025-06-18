@@ -98,7 +98,7 @@ const CloudUsageReports = () => {
     };
 
     const redirectToMainPage = () => {
-        navigate("/")
+        navigate(`/?type=${currentProvider}`)
     };
 
     const clearPortfolioData = () => {
@@ -252,6 +252,8 @@ const CloudUsageReports = () => {
                         <CircularProgress />
                     </Box>
                 )}
+                 
+                 <Box id = "Aws-box">
 
                 {/* Portfolio Name */}
                 <TextField
@@ -315,6 +317,8 @@ const CloudUsageReports = () => {
                     </Box>
                 )}
 
+                </Box>
+
                 {/* AZURE Fields */}
                 {currentProvider === 'AZURE' && (
                     <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 1 }}>
@@ -364,7 +368,7 @@ const CloudUsageReports = () => {
                         />
                         <Autocomplete
                             multiple
-                            options={listOfRegions}
+                            options={options['region'] }
                             value={formData.region}
                             onChange={(event, newValue) => updateFormData('region', newValue)}
                             renderInput={(params) => (
@@ -427,7 +431,7 @@ const CloudUsageReports = () => {
                             <Grid item size={{ xs: 12, md: 5 }}>
                                 <Autocomplete
                                     multiple
-                                    options={listOfRegions}
+                                    options={options['region']}
                                     value={formData.region}
                                     onChange={(event, newValue) => updateFormData('region', newValue)}
                                     renderInput={(params) => (

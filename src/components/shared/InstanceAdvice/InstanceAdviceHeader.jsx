@@ -292,14 +292,7 @@ const InstanceAdviceHeader = () => {
         >
           Cost advice
         </Typography>
-        <Box display="flex" gap={2} alignItems="center">
-          <TextField
-            size="small"
-            placeholder="Search"
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <ExportButton />
-        </Box>
+
 
       </Box>
       <Grid container spacing={2} alignItems="center" mb={1} mt={1}>
@@ -400,19 +393,14 @@ const InstanceAdviceHeader = () => {
           gap: { xs: 1, md: 2 },
           marginLeft: '80px'
         }}>
-          <Slider
-            aria-label="Headroom"
-            valueLabelDisplay="on"
-            step={10}
-            marks
-            max={100}
-            style={{ maxWidth: '300px' }}
+           <Box display="flex" gap={2} alignItems="center">
+          <TextField
+            size="small"
+            placeholder="Search"
+            onChange={(e) => setSearchText(e.target.value)}
           />
-          <Tooltip title="Refresh" arrow>
-            <IconButton >
-              <RefreshIcon />
-            </IconButton>
-          </Tooltip>
+          <ExportButton />
+        </Box>
 
         </Grid>
       </Grid>

@@ -51,7 +51,7 @@ const providerSlice = createSlice({
       state.instanceTypes = [
         ...new Set(
           filteredProviders.flatMap((provider) =>
-            provider.region == action.payload ? provider.instanceType : []
+            provider.region == action.payload ? provider?.instanceType ??[] : []
           )
         ),
       ];     
