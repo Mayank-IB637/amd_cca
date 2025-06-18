@@ -140,7 +140,6 @@ const GenericMetadata = ({ form }) => {
         <DialogHoc
           maxWidth="md"
           fullWidth={true}
-          style={{ width: '100px' }}
           trigger={({ onClick }) => (
             <TooltipHoc message={"Data correction & adjustment guidelines"}>
               <AnimatedIconButton
