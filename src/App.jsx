@@ -81,13 +81,13 @@ const App = () => {
 ;
 
   useEffect(() => {
+
+    window.speechSynthesis.cancel()
      const timeoutId = setTimeout(() => {
         import("@/tour/tour").then((tour) => { 
-          if (tour?.default?.start) {
-          tour.default.start();
-         } else {
-          console.error("tour.default.start is not a function", tour);
-        }
+       
+          tour?.default?.start();
+         
       }).catch((err) => {
         console.error("Failed to load tour:", err);
       });

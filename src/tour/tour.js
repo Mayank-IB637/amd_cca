@@ -18,7 +18,7 @@ const speakText = (text, isMuted) => {
 };
 function generateButtons(step, currentStepIndex) {
   return [
-    {
+     {
       text: isMuted
         ? '<i class="material-icons">volume_off</i>'
         : '<i class="material-icons">volume_up</i>',
@@ -29,9 +29,9 @@ function generateButtons(step, currentStepIndex) {
         } else if (synth.paused) {
           synth.resume();
         }
-
+ 
         isMuted = !isMuted;
-
+ 
         const currentStep = tour.getCurrentStep();
         if (currentStep) {
           currentStep.updateStepOptions({
@@ -41,33 +41,14 @@ function generateButtons(step, currentStepIndex) {
       },
     },
     {
-      text: 'Skip All',
+      text: "Skip All",
       action: () => {
         removeHighlight(step.attachTo.element);
         window.speechSynthesis.cancel();
         tour.complete();
       },
     },
-    // {
-    //   text: "Skip",
-    //   disabled: !step.isSkip,
-    //   secondary: !step.isSkip || step.isEnd,
-    //   action: () => {
-    //     const currentLabel = step?.label ?? "";
-    //     let nextIndex = currentStepIndex + 1;
-    //     while (
-    //       nextIndex < allSteps.length &&
-    //       allSteps[nextIndex].label === currentLabel
-    //     ) {
-    //       nextIndex++;
-    //     }
-    //     if (nextIndex < allSteps.length) {
-    //       tour.show(nextIndex);
-    //     } else {
-    //       tour.complete();
-    //     }
-    //   },
-    // },
+   
     {
       text: "Previous",
       disabled: step.isStart,
@@ -106,7 +87,7 @@ function generateButtons(step, currentStepIndex) {
         }
         try {
           await handleElementAction(el, id);
-        } catch (err) { 
+        } catch (err) {
           alert(`Action failed for ${id}: ${err.message}`);
         } finally {
           if (step?.action?.next) step.action.next();
@@ -119,7 +100,7 @@ function generateButtons(step, currentStepIndex) {
 
 const tour = new Shepherd.Tour({
   defaultStepOptions: {
-    cancelIcon: { enabled: true },
+    cancelIcon: { enabled: false },
     classes: "shepherd-theme-arrows",
     scrollTo: { behavior: "smooth", block: "center" },
   },
@@ -131,16 +112,30 @@ allSteps.forEach((step, currentStepIndex) => {
     id: step.id,
     text: step.text,
     attachTo: step.attachTo,
-
-    buttons: generateButtons(step, currentStepIndex),
+    buttons: [],
+    // showOn: () => {
+    //     const el = document.querySelector(step.attachTo.element);
+    //     return !!el;
+    //   },
     beforeShowPromise: () =>
       new Promise((resolve) => {
+        const speakIfNeeded = () => {
+          
+          if (step.text) speakText(step.text, isMuted);
+        };
+
         const checkExist = setInterval(() => {
           const el = document.querySelector(step.attachTo.element);
           if (el) {
             clearInterval(checkExist);
             highlightElement(step.attachTo.element);
-            speakText(step.text);
+            speakIfNeeded();
+             const currentStep = tour.getCurrentStep();
+            if (currentStep) {
+              currentStep.updateStepOptions({
+                buttons: generateButtons(step, currentStepIndex),
+              });
+            }
             resolve();
           }
         }, 100);
@@ -148,7 +143,6 @@ allSteps.forEach((step, currentStepIndex) => {
     when: {
       hide: () => {
         removeHighlight(step.attachTo.element);
-        window.speechSynthesis.cancel();
       },
     },
   });

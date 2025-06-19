@@ -94,7 +94,7 @@ const ProviderDisplay = ({ onClose, data }) => {
             fontSize: "12px",
           }}
         >
-          <strong>Note:</strong> All third-party logos and icons used are the property of their respective owners and are displayed for informational purposes only, without implying any affiliation, endorsement, or sponsorship.
+          <strong>Disclaimer:</strong> All third-party logos and icons used are the property of their respective owners and are displayed for informational purposes only, without implying any affiliation, endorsement, or sponsorship.
         </Typography>
       </Box>
     </Box>
