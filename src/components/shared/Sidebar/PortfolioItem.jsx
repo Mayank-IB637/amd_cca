@@ -1,17 +1,14 @@
 import React, { useCallback, useMemo } from "react";
 import { ListItemButton, ListItemText, Typography,Box } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector  } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { addCurrentInstance } from "@/redux/features/instanceList/instanceList.slice";
-import { updateInstanceState } from "@/redux/features/instance/instance.slice";
-import { setUploadedFileName } from "@/redux/features/instance/instance.slice";
+import { updateInstanceState, setUploadedFileName  } from "@/redux/features/instance/instance.slice";
 import propsTypes from "prop-types";
-import { Close } from "@mui/icons-material";
 import {
   selectCurrentProviderName,
   selectCurrentProviderType,
 } from "@/redux/features/providerData/providerData.selector";
-import { useSelector } from "react-redux";
 import { selectCurrentInstance } from "@/redux/features/instanceList/instanceList.selector";
 import filelogo from "@/assets/logo/file-document-outline.svg"
 import key from "@/assets/logo/key.svg"
@@ -51,10 +48,7 @@ export default function PortfolioItem({ portfolio }) {
     },
     [dispatch, location.search, navigate, providerName, providerType]
   );
-  console.log({
-    isActive,
-     portfolio , activePortfolioId
-  })
+  
 
   return (
     <ListItemButton

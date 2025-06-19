@@ -40,13 +40,12 @@ function PortfolioBody() {
     instance_stats: useSelector(selectInstances)
   };
 
-  console.log("data:",dataMap.instance_stats);
 
   const columnsMap = {
     instance_stats: GetInstanceColumn()
   };
 
-  const handleChange = useCallback((_, newValue) => setValue(newValue), []);
+ 
 
   const onDelete = useCallback(
     ({ selectedRows }) => {

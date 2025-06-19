@@ -76,11 +76,6 @@ const GenericMetadata = ({ form }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // console.log({
-  //   errors: form.formState.errors,
-  //   formData: form.watch()
-  // })
-
   return (
     <Box sx={{ p: 1, width: '100%', display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
 

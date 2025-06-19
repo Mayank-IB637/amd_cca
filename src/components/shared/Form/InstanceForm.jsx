@@ -31,11 +31,9 @@ InstanceForm.propTypes = {
 function InstanceForm() {
   const dispatch = useDispatch();
   const currentProvider = useSelector(selectCurrentProviderName)
-  // const location = useLocation();
 
   const [formError, setFormError] = useTimedMessage();
   const [formSuccess, setFormSuccess] = useTimedMessage();
-  // console.log({currentProvider});
 
   const form = useForm({
     resolver: zodResolver(instanceSchema),

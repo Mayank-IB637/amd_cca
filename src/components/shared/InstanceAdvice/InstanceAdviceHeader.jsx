@@ -3,18 +3,15 @@ import {
   Typography,
   Button,
   Box,
-  FormControlLabel,
-  Checkbox,
   IconButton,
   Divider,
   List,
   ListItem,
   ListItemText,
   useMediaQuery,
-  Slider, FormControl, InputLabel, Select, MenuItem, Tooltip, TextField, Grid
+   FormControl, InputLabel, Select, MenuItem, TextField, Grid
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import PropTypes from "prop-types";
 import TooltipHoc from "@/components/ui/Tooltip";
 import DialogHoc from "@/components/ui/Dialog";
@@ -131,7 +128,6 @@ const EIARecommendedDialogContent = ({ handleClose }) => (
     >
       <Box>
         <Typography
-          // id="eia-recommended-dialog-title"
           variant="body2"
           fontSize={16}
           fontWeight="bold"

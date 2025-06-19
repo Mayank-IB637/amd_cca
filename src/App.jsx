@@ -103,7 +103,6 @@ const App = () => {
 
 useEffect(() => {
     const provider = getProviderConfig(routes, type);
-    console.log(provider);
     dispatch(setProvider(provider));
 
     
