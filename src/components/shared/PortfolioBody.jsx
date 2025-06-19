@@ -13,6 +13,7 @@ import {
 } from "@/redux/features/instance/instance.selector";
 import { removeInstance, setUploadedFileName } from "@/redux/features/instance/instance.slice";
 import { Slider } from "@mui/material";
+import { selectCurrentProviderType } from "@/redux/features/providerData/providerData.selector";
 
 const CustomTable = lazy(() => import("../ui/table/CustomTable"));
 
@@ -33,9 +34,13 @@ TabPanel.propTypes = {
 function PortfolioBody() {
   const dispatch = useDispatch();
 
+  // const type = useSelector(selectCurrentProviderType)
+
   const dataMap = {
     instance_stats: useSelector(selectInstances)
   };
+
+  console.log("data:",dataMap.instance_stats);
 
   const columnsMap = {
     instance_stats: GetInstanceColumn()
@@ -99,6 +104,7 @@ function PortfolioBody() {
       </div>
     </div>
     <CustomTable
+      
       variant="primary"
       data={dataMap['instance_stats']}
       columns={columnsMap['instance_stats']}

@@ -23,6 +23,7 @@ import { selectCurrentProviderName } from "./redux/features/providerData/provide
 
 import TelemetryDetail from "./components/shared/Telemetry/TelemetryDetails";
 import TelemetryDetailBottomBar from "./components/shared/Telemetry/TelemetryDetailBottombar";
+import { addInstance } from "./redux/features/instanceList/instanceList.slice";
 
 // Route config for reusability
 const routesConfig = [
@@ -70,7 +71,9 @@ const App = () => {
   const pathname = useMemo(() => location.pathname, [location]);
   const SidebarComp = useMemo(() => getSidebar(pathname), [pathname]);
   const BottomBarComp = useMemo(() => getBottomBar(pathname), [pathname]);
+
   const type = useSelector(selectCurrentProviderName)
+
   const routes = useMemo(
     () => location.pathname.split("/").filter(Boolean),
     [location.pathname]
@@ -100,7 +103,10 @@ const App = () => {
 
 useEffect(() => {
     const provider = getProviderConfig(routes, type);
+    console.log(provider);
     dispatch(setProvider(provider));
+
+    
     
   }, [routes.join(","), type]);
 

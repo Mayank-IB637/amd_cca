@@ -69,7 +69,7 @@ const instanceSlice = createSlice({
       state.name = name;
       state.instances = instances;
     },
-        updateSingleInstance(state, action) {
+    updateSingleInstance(state, action) {
       const { index, field, value } = action.payload;
       if (state.instances[index]) {
         state.instances[index][field] = value;

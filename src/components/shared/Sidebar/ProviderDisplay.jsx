@@ -5,6 +5,8 @@ import CustomTable from "@/components/ui/table/CustomTable";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setProvider } from "@/redux/features/providerData/providerData.slice";
+import { addCurrentInstance } from "@/redux/features/instanceList/instanceList.slice";
+import { resetInstanceState } from "@/redux/features/instance/instance.slice";
 
 // Utility to format header text
 const toTitleCase = (text) =>
@@ -19,15 +21,17 @@ const ProviderDisplay = ({ onClose, data }) => {
       const { type, name, logo } = getValue();
 
       const handleClick = () => {
-        dispatch(setProvider({ type, name }));
+       dispatch(setProvider({ type, name }));
+        dispatch(addCurrentInstance(null));
+        dispatch(resetInstanceState());
         const formattedName = name;
-        onClose();
-
+ 
         if (type === "cloud") {
           navigate(`/?type=${formattedName}`);
         } else if (type === "telemetry") {
           navigate(`/telemetry?type=${formattedName}`);
         }
+        onClose();
       };
 
       return (

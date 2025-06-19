@@ -248,12 +248,12 @@ export const releaseNotesTableData = [
         ],
         links: [
           {
-            label: "List of AWS Regions",
-            value: "https://eia-prod.amd.com/regionLists?providerName=AWS",
+            label: "List Of AWS Regions",
+            value: "https://cca-prod.amd.com/regionLists?providerName=AWS",
           },
           {
             label: "List of Azure Regions",
-            value: "https://eia-prod.amd.com/regionLists?providerName=AZURE",
+            value: "https://cca-prod.amd.com/regionLists?providerName=AZURE",
           },
         ],
       },

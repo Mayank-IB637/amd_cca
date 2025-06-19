@@ -176,7 +176,7 @@ const GenericMetadata = ({ form }) => {
               <Divider />
               <Box p={" 24px 24px"}>
                 <Typography fontSize={"16px"} fontWeight={600}>
-                  Cloud Selection:
+                  1. Cloud Selection:
                 </Typography>
 
                 <Typography fontSize={"16px"} margin={"4px 0 0 16px"}>

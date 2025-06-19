@@ -3,9 +3,13 @@ import { Box, Button, Link } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete"; 
 import ArrowRightIcon from '@mui/icons-material/East';
 import PropTypes from "prop-types"; 
+import { useSelector } from "react-redux";
+import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
 
 export default function ActionBlock({ table, onDelete }) {
+  
   const selectedRows = table.getSelectedRowModel().rows;
+  const type = useSelector(selectCurrentProviderName)
    
   const handleDelete = () => {
     if (!selectedRows || selectedRows.length === 0) return;
@@ -42,7 +46,7 @@ export default function ActionBlock({ table, onDelete }) {
       </Button>
 
       <Link
-        href="https://eia-prod.amd.com/regionLists?providerName=AWS"
+        href={`https://cca-prod.amd.com/regionLists?providerName=${type}`}
         underline="none"
         color="text.primary"
         target="_blank"
@@ -59,7 +63,7 @@ export default function ActionBlock({ table, onDelete }) {
         }}
         className="ListOfRegions"
       >
-        List of AWS Regions
+        List of {type} Regions
         <ArrowRightIcon sx={{ fontSize: "17px", ml: 0.5 }} />
       </Link>
     </Box>

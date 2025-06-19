@@ -9,6 +9,7 @@ const steps = () => [
       element: "#step-one-target",
       on: "bottom",
       offset: "0 10",
+      // isSkip: true,
     },
   },
   {
@@ -58,7 +59,7 @@ const steps = () => [
   },
   {
     id: "step-7",
-    text: "Click to open the download menu.",
+    text: "Click to Download the template in Excel (.xlsx) format to ensure your data is formatted correctly. Fill all required fields as per the template structure.",
     attachTo: {
       element: "#step-five-target",
       on: "bottom",
@@ -153,7 +154,7 @@ const steps = () => [
   },
     {
     id: "step-18",
-    text: "Click this to close input error explanations.",
+    text: "Click this to close EIA Recommendation.",
     attachTo: {
       element: "#eia-recommended-dialog-close",
       on: "bottom",

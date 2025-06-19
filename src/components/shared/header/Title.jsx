@@ -17,19 +17,18 @@ function Title() {
     { label: "Explorer", path: links.EXPLORER },
   ];
 
-  const styles = (isActive) => {
-    return {
-      color: "white",
-      fontSize: "16px",
-      ml: 2.5,
-      borderBottom: isActive ? "2px solid white" : "2px solid transparent",
-      paddingBottom: "2px",
-      transition: "border-bottom 0.3s",
-      "&:hover": {
-        borderBottom: "2px solid white",
-      },
-    };
-  }
+  const styles = (isActive) => ({
+    color: "white",
+    fontSize: "16px",
+    ml: 2.5,
+    borderBottom: isActive ? "2px solid white" : "2px solid transparent",
+    paddingBottom: "2px",
+    transition: "border-bottom 0.3s",
+    cursor: "pointer",
+    "&:hover": {
+      borderBottom: "2px solid white",
+    },
+  });
 
   return (
     <Box
@@ -60,13 +59,7 @@ function Title() {
 
       <Box sx={{ display: "flex", ml: 3 }}>
         {data.map((item) => {
-          // If URL contains any of those special routes, activate only Manage Portfolio tab
-          const specialRoutes = ['cloudusagereports', 'instanceAdvice',''];
-          const isSpecialRoute = specialRoutes.some(route => url.includes(route));
-
-          const isActive = isSpecialRoute
-            ? (item.path === links.MANAGE_PORTFOLIO)
-            : (url === item.path);
+          const isActive = url === item.path;
 
           return (
             <Link key={item.path} to={item.path} style={{ textDecoration: "none" }}>

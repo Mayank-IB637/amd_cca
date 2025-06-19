@@ -9,6 +9,7 @@ import { selectInstances } from "@/redux/features/instance/instance.selector";
 
 function MainContent() {
   const instanceData = useSelector(selectInstances);
+  console.log({instanceData});
   const showTable = instanceData.length > 0;
   return (
     <Box sx={{ flex: 1, p: 0, overflowY: "auto" }}>

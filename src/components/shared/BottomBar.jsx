@@ -76,6 +76,7 @@ function BottomBar() {
   //     );
   //     return;
   //   }
+
    const handleSavePortFolio = () => {
     const trimmedName = portfolioName?.trim();
     if (!trimmedName) {
@@ -104,6 +105,8 @@ function BottomBar() {
       );
       return;
     }
+
+    
 
     const payload = {
       id: formId,
