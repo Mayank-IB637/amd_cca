@@ -26,7 +26,6 @@ import {
   selectMessage,
   selectMessageType,
   selectPortfolioName,
-  selectSelfAssessment,
 } from "@/redux/features/instance/instance.selector";
 import {
   errorMessageType,
@@ -35,24 +34,21 @@ import {
   updateInstanceState,
   setUploadedFileName ,
 } from "@/redux/features/instance/instance.slice";
-// import {  } from "@/redux/features/instanceList/instanceList.selector";
 import { 
   selectCurrentProviderName,
 
  } from "@/redux/features/providerData/providerData.selector";
-// import {  } from "@/redux/features/instance/instance.slice";
-import { AttachMoney, Refresh } from "@mui/icons-material";
-import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
-// import { selectCurrentProviderName } from "@/redux/features/providerData/providerData.selector";
+import { AttachMoney } from "@mui/icons-material";
+import { selectCurrentInstance, selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
 
 function BottomBar() {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const location = useLocation();
-  const pathParts = location.pathname.split("/");
-  const currentInstanceId = pathParts[pathParts.length - 1];
+  const location = useLocation(); 
+  const currentInstance = useSelector(selectCurrentInstance);
+  const currentInstanceId = currentInstance?.id;
   const alertMessage = useSelector(selectMessage);
   const alertMessageType = useSelector(selectMessageType);
   const portfolioName = useSelector(selectPortfolioName);
@@ -63,19 +59,6 @@ function BottomBar() {
   const formId = currentInstanceId || nanoid();
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get("type");
-
-  // const handleSavePortFolio = () => {
-  //   const trimmedName = portfolioName?.trim();
-  //   const validNameRegex = /^[a-zA-Z0-9_-]+$/;
-  //   if (!trimmedName || trimmedName.length < 3 || !validNameRegex.test(trimmedName)) {
-  //     dispatch(
-  //       setMessage({
-  //         type: errorMessageType.ERROR,
-  //         message: "Please enter a portfolio name with at least 3 characters. Only letters, numbers, underscores (_), and hyphens (-) are allowed; no other special characters.",
-  //       })
-  //     );
-  //     return;
-  //   }
 
    const handleSavePortFolio = () => {
     const trimmedName = portfolioName?.trim();
@@ -130,15 +113,6 @@ function BottomBar() {
       })
     );
   }
-
-  // const handleRefreshInstances = () => {
-  //   dispatch(
-  //     setMessage({
-  //       type: errorMessageType.SUCCESS,
-  //       message: "Instances Fetched",
-  //     })
-  //   );
-  // }
 
 
   const handleDeletePortfolio = useCallback(() => {
@@ -295,17 +269,7 @@ function BottomBar() {
             />
           </Suspense>
         )}
-        {/* <Suspense fallback={null}>
-          <Button
-            id="savePortfolio"
-            onClick={location.pathname.includes('cloudInstances') ? handleRefreshInstances : handleSavePortFolio}
-            variant="contained"
-            startIcon={location.pathname.includes('cloudInstances') ? <Refresh /> : <SaveIcon />}
-            disabled={!location.pathname.includes('cloudInstances') && isSaveDisabled}
-          >
-            {location.pathname.includes('cloudInstances') ? 'Refresh' : 'Save'}
-          </Button>
-        </Suspense> */}
+       
         
         <Suspense fallback={null}>
           <Button

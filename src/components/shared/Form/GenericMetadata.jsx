@@ -11,6 +11,7 @@ import { AnimatedIconButton } from "@/components/shared/Form/Consumption Metadat
 import { Add } from "@mui/icons-material";
 import { selectCurrentProviderInstanceTypes, selectCurrentProviderPricingModels, selectCurrentProviderRegions } from "@/redux/features/providerData/providerData.selector";
 import { setRegion } from "@/redux/features/providerData/providerData.slice";
+import replacelogo from "@/assets/logo/file-replace.svg"
 
 
 const HoverInput = lazy(() => import("@/components/ui/form/Input"));
@@ -123,7 +124,7 @@ const GenericMetadata = ({ form }) => {
               >
                 <Box
                   component="img"
-                  src="/file-replace.svg"
+                  src={replacelogo}
                   alt="Find & Replace"
                   sx={{ width: 24, height: 24 }}
                 />
@@ -173,16 +174,52 @@ const GenericMetadata = ({ form }) => {
                   </IconButton>
                 </Box>
               </Box>
-              <Divider />
-              <Box p={" 24px 24px"}>
-                <Typography fontSize={"16px"} fontWeight={600}>
+              <Divider sx={{ borderBottom: "1px solid black" }} />
+              <Box p="24px 24px">
+     
+                <Typography fontSize="16px" fontWeight={600}>
                   1. Cloud Selection:
                 </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5} >
+                  If the cloud is empty, invalid, or unsupported, it will be replaced with the default CSP selected.
+                </Typography>
 
-                <Typography fontSize={"16px"} margin={"4px 0 0 16px"}>
-                  If the cloud value is empty, invalid, or unsupported, it will
-                  be automatically set to the default Cloud Service Provider
-                  (CSP).
+                <Typography fontSize="16px" fontWeight={600} mt={2}>
+                  2. Quantity:
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • The quantity should be a positive number. If a floating-point number is provided, it will be rounded off.
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • If the value is not mentioned, it will default to 1.
+                </Typography>
+
+              
+                <Typography fontSize="16px" fontWeight={600} mt={2}>
+                  3. Number of Hours per Month:
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • If the value is empty, it will be set to (quantity * 730). For example, if the quantity is 5 and the number of hours per month is not mentioned, it will be auto-corrected to (5 * 730) = 3650.
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • If the value exceeds (quantity * 730), it will automatically be set to (quantity * 730).
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • If the value is a floating-point number, it will be rounded off.
+                </Typography>
+
+               
+                <Typography fontSize="16px" fontWeight={600} mt={2}>
+                  4. Pricing Model:
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • Currently, only two pricing models are supported: on-demand and reserved.
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • If the pricing model is empty, it will default to on-demand.
+                </Typography>
+                <Typography fontSize="16px" ml={2} mt={0.5}>
+                  • If the value is something other than the supported options, the user can replace it with on-demand or reserved using the “find and replace” option.
                 </Typography>
               </Box>
             </Box>

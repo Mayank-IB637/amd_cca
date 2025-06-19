@@ -25,6 +25,8 @@ const EXPLANATION_LIST = [
   "Older generation series (e.g., 3rd generations) with insufficient performance data.",
   "Graviton instances, which are not currently supported by EIA.",
 ];
+import excellogo from "@/assets/logo/file-excel.svg"
+import cost_advisor from "@/assets/cost_advisor.xlsx"
 
 const EIAList = [
   "EIA is recommended when a more technical analysis is needed for an optimized recommendation.",
@@ -230,18 +232,17 @@ rulesDialogContent.propTypes = {
 EIARecommendedDialogContent.propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
-const ExportButton = React.memo(() => (<>
-
+const ExportButton = React.memo(() => (
   <TooltipHoc message="Export detailed recommendation">
     <Button
       id="btn-cost-advice-export"
       variant="outlined"
       size="small"
-      href="/cost_advisor.xlsx"
+      href={cost_advisor}
       startIcon={
         <Box
           component="img"
-          src="/file-excel.svg"
+          src={excellogo}
           alt="Excel Export"
           sx={{ width: 18, height: 18 }}
         />
@@ -250,7 +251,6 @@ const ExportButton = React.memo(() => (<>
       Export
     </Button>
   </TooltipHoc>
-</>
 ));
 
 const InstanceAdviceHeader = () => {

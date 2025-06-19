@@ -13,6 +13,8 @@ import {
 } from "@/redux/features/providerData/providerData.selector";
 import { useSelector } from "react-redux";
 import { selectCurrentInstance } from "@/redux/features/instanceList/instanceList.selector";
+import filelogo from "@/assets/logo/file-document-outline.svg"
+import key from "@/assets/logo/key.svg"
 
 export default function PortfolioItem({ portfolio }) {
   const dispatch = useDispatch();
@@ -70,7 +72,7 @@ export default function PortfolioItem({ portfolio }) {
     >
       <Box
         component="img"
-        src={portfolio.type!='cloudreports'?"/file-document-outline.svg":"/key.svg"}
+        src={portfolio.type!='cloudreports'?filelogo:key}
         alt="Find & Replace"
         sx={{ width: 16, height: 16 ,filter: isActive ? 'invert(1000%) sepia(100%) saturate(0%) hue-rotate(0deg)' : 'invert(0%)',}}
       />

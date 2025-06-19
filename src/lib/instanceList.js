@@ -1,5 +1,10 @@
 import { telemetryTypes } from "@/redux/features/Telemetry/telemetry.slice";
-
+import awslogo from "@/assets/logo/awslogo.svg"
+import azurelogo from "@/assets/logo/azurelogo.svg"
+import gcplogo from "@/assets/logo/googlelogo.svg"
+import datadog from "@/assets/logo/datadog.svg"
+import insightslogs from "@/assets/logo/azureInsights.svg"
+import cloudlogo from "@/assets/logo/cloudWatch.svg"
 export const instanceList = [
   // AWS
   {
@@ -789,13 +794,13 @@ export const providerList = [
       id: 1,
       type: "cloud",
       name: "AWS",
-      logo: "/logo/awslogo.svg",
+      logo: awslogo,
     },
     telemetry: {
       id: 5,
       type: "telemetry",
       name: telemetryTypes.DATA_DOG,
-      logo: "/logo/datadog.svg",
+      logo: datadog,
     },
   },
   {
@@ -803,13 +808,13 @@ export const providerList = [
       id: 2,
       type: "cloud",
       name: "AZURE",
-      logo: "/logo/azurelogo.svg",
+      logo: azurelogo,
     },
     telemetry: {
       id: 6,
       type: "telemetry",
       name: telemetryTypes.AWS_CLOUDWATCH,
-      logo: "/logo/cloudWatch.svg",
+      logo: cloudlogo,
     },
   },
   {
@@ -817,13 +822,13 @@ export const providerList = [
       id: 3,
       type: "cloud",
       name: "GCP",
-      logo: "/logo/googlelogo.svg",
+      logo: gcplogo,
     },
     telemetry: {
       id: 7,
       type: "telemetry",
       name: telemetryTypes.AZURE_INSIGHTS,
-      logo: "/logo/azureInsights.svg",
+      logo: insightslogs,
     },
   },
 ];

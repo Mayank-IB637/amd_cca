@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import React from 'react'
 // import logocopy from "../../../assets/logocopy.png"
+import logo from "../../../assets/logo/amd-header-logo.svg"
 
 
 function Logo() {
@@ -13,7 +14,7 @@ function Logo() {
         >
           <img
             id="header-logo-img"
-            src="/logo/amd-header-logo.svg"
+            src={logo}
             alt="AMD Logo"
             style={{ width: "80px", cursor: "pointer" }}
           />
