@@ -23,13 +23,12 @@ const HelpDialogContent = lazy(() => import("./HelpDialogContent"));
 const menuConfig = [
   {
     label: "Profile",
-    value: "https://epycadvisory.amd.com/profile/request-role?appName=EIA",
-    type: "link",
+
     icon: <AccountCircleIcon />,
   },
   {
     label: "User Guide",
-    value: "https://eia-prod.amd.com/assets/EIA%20User%20Guide-UyjIb5PG.pdf",
+    value: "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
     type: "link",
     icon: <MenuBookIcon />,
   },
@@ -118,9 +117,7 @@ function UserMenu({ onClose }) {
       })}
       <Divider sx={{ borderColor: theme.palette.divider }} />
       <MenuItem
-        component="a"
-        href="https://eia-prod.amd.com"
-        target="_blank"
+        
         id="logout-link"
         sx={{
           borderBottom: "1px solid transparent",

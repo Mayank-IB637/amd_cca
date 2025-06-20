@@ -13,7 +13,7 @@ export default function AboutDialogContent({ onClose }) {
         p={2}
       >
         <Typography variant="h5" fontWeight="bold" gutterBottom>
-          About Cloud Instance Advisor
+          About Cloud Cost Advisor
         </Typography>
 
         <Box display="flex" justifyContent="flex-end">
@@ -23,36 +23,10 @@ export default function AboutDialogContent({ onClose }) {
         </Box>
       </Box>
       <Divider />
-      <Box p={2} overflow={"auto"} maxHeight="70vh">
+      <Box p={2} overflow={"auto"} maxHeight="40vh">
         {/* Intro Paragraph */}
-        <Typography mt={2}>
-          Cloud Instance Advisor is a powerful recommendation engine designed to
-          analyze historical system statistics and provide optimal instance
-          recommendations.
-        </Typography>
-
-        {/* Note */}
-        <Typography mt={2}>
-          <span>
-            {" "}
-            To get started, download the Stat Collector package by clicking the
-          </span>
-          {""}
-          <span>
-            This package includes executables that gather essential system
-            statistics such as CPU, memory, network, and I/O utilization. For
-            detailed instructions, refer to
-          </span>{" "}
-          <a href="https://cca-prod.amd.com/tools/README.txt">Readme.txt</a>{" "}
-          <span> file in the downloaded package</span>
-        </Typography>
-
-        {/* Main Feature List */}
-        <Typography mt={2}>
-          Once you've collected the system statistics, upload the generated
-          files to receive tailored instance recommendations. You can upload a
-          single XLSX file containing statistics for multiple systems or use the
-          downloadable template to input the required details manually.
+        <Typography mt={0.5}>
+          Get real-time insights into estimated cost savings when switching to cloud instances powered by AMD within the same Cloud Service Provider(CSP).
         </Typography>
       </Box>
     </Box>

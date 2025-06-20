@@ -1,6 +1,5 @@
 import { IconButton, MenuItem, Box, Divider } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import MenuIcon from "@mui/icons-material/Menu"; 
 import HelpIcon from "@mui/icons-material/Help";
 import InfoIcon from "@mui/icons-material/Info";
 import SupportIcon from "@mui/icons-material/Support";
@@ -82,7 +81,7 @@ function ResponsiveSubMenu() {
         icon: <BookIcon />,
         type: "link",
         value:
-          "https://eia-prod.amd.com/assets/EIA%20User%20Guide-UyjIb5PG.pdf",
+          "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
       },
       {
         label: "Help",
@@ -152,9 +151,7 @@ function ResponsiveSubMenu() {
           })}
           <Divider sx={{ my: 1 }} />
           <MenuItem
-            component="a"
-            href={"https://eia-prod.amd.com/"}
-            target="_blank"
+            
             rel="noopener noreferrer"
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
