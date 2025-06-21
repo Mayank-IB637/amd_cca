@@ -28,7 +28,7 @@ const menuConfig = [
   },
   {
     label: "User Guide",
-    value: "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
+    // value: "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
     type: "link",
     icon: <MenuBookIcon />,
   },
