@@ -18,28 +18,32 @@ const speakText = (text, isMuted) => {
 };
 function generateButtons(step, currentStepIndex) {
   return [
-     {
-      text: isMuted
-        ? '<i class="material-icons">volume_off</i>'
-        : '<i class="material-icons">volume_up</i>',
-      action: () => {
-        const synth = window.speechSynthesis;
-        if (synth.speaking && !synth.paused) {
-          synth.pause();
-        } else if (synth.paused) {
-          synth.resume();
-        }
- 
-        isMuted = !isMuted;
- 
-        const currentStep = tour.getCurrentStep();
-        if (currentStep) {
-          currentStep.updateStepOptions({
-            buttons: generateButtons(step, currentStepIndex),
-          });
-        }
-      },
-    },
+   {
+  text: isMuted
+    ? '<i class="material-icons">volume_off</i>'
+    : '<i class="material-icons">volume_up</i>',
+  action: () => {
+    isMuted = !isMuted;
+
+    const synth = window.speechSynthesis;
+    synth.cancel(); // Instantly stop any ongoing speech
+
+    // If unmuting and a current step exists, speak its text
+    const currentStep = tour.getCurrentStep();
+    if (currentStep && !isMuted) {
+      const stepData = allSteps[currentStepIndex];
+      speakText(stepData.text, isMuted);
+    }
+
+    // Update buttons to reflect new icon
+    if (currentStep) {
+      currentStep.updateStepOptions({
+        buttons: generateButtons(allSteps[currentStepIndex], currentStepIndex),
+      });
+    }
+  },
+},
+
     {
       text: "Skip All",
       action: () => {
