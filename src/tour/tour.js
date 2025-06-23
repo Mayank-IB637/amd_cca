@@ -53,33 +53,33 @@ function generateButtons(step, currentStepIndex) {
       },
     },
    
-    {
-      text: "Previous",
-      disabled: step.isStart,
-      secondary: step.isStart,
-      action: () => {
-        const currentLabel = allSteps[currentStepIndex].label;
-        let prevLabelIndex = currentStepIndex - 1;
-        while (
-          prevLabelIndex >= 0 &&
-          allSteps[prevLabelIndex].label === currentLabel
-        ) {
-          prevLabelIndex--;
-        }
+    // {
+    //   text: "Previous",
+    //   disabled: step.isStart,
+    //   secondary: step.isStart,
+    //   action: () => {
+    //     const currentLabel = allSteps[currentStepIndex].label;
+    //     let prevLabelIndex = currentStepIndex - 1;
+    //     while (
+    //       prevLabelIndex >= 0 &&
+    //       allSteps[prevLabelIndex].label === currentLabel
+    //     ) {
+    //       prevLabelIndex--;
+    //     }
 
-        if (prevLabelIndex >= 0) {
-          const prevLabel = allSteps[prevLabelIndex].label;
-          const firstOccurrence = allSteps.findIndex(
-            (s) => s.label === prevLabel
-          );
-          if (firstOccurrence !== -1) {
-            tour.show(firstOccurrence);
-          }
-        } else {
-          tour.show(0);
-        }
-      },
-    },
+    //     if (prevLabelIndex >= 0) {
+    //       const prevLabel = allSteps[prevLabelIndex].label;
+    //       const firstOccurrence = allSteps.findIndex(
+    //         (s) => s.label === prevLabel
+    //       );
+    //       if (firstOccurrence !== -1) {
+    //         tour.show(firstOccurrence);
+    //       }
+    //     } else {
+    //       tour.show(0);
+    //     }
+    //   },
+    // },
     {
       text: step.isEnd ? "Finish" : "Next",
       action: async () => {
