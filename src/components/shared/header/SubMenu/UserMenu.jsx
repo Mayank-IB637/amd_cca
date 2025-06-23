@@ -16,6 +16,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import DialogHoc from "@/components/ui/Dialog";
 import PropTypes from "prop-types";
 
+
 // Lazy load dialog content components
 const AboutDialogContent = lazy(() => import("./AboutDialogContent"));
 const HelpDialogContent = lazy(() => import("./HelpDialogContent"));
@@ -28,7 +29,7 @@ const menuConfig = [
   },
   {
     label: "User Guide",
-    // value: "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
+    value: "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
     type: "link",
     icon: <MenuBookIcon />,
   },
