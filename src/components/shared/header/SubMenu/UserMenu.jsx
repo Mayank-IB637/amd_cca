@@ -15,6 +15,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HelpIcon from "@mui/icons-material/Help";
 import DialogHoc from "@/components/ui/Dialog";
 import PropTypes from "prop-types";
+import pdf from "@/assets/AMD_CCA1.pdf"
+
 
 
 // Lazy load dialog content components
@@ -29,7 +31,7 @@ const menuConfig = [
   },
   {
     label: "User Guide",
-    value: "https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
+    value: pdf,
     type: "link",
     icon: <MenuBookIcon />,
   },

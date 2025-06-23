@@ -8,6 +8,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import BookIcon from "@mui/icons-material/Book";
 import MenuHoc from "@/components/ui/Menu";
 import { lazy, Suspense, useMemo } from "react";
+import pdf from "@/assets/AMD_CCA1.pdf"
 
 
 // Lazy load dialogs
@@ -81,7 +82,7 @@ function ResponsiveSubMenu() {
         label: "User Guide",
         icon: <BookIcon />,
         type: "link",
-        value:"https://cca-prod.amd.com/assets/AMD%20CCA1.BDHf4xn9.pdf",
+        value:pdf,
       },
       {
         label: "Help",

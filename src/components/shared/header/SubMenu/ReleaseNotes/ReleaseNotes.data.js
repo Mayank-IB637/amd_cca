@@ -1,5 +1,125 @@
 export const releaseNotesTableData = [
   {
+  version: "v3.1.0",
+  releaseDate: "June, 2025",
+  majorFeatures: [
+    {
+      label: "Azure App Insights",
+      values: [
+        "Introduced support for Azure Application Insights as a telemetry connector."
+      ],
+    },
+  ],
+  minorImprovements: [
+    {
+      label: "Code Snippet",
+      values: [
+        "Customers can view the code snippet for applicable APIs.",
+        "Currently, only the CURL format is supported.",
+        "Once an API key is generated, users can use the code snippet directly in API testing tools.",
+      ],
+    },
+    {
+      label: "Enhanced Admin Visibility",
+      values: [
+        "Administrator can now view all portfolios across their organization."
+      ],
+    },
+    {
+      label: "Interactive Demo Enhancements",
+      values: [
+        "Faster loading times",
+        "Added audio and visual guidance to improve user onboarding.",
+        "New controls to mute or skip instructions.",
+      ],
+    },
+    {
+      label: "General Bug Fixes & Performance Improvements",
+      values: [],
+    },
+  ],
+  upComing: [
+    {
+      label: "AWS Legacy Recommendations Support",
+      values: [
+        "Upcoming support for instance recommendations on AWS v2 and v3 instance types",
+      ],
+    },
+    {
+      label: "Telemetry Expansion",
+      values: [
+        "Planned support for GCP Open Telemetry integration",
+        "Prometheus-based telemetry support.",
+      ],
+    },
+  ],
+},
+
+  {
+    version: "v3.0.0",
+    releaseDate: "May, 2025",
+    majorFeatures: [
+      {
+        label: "Google Cloud Platform (GCP)",
+        values: [
+          "GCP support extended to all the regions across globe.(regional availability should be considered)",
+        ],
+      },
+      {
+        label: "API key for third-party applications",
+        values: ["Generate up to 5 API keys for recommendations, supported instances, and data validation.",
+                 "Log in, visit Profile, download the user guide, and generate an API key."
+        ],
+      },
+      {
+        label: "AWS CloudWatch telemetry connector",
+        values: [
+          "Users can now link their AWS CloudWatch account to view all instances and receive recommendations and cost advice.",
+        ],
+      },
+    ],
+
+    minorImprovements: [
+      {
+        label: "Excel export",
+        values: [
+          "Enhancement of font size and modification of note colors in the exported file for improved visibility.",
+
+          "The Region, Instance, Monthly cost and Annual Cost columns for current instances are now frozen for more accurate comparison in the Excel document.",
+        ],
+      },
+      {
+        label: "Bug fixes and performance improvements",
+        values: [],
+      },
+    ],
+    upComing: [
+      {
+        label: "Azure app insights support:",
+        values: [
+          "Extended telemetry tool with Azure Application Insights to further enhance data collection and analysis.",
+        ],
+      },
+      {
+        label:
+          "Hyper-V VM’s support for recommendations/cost advice Automated CUR ingests",
+        values: [
+          "Customers can upload a data file, and the EPYC advisory service will extract the necessary data and create an input file for the cost advisor and instance advisor.",
+        ],
+      },
+      {
+        label:
+          "Custom headroom recommendations Improvised interactive demo Refined EIA recommendations",
+        values: [
+          "Clear differentiation between the recommendations for EIA",
+          "Cost optimized",
+          "Performance optimized",
+          "Less power and less carbon producing instances",
+        ],
+      },
+    ],
+  },
+  {
     version: "v2.0.0",
     releaseDate: "Apr, 2025",
     majorFeatures: [
