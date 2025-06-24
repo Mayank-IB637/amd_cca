@@ -19,6 +19,7 @@ import pdf from "@/assets/AMD_CCA1.pdf"
 
 
 
+
 // Lazy load dialog content components
 const AboutDialogContent = lazy(() => import("./AboutDialogContent"));
 const HelpDialogContent = lazy(() => import("./HelpDialogContent"));
@@ -46,6 +47,7 @@ const menuConfig = [
     label: "Online Documentation",
     icon: <HelpIcon />,
     type: "dialog",
+    
     component: HelpDialogContent,
   },
 ];
