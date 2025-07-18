@@ -24,6 +24,8 @@ import { selectCurrentProviderName } from "./redux/features/providerData/provide
 import TelemetryDetail from "./components/shared/Telemetry/TelemetryDetails";
 import TelemetryDetailBottomBar from "./components/shared/Telemetry/TelemetryDetailBottombar";
 import { addInstance } from "./redux/features/instanceList/instanceList.slice";
+import Support from "./components/ui/Support";
+import ReleaseNotesPage from "./components/shared/header/SubMenu/ReleaseNotes/ReleaseNotesPage";
 
 // Route config for reusability
 const routesConfig = [
@@ -37,18 +39,22 @@ const routesConfig = [
   { path: "/instanceAdvice", element: <InstanceAdviceLayout /> },
   { path: "/instanceAdvice/:id", element: <InstanceAdviceLayout /> },
   {path:"/telemetry", element: <TelemetryLayout />},
-  {path:"/telemetry/:id", element: <TelemetryDetail />}
+  {path:"/telemetry/:id", element: <TelemetryDetail />},
+  { path: "/support", element: <Support /> },
+  { path: "/release-notes", element: <ReleaseNotesPage /> },
+
+
 ];
 
 
 const getSidebar = (pathname) =>
-  !["/explorer", "/explorer/:id"].includes(pathname) ? Sidebar : null;
+  !["/explorer", "/explorer/:id","/support","/release-notes"].includes(pathname) ? Sidebar : null;
 
 const getBottomBar = (pathname) => {
   if (pathname.startsWith('/instanceAdvice')) {
     return InstanceAdviceBottomBar;
   }
-  if (pathname.startsWith('/explorer') || pathname === '/cloudusagereports') {
+  if (pathname.startsWith('/explorer') || pathname === '/cloudusagereports' || pathname === '/support' || pathname === '/release-notes') {
     return null;
   }
 

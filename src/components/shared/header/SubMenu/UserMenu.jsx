@@ -26,30 +26,30 @@ const HelpDialogContent = lazy(() => import("./HelpDialogContent"));
 
 const menuConfig = [
   {
-    label: "Profile",
+    label: "Admin Panel",
 
     icon: <AccountCircleIcon />,
   },
-  {
-    label: "User Guide",
-    value: pdf,
-    type: "link",
-    icon: <MenuBookIcon />,
-  },
-  
+  // {
+  //   label: "User Guide",
+  //   value: pdf,
+  //   type: "link",
+  //   icon: <MenuBookIcon />,
+  // },
+   {
+    label: "Online Documentation",
+    icon: <HelpIcon />,
+    type: "dialog",
+    
+    component: HelpDialogContent,
+  },  
   {
     label: "About",
     icon: <InfoIcon />,
     type: "dialog",
     component: AboutDialogContent,
   },
-  {
-    label: "Online Documentation",
-    icon: <HelpIcon />,
-    type: "dialog",
-    
-    component: HelpDialogContent,
-  },
+ 
 ];
 
 function UserMenu({ onClose }) {

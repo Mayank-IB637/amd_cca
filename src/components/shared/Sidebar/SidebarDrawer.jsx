@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import {
   Box,
   Divider,
@@ -6,6 +6,8 @@ import {
   Typography,
   List,
   useTheme,
+  Switch,
+  TextField,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -34,6 +36,9 @@ const SidebarDrawer = () => {
   const portfolio = useSelector(selectCurrentProviderName);
   const portfolioType = useSelector(selectCurrentProviderType);
   const instances = useSelector(selectInstanceList);
+    const [portfolioFilter, setPortfolioFilter] = useState(false);
+
+ 
 
   
 
@@ -116,6 +121,23 @@ const SidebarDrawer = () => {
         height="2.5rem"
       >
         <Typography fontWeight={500}>Portfolios</Typography>
+      
+  <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "2px",
+          }}
+        >
+          <Switch
+            value={portfolioFilter}
+            onClick={() => setPortfolioFilter((prev) => !prev)}
+          />{" "}
+          <Typography sx={{ fontWeight: 600 }}>
+            {portfolioFilter ? "Total" : "Self"}
+          </Typography>
+        </Box>
         <TooltipHoc message="Create New Portfolio">
           <IconButton
             id="btn-dashboard-createPortfolio"
@@ -132,8 +154,11 @@ const SidebarDrawer = () => {
         </TooltipHoc>
       </Box>
 
+        
       {/* Portfolio List */}
       <Box sx={{ height: "70vh", overflowY: "auto" }}>
+         <div style={{paddingLeft:'10px' ,marginBottom:"10px"}}><TextField placeholder="Search Portfolio"  /></div>
+ 
         <List id="dashboard-portfolio-list">
           {data.map((portfolio) => (
             <PortfolioItem key={portfolio.id} portfolio={portfolio} />

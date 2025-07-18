@@ -117,9 +117,9 @@ export const FIND_AND_REPLACE_FIELD_TYPES = [
   },
 ];
 
-const subject = "CCA - Support Ticket Request - Regarding manageAccounts Page";
+export const supportEmailSubject = "CCA - Support Ticket Request - Regarding manageAccounts Page";
 
-const body = `
+export const supportEmailBody = `
 Hi [Support Team/Specific Name],
 
 I am writing to request support regarding EIA manageAccounts Page.
@@ -160,6 +160,6 @@ Best regards,
 `;
 
 export const supportMailtoLink = `mailto:support@example.com?subject=${encodeURIComponent(
-  subject
-)}&body=${encodeURIComponent(body)}`;
+  supportEmailSubject
+)}&body=${encodeURIComponent(supportEmailBody)}`;
 export const supportMobileNumber = `tel:+1 (502) 388-6228`;

@@ -4,18 +4,37 @@ import { useSelector } from "react-redux";
 import { telemetryColumns } from "./telemetryColumns";
 import CustomTable from "@/components/ui/table/CustomTable";
 import { useLocation } from "react-router-dom"; 
-import { selectTelemetryState } from "@/redux/features/Telemetry/telemetry.selector";
 import { telemetryTypes } from "@/redux/features/Telemetry/telemetry.slice";
+import PrometheusTelemetry from "./Prometheus";
+import { selectTelemetryState } from "@/redux/features/telemetry/telemetry.selector";
 // Lazy load the forms
 const DatadogForm = lazy(() => import("./DatadogForm"));
 const AzureInsightsForm = lazy(() => import("./AzureInsightsForm"));
+const Prometheus = lazy(() => import("./Prometheus"));
+const GCPTelemetry = lazy(() => import("./GCPTelemetry"));
 
 function TelemetryLayout() {
   const { data, showData } = useSelector(selectTelemetryState);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const type = queryParams.get("type");
-
+  const renderForm = () => {
+    switch (type) {
+      case telemetryTypes.AZURE_INSIGHTS:
+        return <AzureInsightsForm />;
+      case telemetryTypes.AWS_CLOUDWATCH:
+        return <AzureInsightsForm />;
+      case telemetryTypes.DATA_DOG:
+        return <DatadogForm />;
+      case telemetryTypes.GOOGLE_CLOUD_OPS:
+        return <GCPTelemetry />;
+      case telemetryTypes.PROMETHEUS:
+        return <PrometheusTelemetry />;
+      default:
+        return null;
+    }
+  };
+ 
   return (
     <Box
       sx={{
@@ -28,7 +47,7 @@ function TelemetryLayout() {
       }}
     >
       <Suspense fallback={<Skeleton variant="rectangular" height={400} />}>
-        {type === telemetryTypes.AZURE_INSIGHTS ? <AzureInsightsForm /> : <DatadogForm />}
+        {renderForm()}
       </Suspense>
 
       {showData && (

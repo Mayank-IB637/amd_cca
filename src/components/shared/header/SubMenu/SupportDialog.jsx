@@ -9,7 +9,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
-import { supportMailtoLink, supportMobileNumber } from '@/lib/constant';
+// import { supportMailtoLink, supportMobileNumber } from '@/lib/constant';
 
 export default function SupportDialog({ onClose }) {
   return (
@@ -36,7 +36,7 @@ export default function SupportDialog({ onClose }) {
         <Divider />
 
         {/* Hotline */}
-        <Box mt={2} display="flex" alignItems="flex-start">
+        {/* <Box mt={2} display="flex" alignItems="flex-start">
           <PhoneIcon sx={{ mr: 3, mt: 1 }} />
           <Box
             component="a"
@@ -57,7 +57,7 @@ export default function SupportDialog({ onClose }) {
           </Box>
         </Box>
 
-        {/* Email */}
+       
         <Box mt={2} display="flex" alignItems="flex-start"  component="a" href={supportMailtoLink} color={'primary.main'}  sx={{ textDecoration: 'none' }} > 
           <EmailIcon sx={{ mr: 3, mt: 1 }} />
           <Box>
@@ -73,7 +73,8 @@ export default function SupportDialog({ onClose }) {
               dl.epycservices@amd.com
             </Link>
           </Box>
-        </Box>
+        </Box> */}
+
       </Box>
     </Box>
   

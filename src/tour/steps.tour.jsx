@@ -2,28 +2,28 @@ import { openSidebar } from "@/redux/features/sidebar/sidebar.slice";
 import { store } from "@/redux/store";
 
 const steps = () => [
+  // {
+  //   id: "step-1",
+  //   text: "Click this button to view previous releases.",
+  //   attachTo: {
+  //     element: "#step-one-target",
+  //     on: "bottom",
+  //     offset: "0 10",
+  //     // isSkip: true,
+  //   },
+  // },
+  // {
+  //   id: "step-2",
+  //   text: "Click here to close the dialog box.",
+  //   attachTo: {
+  //     element: "#step-two-target",
+  //     on: "top",
+  //     offset: "0 20",
+  //   },
+  //   type: "wait",
+  // },
   {
     id: "step-1",
-    text: "Click this button to view previous releases.",
-    attachTo: {
-      element: "#step-one-target",
-      on: "bottom",
-      offset: "0 10",
-      // isSkip: true,
-    },
-  },
-  {
-    id: "step-2",
-    text: "Click here to close the dialog box.",
-    attachTo: {
-      element: "#step-two-target",
-      on: "top",
-      offset: "0 20",
-    },
-    type: "wait",
-  },
-  {
-    id: "step-3",
     text: "Click to open the support menu.",
     attachTo: {
       element: "#step-three-target",
@@ -32,10 +32,29 @@ const steps = () => [
     offset: "0 20",
   },
   {
-    id: "step-4",
-    text: "Access all support options here.",
+    id: "step-2",
+    text: "Click to open the Release menu.",
     attachTo: {
-      element: "#step-three-target",
+      element: "#release-menu",
+      on: "right",
+    },
+    offset: "0 20",
+  },
+   {
+    id: "step-3",
+    text: "Click to open the Release Notes.",
+    attachTo: {
+      element: "#release-notes",
+      on: "right",
+    },
+    offset: "0 20",
+  },
+
+  {
+    id: "step-4",
+    text: "Click here to go home.",
+    attachTo: {
+      element: "#redirectToHome",
       on: "right",
       offset: "0 20",
     },

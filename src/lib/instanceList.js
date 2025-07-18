@@ -5,6 +5,8 @@ import gcplogo from "@/assets/logo/googlelogo.svg"
 import datadog from "@/assets/logo/datadog.svg"
 import insightslogs from "@/assets/logo/azureInsights.svg"
 import cloudlogo from "@/assets/logo/cloudWatch.svg"
+import prometheuslogo from "@/assets/logo/prometheus.svg"
+
 export const instanceList = [
   // AWS
   {
@@ -785,7 +787,106 @@ export const instanceList = [
   //   region: "asia-east1",
   //   instanceType: "asia-south1",
   // },
+//GCP
+  {
+    id: 109,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-south1",
+  },
+  {
+    id: 110,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "europe-west1",
+    instanceType: "europe-west2",
+  },
+  {
+    id: 111,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "europe-west1",
+    instanceType: "europe-west3",
+  },
+  {
+    id: 112,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "europe-west1",
+    instanceType: "europe-west4",
+  },
+  {
+    id: 113,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-northeast1",
+  },
+  {
+    id: 114,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-southeast1",
+  },
+  {
+    id: 115,
+    type: "telemetry",
+    name: telemetryTypes.GOOGLE_CLOUD_OPS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-south1",
+  },
+ //prometheous
+  {
+    id: 116,
+    type: "telemetry",
+    name: telemetryTypes.PROMETHEUS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "europe-west1",
+    instanceType: "europe-west3",
+  },
+  {
+    id: 117,
+    type: "telemetry",
+    name: telemetryTypes.PROMETHEUS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "europe-west1",
+    instanceType: "europe-west4",
+  },
+  {
+    id: 118,
+    type: "telemetry",
+    name: telemetryTypes.PROMETHEUS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-northeast1",
+  },
+  {
+    id: 119,
+    type: "telemetry",
+    name: telemetryTypes.PROMETHEUS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-southeast1",
+  },
+  {
+    id: 120,
+    type: "telemetry",
+    name: telemetryTypes.PROMETHEUS,
+    // cloud: CLOUD_TYPES.GCP,
+    region: "asia-east1",
+    instanceType: "asia-south1",
+  },
 ];
+
 
 
 export const providerList = [
@@ -829,6 +930,24 @@ export const providerList = [
       type: "telemetry",
       name: telemetryTypes.AZURE_INSIGHTS,
       logo: insightslogs,
+    },
+  },
+   {
+    cloud: null,
+    telemetry: {
+      id: 8,
+      type: "telemetry",
+      name: telemetryTypes.GOOGLE_CLOUD_OPS,
+      logo: gcplogo,
+    },
+  },
+  {
+    cloud: null,
+    telemetry: {
+      id: 9,
+      type: "telemetry",
+      name: telemetryTypes.PROMETHEUS,
+      logo: prometheuslogo,
     },
   },
 ];

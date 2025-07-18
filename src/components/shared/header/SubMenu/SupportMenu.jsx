@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
-import { supportMailtoLink, supportMobileNumber } from "@/lib/constant";
+// import { supportMailtoLink, supportMobileNumber } from "@/lib/constant";
 
 function SupportMenu() {
   const theme = useTheme();
@@ -23,7 +23,7 @@ function SupportMenu() {
 
   return (
     <>
-      <MenuItem component="a" href={supportMobileNumber}>
+      {/* <MenuItem component="a" href={supportMobileNumber}>
         <ListItemIcon sx={{ color: theme.palette.primary.contrastText }}>
           <PhoneIcon />
         </ListItemIcon>
@@ -32,9 +32,9 @@ function SupportMenu() {
           secondary={supportMobileNumber.split(":")[1]}
           {...commonTextStyles}
         />
-      </MenuItem>
+      </MenuItem> */}
       <Divider sx={{ borderColor: theme.palette.divider }} />
-      <MenuItem component="a" href={supportMailtoLink}>
+      {/* <MenuItem component="a" href={supportMailtoLink}>
         <ListItemIcon sx={{ color: theme.palette.primary.contrastText }}>
           <EmailIcon />
         </ListItemIcon>
@@ -43,7 +43,7 @@ function SupportMenu() {
           secondary={supportMailtoLink.split(":")[1].split("?")[0]}
           {...commonTextStyles}
         />
-      </MenuItem>
+      </MenuItem> */}
     </>
   );
 }

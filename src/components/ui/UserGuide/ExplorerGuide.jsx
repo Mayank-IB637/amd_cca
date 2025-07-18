@@ -4,9 +4,6 @@ import { Box, Typography, List, ListItem, ListItemText, Divider } from "@mui/mat
 const ExplorerGuide = () => {
   return (
     <Box p={1}>
-      {/* <Typography variant="h5" fontWeight={600} gutterBottom>
-        Explorer
-      </Typography> */}
 
       <Typography variant="body1" gutterBottom>
         The Explorer section allows users to investigate a variety of AMD instances across different cloud service providers.

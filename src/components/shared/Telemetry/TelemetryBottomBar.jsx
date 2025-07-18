@@ -10,7 +10,7 @@ import {
   resetTelemetryData,
   telemetryConnectionStatus,
   toggleShowData,
-} from "@/redux/features/telemetry/telemetry.slice";
+} from "@/redux/features/Telemetry/telemetry.slice";
 import { selectTelemetryState } from "@/redux/features/telemetry/telemetry.selector";
 import {
   addInstance,

@@ -29,7 +29,8 @@ const SidebarSelect = () => {
     selectCurrentProviderTelemetryCloud
   );
 
-  const telemetryOptions = providers.map((provider) => provider.cloud.name);
+  // const telemetryOptions = providers.map((provider) => provider.cloud.name);
+  const telemetryOptions = providers.map((provider) => provider.cloud !== null ? provider.cloud.name : undefined).filter(v => v != undefined);
 
   const handleTelemetryCloudChange = (event) => {
     const selectedCloud = event.target.value;
@@ -78,7 +79,7 @@ const SidebarSelect = () => {
         )}
       />
       {currentProviderType == "telemetry" &&
-        ![telemetryTypes.AWS_CLOUDWATCH,telemetryTypes.AZURE_INSIGHTS].includes(currentProvider) && (
+        ![telemetryTypes.AWS_CLOUDWATCH, telemetryTypes.AZURE_INSIGHTS].includes(currentProvider) && (
           <FormControl fullWidth variant="outlined">
             <InputLabel>Cloud*</InputLabel>
             <SelectHoc

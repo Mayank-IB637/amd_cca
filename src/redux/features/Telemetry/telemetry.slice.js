@@ -2,7 +2,7 @@ import {
   awsCloudWatchTelemetryData,
   azureInsightsTelemetryData,
   dataDogTelemetryData,
-} from "@/lib/telemetryData";
+} from "@/lib/telemetrydata";
 import { createSlice } from "@reduxjs/toolkit";  
 
 export const telemetryConnectionStatus = {
@@ -14,7 +14,11 @@ export const telemetryTypes = {
   DATA_DOG: "Datadog",
   AWS_CLOUDWATCH: "AWS CloudWatch",
   AZURE_INSIGHTS: "Azure App Insights",
+  GOOGLE_CLOUD_OPS: "Google Cloud Ops Agent",
+  PROMETHEUS: "Prometheus",
 };
+
+ 
 
 const initialState = {
   data: [],
