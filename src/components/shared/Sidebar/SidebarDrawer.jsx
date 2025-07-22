@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
+import CancelIcon from '@mui/icons-material/Cancel';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -120,7 +120,6 @@ const SidebarDrawer = () => {
         px={1}
         height="2.5rem"
       >
-        <Typography fontWeight={500}>Portfolios</Typography>
       
   <Box
           sx={{
@@ -134,14 +133,14 @@ const SidebarDrawer = () => {
             value={portfolioFilter}
             onClick={() => setPortfolioFilter((prev) => !prev)}
           />{" "}
-          <Typography sx={{ fontWeight: 600 }}>
-            {portfolioFilter ? "Total" : "Self"}
+          <Typography sx={{ fontWeight: 500 }}>
+            {portfolioFilter ? "Org Portfolios" : "My Portfolios"}
           </Typography>
         </Box>
-        <TooltipHoc message="Create New Portfolio">
+        <TooltipHoc message="Clear Portfolio">
           <IconButton
             id="btn-dashboard-createPortfolio"
-            aria-label="Create New Portfolio"
+            aria-label="Clear Portfolio"
             onClick={handleOpenNewForm}
             size="small"
             sx={{
@@ -149,7 +148,7 @@ const SidebarDrawer = () => {
               "&:hover": { backgroundColor: "transparent" },
             }}
           >
-            <AddCircleIcon fontSize="small" />
+            <CancelIcon fontSize="small" />
           </IconButton>
         </TooltipHoc>
       </Box>
