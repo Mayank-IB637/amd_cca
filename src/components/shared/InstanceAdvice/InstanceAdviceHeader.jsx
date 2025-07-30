@@ -31,14 +31,7 @@ const EIAList = [
   "For disk (d) or network-enhanced (n) instances.",
   "When savings are not projected on modernized instances powered by AMD EPYC™ processors."
 ]
-const handleDownloadPPT = () => {
-  const link = document.createElement("a");
-  link.href = 'https://cca-dev.amd.com/results/Advice_aws_Port58058.pptx';
-  link.download = "Presentation.ppt";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
+
 const Spinner = () => (
   <>
     <Box sx={spinnerStyles.loader} />
@@ -405,10 +398,8 @@ const InstanceAdviceHeader = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
             <Button
-              id="btn-cost-advice-export"
               variant="outlined"
               size="small"
-              onClick={() => handleDownloadPPT()}
               startIcon={<SlideshowIcon />
               }
             >
