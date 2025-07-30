@@ -9,7 +9,7 @@ import {
   ListItem,
   ListItemText,
   useMediaQuery,
-   FormControl, InputLabel, Select, MenuItem, TextField, Grid
+  FormControl, InputLabel, Select, MenuItem, TextField, Grid
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
@@ -17,6 +17,7 @@ import TooltipHoc from "@/components/ui/Tooltip";
 import DialogHoc from "@/components/ui/Dialog";
 import { useTheme } from "@emotion/react";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import SlideshowIcon from '@mui/icons-material/Slideshow';
 const EXPLANATION_LIST = [
   "Instances for which performance data is unavailable.",
   "Older generation series (e.g., 3rd generations) with insufficient performance data.",
@@ -30,6 +31,14 @@ const EIAList = [
   "For disk (d) or network-enhanced (n) instances.",
   "When savings are not projected on modernized instances powered by AMD EPYC™ processors."
 ]
+const handleDownloadPPT = () => {
+  const link = document.createElement("a");
+  link.href = 'https://cca-dev.amd.com/results/Advice_aws_Port58058.pptx';
+  link.download = "Presentation.ppt";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 const Spinner = () => (
   <>
     <Box sx={spinnerStyles.loader} />
@@ -79,8 +88,8 @@ const ExplanationDialogContent = ({ handleClose }) => (
         </Typography>
       </Box>
       <IconButton
-      id = "input-errors-explanation-close"
-       onClick={handleClose}>
+        id="input-errors-explanation-close"
+        onClick={handleClose}>
         <CloseIcon />
       </IconButton>
     </Box>
@@ -137,10 +146,10 @@ const EIARecommendedDialogContent = ({ handleClose }) => (
         </Typography>
 
       </Box>
-      <IconButton 
-      onClick={handleClose}
-      id = "eia-recommended-dialog-close">
-       
+      <IconButton
+        onClick={handleClose}
+        id="eia-recommended-dialog-close">
+
         <CloseIcon />
       </IconButton>
     </Box>
@@ -341,7 +350,7 @@ const InstanceAdviceHeader = () => {
             <DialogHoc
               trigger={({ onClick }) => (
                 <Box
-                id="input-errors-explanation"
+                  id="input-errors-explanation"
                   component="span"
                   onClick={onClick}
                   sx={{
@@ -389,14 +398,25 @@ const InstanceAdviceHeader = () => {
           gap: { xs: 1, md: 2 },
           marginLeft: '80px'
         }}>
-           <Box display="flex" gap={2} alignItems="center">
-          <TextField
-            size="small"
-            placeholder="Search"
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <ExportButton />
-        </Box>
+          <Box display="flex" gap={2} alignItems="center">
+            <TextField
+              size="small"
+              placeholder="Search"
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+            <Button
+              id="btn-cost-advice-export"
+              variant="outlined"
+              size="small"
+              onClick={() => handleDownloadPPT()}
+              startIcon={<SlideshowIcon />
+              }
+            >
+              PPT
+            </Button>
+            <ExportButton />
+
+          </Box>
 
         </Grid>
       </Grid>
