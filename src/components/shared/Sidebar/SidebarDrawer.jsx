@@ -26,7 +26,7 @@ import {
   selectCurrentProviderType,
 } from "@/redux/features/providerData/providerData.selector";
 import { selectInstanceList } from "@/redux/features/instanceList/instanceList.selector";
-import { resetTelemetryData } from "@/redux/features/telemetry/telemetry.slice";
+import { resetTelemetryData } from "@/redux/features/Telemetry/telemetry.slice";
 
 const SidebarDrawer = () => {
   const theme = useTheme();
